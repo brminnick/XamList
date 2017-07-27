@@ -46,10 +46,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XamList.Constants\XamList.Constants.csproj">
-      <Project>{25C73EEE-1E83-40A0-8FF5-79567A7757F7}</Project>
-      <Name>XamList.Constants</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Droid\XamList.Droid.csproj">
       <Project>{C534602B-AE1C-4B79-A1A7-261513613A06}</Project>
       <Name>XamList.Droid</Name>
@@ -67,5 +63,6 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <Import Project="..\XamList.Constants\XamList.Constants.projitems" Label="Shared" Condition="Exists('..\XamList.Constants\XamList.Constants.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

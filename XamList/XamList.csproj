@@ -14,10 +14,8 @@
 		<PackageReference Include="Microsoft.Azure.Mobile.Distribute" Version="0.14.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\XamList.Constants\XamList.Constants.csproj" />
-	</ItemGroup>
-	<ItemGroup>
 		<Folder Include="Data\" />
 	</ItemGroup>
+	<Import Project="..\XamList.Constants\XamList.Constants.projitems" Label="Shared" Condition="Exists('..\XamList.Constants\XamList.Constants.projitems')" />
 	<Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" />
 </Project>

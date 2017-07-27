@@ -17,7 +17,7 @@ namespace XamList.Shared
         public ContactModel() => Id = Guid.NewGuid().ToString();
         #endregion
 
-#region Properties
+        #region Properties
 #if API
 #else
         public string FullName => $"{FirstName} {LastName}";
@@ -43,7 +43,6 @@ namespace XamList.Shared
         [Column(Name = nameof(PhoneNumber), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #endif
         public string PhoneNumber { get; set; }
-        #endregion
 
 #if API
         [Column(Name = nameof(CreatedAt), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
@@ -61,5 +60,6 @@ namespace XamList.Shared
         [JsonProperty("deleted")]
 #endif
         public bool IsDeleted { get; set; }
+        #endregion
     }
 }
