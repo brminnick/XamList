@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
+
 using Xamarin.Forms;
+
+using XamList.Shared;
 
 namespace XamList
 {

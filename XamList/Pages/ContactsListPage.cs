@@ -4,6 +4,8 @@ using Xamarin.Forms;
 
 using XamList.Constants;
 
+using XamList.Shared;
+
 namespace XamList
 {
     public class ContactsListPage : BaseContentPage<ContactsListViewModel>

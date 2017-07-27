@@ -4,6 +4,8 @@ using SQLite;
 
 using Xamarin.Forms;
 
+using XamList.Shared;
+
 namespace XamList
 {
     public abstract class BaseDatabase

@@ -5,6 +5,7 @@ using Xamarin.Forms;
 
 using EntryCustomReturn.Forms.Plugin.Abstractions;
 
+using XamList.Shared;
 using XamList.Constants;
 
 namespace XamList

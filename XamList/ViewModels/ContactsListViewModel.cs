@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 
+using XamList.Shared;
+
 namespace XamList
 {
     public class ContactsListViewModel : BaseViewModel

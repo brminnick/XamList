@@ -19,4 +19,5 @@
 		<Folder Include="Data\" />
 		<Folder Include="Helpers\" />
 	</ItemGroup>
+	<Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" />
 </Project>

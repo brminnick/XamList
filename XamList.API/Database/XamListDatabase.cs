@@ -6,7 +6,8 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
+
+using XamList.Shared;
 
 namespace XamList.API.Database
 {
@@ -19,8 +20,10 @@ namespace XamList.API.Database
         #region Methods
         public static async Task<List<ContactModel>> GetAllContactModels()
         {
-            Func<DataContext, List<ContactModel>> getAllAzureAnswersFunction = x => x.GetTable<ContactModel>().ToList();
-            return await PerformDatabaseFunction(getAllAzureAnswersFunction);
+            Func<DataContext, List<ContactModel>> getAllContactModelsFunction = x => x.GetTable<ContactModel>().ToList();
+            var contactList = await PerformDatabaseFunction(getAllContactModelsFunction);
+
+            return contactList;
         }
 
         static async Task<TResult> PerformDatabaseFunction<TResult>(Func<DataContext, TResult> databaseFunction) where TResult : class
