@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
+using System.Web.Http.OData.Extensions;
 
 namespace XamList.API
 {
@@ -13,6 +11,7 @@ namespace XamList.API
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+            config.AddODataQueryFilter();
 
             //config.Routes.MapHttpRoute(
             //    name: "DefaultApi",

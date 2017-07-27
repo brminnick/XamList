@@ -37,10 +37,10 @@ namespace XamList
             await PostObjectToAPI("PostContact", contact);
 
         public static async Task<HttpResponseMessage> PatchContactModel(ContactModel contact) =>
-            await PatchObjectToAPI("PatchContact", contact);
+            await PatchObjectToAPI($"PatchContact/{contact.Id}", contact);
 
         public static async Task<HttpResponseMessage> DeleteContactModel(ContactModel contact) =>
-            await DeleteObjectFromAPI("DeleteContact", contact.Id);
+            await DeleteObjectFromAPI($"DeleteContact/{contact.Id}");
 
         static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
             await GetDataObjectFromAPI<T, object>(apiUrl);
@@ -131,16 +131,9 @@ namespace XamList
             }
         }
 
-        static async Task<HttpResponseMessage> DeleteObjectFromAPI<T>(string apiUrl, T data)
+        static async Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
         {
-            var stringPayload = await Task.Run(() => JsonConvert.SerializeObject(data)).ConfigureAwait(false);
-
-            var httpContent = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-
-            var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri(apiUrl))
-            {
-                Content = httpContent
-            };
+            var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri(apiUrl));
 
             try
             {

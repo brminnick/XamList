@@ -2,16 +2,17 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using XamList.Shared;
-using System.Collections.Generic;
 
 namespace XamList.API.Controllers
 {
     public class XamListApiController : ApiController
     {
-        [HttpGet, Route("api/GetAllContacts")]
+        [HttpGet, Route("api/GetAllContacts"), EnableQuery]
         public async Task<IList<ContactModel>> GetAllContacts() =>
              await Database.XamListDatabase.GetAllContactModels();
 
@@ -24,49 +25,40 @@ namespace XamList.API.Controllers
         {
             try
             {
-                await Database.XamListDatabase.InsertContactModel(contact);
-                return new HttpResponseMessage(HttpStatusCode.Created);
+                var contactFromDatabase = await Database.XamListDatabase.InsertContactModel(contact);
+                return Request.CreateResponse(HttpStatusCode.Created, contactFromDatabase);
             }
             catch (Exception e)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    ReasonPhrase = e.Message
-                };
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { ReasonPhrase = e.Message };
             }
         }
 
-        [HttpPatch, Route("api/PatchContact")]
-        public async Task<HttpResponseMessage> PatchContact(ContactModel contact)
+        [HttpPatch, Route("api/PatchContact/{id}")]
+        public async Task<HttpResponseMessage> PatchContact(string id, Delta<ContactModel> contact)
         {
             try
             {
-                await Database.XamListDatabase.PatchContactModel(contact);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                var contactFromDatabase = await Database.XamListDatabase.PatchContactModel(id, contact);
+                return Request.CreateResponse(HttpStatusCode.OK, contactFromDatabase);
             }
             catch (Exception e)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    ReasonPhrase = e.Message
-                };
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { ReasonPhrase = e.Message };
             }
         }
 
-        [HttpDelete, Route("api/DeleteContact")]
+        [HttpDelete, Route("api/DeleteContact/{id}")]
         public async Task<HttpResponseMessage> DeleteContact(string id)
         {
             try
             {
-                await Database.XamListDatabase.DeleteContactModel(id);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                var contactFromDatabase = await Database.XamListDatabase.DeleteContactModel(id);
+                return Request.CreateResponse(HttpStatusCode.OK, contactFromDatabase);
             }
             catch (Exception e)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    ReasonPhrase = e.Message
-                };
+                return new HttpResponseMessage(HttpStatusCode.BadRequest) { ReasonPhrase = e.Message };
             }
         }
     }

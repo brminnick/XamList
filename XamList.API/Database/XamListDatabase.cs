@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Linq;
-using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Linq;
+using System.Data.Linq;
+using System.Diagnostics;
+using System.Web.Http.OData;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using XamList.Shared;
 
@@ -14,7 +14,8 @@ namespace XamList.API.Database
     public class XamListDatabase
     {
         #region Constant Fields
-        readonly static string _connectionString = ConfigurationManager.ConnectionStrings["XamListDatabaseConnectionString"].ConnectionString;
+        readonly static string _connectionString = "Server=tcp:xamlistserver.database.windows.net,1433;Initial Catalog=XamList;Persist Security Info=False;User ID=bminnick;Password=}{POIiomega28;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        //readonly static string _connectionString = ConfigurationManager.ConnectionStrings["XamListDatabaseConnectionString"].ConnectionString;
         #endregion
 
         #region Methods
@@ -30,9 +31,9 @@ namespace XamList.API.Database
             return await PerformDatabaseFunction(getContactModelFunction);
         }
 
-        public static async Task InsertContactModel(ContactModel contact)
+        public static async Task<ContactModel> InsertContactModel(ContactModel contact)
         {
-            Func<DataContext, object> insertContactModelFunction = dataContext =>
+            Func<DataContext, ContactModel> insertContactModelFunction = dataContext =>
             {
                 if (string.IsNullOrWhiteSpace(contact.Id))
                     contact.Id = Guid.NewGuid().ToString();
@@ -42,40 +43,37 @@ namespace XamList.API.Database
 
                 dataContext.GetTable<ContactModel>().InsertOnSubmit(contact);
 
-                return null;
+                return contact;
             };
 
-            await PerformDatabaseFunction(insertContactModelFunction);
+            return await PerformDatabaseFunction(insertContactModelFunction);
         }
 
-        public static async Task PatchContactModel(ContactModel contact)
+        public static async Task<ContactModel> PatchContactModel(string id, Delta<ContactModel> contact)
         {
-            Func<DataContext, object> patchContactModelFunction = dataContext =>
+            Func<DataContext, ContactModel> patchContactModelFunction = dataContext =>
             {
-                var contactFromDatabase = dataContext.GetTable<ContactModel>().Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
-                contactFromDatabase.FirstName = contact.FirstName;
-                contactFromDatabase.IsDeleted = contact.IsDeleted;
-                contactFromDatabase.LastName = contact.LastName;
-                contactFromDatabase.PhoneNumber = contact.PhoneNumber;
-                contactFromDatabase.UpdatedAt = DateTimeOffset.UtcNow;
+                var contactFromDatabase = dataContext.GetTable<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
 
-                return null;
+                contact.Patch(contactFromDatabase);
+
+                return contactFromDatabase;
             };
 
-            await PerformDatabaseFunction(patchContactModelFunction);
+            return await PerformDatabaseFunction(patchContactModelFunction);
         }
 
-        public static async Task DeleteContactModel(string id)
+        public static async Task<ContactModel> DeleteContactModel(string id)
         {
-            Func<DataContext, object> deleteContactModelFunction = dataContext =>
+            Func<DataContext, ContactModel> deleteContactModelFunction = dataContext =>
             {
                 var contactFromDatabase = dataContext.GetTable<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
                 contactFromDatabase.IsDeleted = true;
 
-                return null;
+                return contactFromDatabase;
             };
 
-            await PerformDatabaseFunction(deleteContactModelFunction);
+            return await PerformDatabaseFunction(deleteContactModelFunction);
         }
 
         static async Task<TResult> PerformDatabaseFunction<TResult>(Func<DataContext, TResult> databaseFunction) where TResult : class
