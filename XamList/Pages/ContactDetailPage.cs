@@ -95,6 +95,8 @@ namespace XamList
         #region Methods
         protected override void OnAppearing()
         {
+            base.OnAppearing();
+
             MobileCenterHelpers.TrackEvent(MobileCenterConstants.ContactDetailPageAppeared);
         }
 

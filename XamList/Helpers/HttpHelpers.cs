@@ -30,8 +30,8 @@ namespace XamList
         public static async Task<List<ContactModel>> GetAllContactModels() =>
             await GetDataObjectFromAPI<List<ContactModel>>("GetAllContacts");
 
-        public static async Task<ContactModel> GetContactModel(string id) =>
-            await GetDataObjectFromAPI<ContactModel, string>("GetContact", id);
+        public static async Task<ContactModel> GetContactModel(ContactModel contact) =>
+            await GetDataObjectFromAPI<ContactModel, string>("GetContact", contact.Id);
 
         public static async Task<HttpResponseMessage> PostContactModel(ContactModel contact) =>
             await PostObjectToAPI("PostContact", contact);
@@ -110,7 +110,7 @@ namespace XamList
             var httpRequest = new HttpRequestMessage
             {
                 Method = new HttpMethod("PATCH"),
-                RequestUri = new Uri(apiUrl),
+                RequestUri = new Uri($"{_client.BaseAddress}{apiUrl}"),
                 Content = httpContent
             };
 
@@ -133,7 +133,7 @@ namespace XamList
 
         static async Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
         {
-            var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri(apiUrl));
+            var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri($"{_client.BaseAddress}{apiUrl}"));
 
             try
             {

@@ -13,6 +13,7 @@ namespace XamList
         {
             BindingContext = ViewModel;
             BackgroundColor = ColorConstants.PageBackgroundColor;
+            this.SetBinding(IsBusyProperty, nameof(ViewModel.IsInternetConnectionActive));
         }
         #endregion
 
