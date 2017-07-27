@@ -24,6 +24,12 @@ namespace XamList.API.Database
             return await PerformDatabaseFunction(getAllContactModelsFunction);
         }
 
+        public static async Task<ContactModel> GetContactModel(string id)
+        {
+            Func<DataContext, ContactModel> getContactModelFunction = dataContext => dataContext.GetTable<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+            return await PerformDatabaseFunction(getContactModelFunction);
+        }
+
         public static async Task InsertContactModel(ContactModel contact)
         {
             Func<DataContext, object> insertContactModelFunction = dataContext =>

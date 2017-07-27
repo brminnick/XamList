@@ -15,6 +15,10 @@ namespace XamList.API.Controllers
         public async Task<IList<ContactModel>> GetAllContacts() =>
              await Database.XamListDatabase.GetAllContactModels();
 
+        [HttpGet, Route("api/GetContact")]
+        public async Task<ContactModel> GetContact(string id) =>
+             await Database.XamListDatabase.GetContactModel(id);
+
         [HttpPost, Route("api/PostContact")]
         public async Task<HttpResponseMessage> PostContact(ContactModel contact)
         {

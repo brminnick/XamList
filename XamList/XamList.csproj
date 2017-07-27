@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netstandard1.0</TargetFramework>
+		<TargetFramework>netstandard1.1</TargetFramework>
 		<PackageTargetFallback>portable-win+net45+wp80+win81+wpa81</PackageTargetFallback>
 	</PropertyGroup>
 	<ItemGroup>
@@ -18,7 +18,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Data\" />
-		<Folder Include="Helpers\" />
 	</ItemGroup>
 	<Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" />
 </Project>
