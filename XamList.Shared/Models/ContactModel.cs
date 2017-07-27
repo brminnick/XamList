@@ -3,6 +3,7 @@
 using System.Data.Linq.Mapping;
 #else
 using SQLite;
+using Newtonsoft.Json;
 #endif
 
 namespace XamList.Shared
@@ -42,6 +43,23 @@ namespace XamList.Shared
         [Column(Name = nameof(PhoneNumber), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #endif
         public string PhoneNumber { get; set; }
-#endregion
+        #endregion
+
+#if API
+        [Column(Name = nameof(CreatedAt), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
+#endif
+        public DateTimeOffset CreatedAt { get; set; }
+
+#if API
+        [Column(Name = nameof(UpdatedAt), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
+#endif
+        public DateTimeOffset UpdatedAt { get; set; }
+
+#if API
+        [Column(Name = "deleted", IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
+#else
+        [JsonProperty("deleted")]
+#endif
+        public bool IsDeleted { get; set; }
     }
 }
