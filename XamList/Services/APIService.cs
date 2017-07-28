@@ -14,7 +14,7 @@ using XamList.Shared;
 
 namespace XamList
 {
-    static class HttpHelpers
+    static class APIService
     {
         #region Constant Fields
         static readonly TimeSpan _httpTimeout = TimeSpan.FromSeconds(60);

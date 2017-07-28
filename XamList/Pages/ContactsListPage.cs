@@ -34,9 +34,34 @@ namespace XamList
             _contactsListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
             _contactsListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
 
+            var restoreDeletedContactsButton = new Button
+            {
+                Text = "  Restore Deleted Contacts  ",
+                TextColor = ColorConstants.TextColor,
+                BackgroundColor = new Color(ColorConstants.NavigationBarBackgroundColor.R, 
+                                            ColorConstants.NavigationBarBackgroundColor.G, 
+                                            ColorConstants.NavigationBarBackgroundColor.B, 
+                                            0.25)
+            };
+            restoreDeletedContactsButton.SetBinding(Button.CommandProperty, nameof(ViewModel.RestoreDeletedContactsCommand));
+
             Title = PageTitles.ContactsListPage;
 
-            Content = _contactsListView;
+            var relativeLayout = new RelativeLayout();
+
+            Func<RelativeLayout, double> getRestoreDeletedContactsButtonHeight = parent => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Height;
+            Func<RelativeLayout, double> getRestoreDeletedContactsButtonWidth = parent => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Width;
+
+            relativeLayout.Children.Add(_contactsListView,
+                                       Constraint.Constant(0),
+                                       Constraint.Constant(0),
+                                       Constraint.RelativeToParent(parent => parent.Width),
+                                       Constraint.RelativeToParent(parent => parent.Height));
+            relativeLayout.Children.Add(restoreDeletedContactsButton,
+                                        Constraint.RelativeToParent(parent => parent.Width / 2 - getRestoreDeletedContactsButtonWidth(parent) / 2),
+                                        Constraint.RelativeToParent(parent => parent.Height - getRestoreDeletedContactsButtonHeight(parent) - 10));
+
+            Content = relativeLayout;
         }
         #endregion
 
@@ -47,7 +72,7 @@ namespace XamList
 
             MobileCenterHelpers.TrackEvent(MobileCenterConstants.ContactsListPageAppeared);
 
-			Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
+            Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
         }
 
         protected override void SubscribeEventHandlers()

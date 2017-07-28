@@ -13,39 +13,40 @@ namespace XamList
     public class ContactDetailPage : BaseContentPage<ContactDetailViewModel>
     {
         #region Constant Fields
+        readonly bool _isNewContact;
         readonly ContactModel _contactModel;
         ToolbarItem _saveToobarItem, _cancelToolbarItem;
         #endregion
 
         #region Constructors
-        public ContactDetailPage(ContactModel selectedContact, bool canEdit)
+        public ContactDetailPage(ContactModel selectedContact, bool isNewContact)
         {
-            _contactModel = selectedContact;
-            BindingContext = _contactModel;
+            _isNewContact = isNewContact;
+            ViewModel.Contact = selectedContact;
 
-            var phoneNumberDataEntry = new ContactDetailEntry(canEdit)
+            var phoneNumberDataEntry = new ContactDetailEntry
             {
                 ReturnType = ReturnType.Go,
-                ReturnCommand = new Command(async () => await SaveContactAndPopPage()),
-                AutomationId = AutomationIdConstants.PhoneNumberEntry
+                AutomationId = AutomationIdConstants.PhoneNumberEntry,
+                ReturnCommand = new Command(Unfocus)
             };
-            phoneNumberDataEntry.SetBinding(Entry.TextProperty, nameof(_contactModel.PhoneNumber));
+            phoneNumberDataEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhoneNumberText));
 
-            var lastNameDataEntry = new ContactDetailEntry(canEdit)
+            var lastNameDataEntry = new ContactDetailEntry
             {
                 ReturnType = ReturnType.Next,
                 ReturnCommand = new Command(() => phoneNumberDataEntry.Focus()),
                 AutomationId = AutomationIdConstants.LastNameEntry
             };
-            lastNameDataEntry.SetBinding(Entry.TextProperty, nameof(_contactModel.LastName));
+            lastNameDataEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.LastNameText));
 
-            var firstNameDataEntry = new ContactDetailEntry(canEdit)
+            var firstNameDataEntry = new ContactDetailEntry
             {
                 ReturnType = ReturnType.Next,
                 ReturnCommand = new Command(() => lastNameDataEntry.Focus()),
                 AutomationId = AutomationIdConstants.FirstNameEntry
             };
-            firstNameDataEntry.SetBinding(Entry.TextProperty, nameof(_contactModel.FirstName));
+            firstNameDataEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.FirstNameText));
 
             var phoneNumberTextLabel = new ContactDetailLabel { Text = "Phone Number" };
             var lastNameTextLabel = new ContactDetailLabel { Text = "Last Name" };
@@ -55,8 +56,10 @@ namespace XamList
             {
                 Text = "Save",
                 Priority = 0,
-                AutomationId = AutomationIdConstants.SaveContactButton
+                AutomationId = AutomationIdConstants.SaveContactButton,
+                CommandParameter = _isNewContact
             };
+            _saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ViewModel.SaveButtonTappedCommand));
 
             _cancelToolbarItem = new ToolbarItem
             {
@@ -65,10 +68,11 @@ namespace XamList
                 AutomationId = AutomationIdConstants.CancelContactButton
             };
 
-            switch (canEdit)
+            ToolbarItems.Add(_saveToobarItem);
+
+            switch (isNewContact)
             {
                 case true:
-                    ToolbarItems.Add(_saveToobarItem);
                     ToolbarItems.Add(_cancelToolbarItem);
                     break;
             }
@@ -103,36 +107,39 @@ namespace XamList
         protected override void SubscribeEventHandlers()
         {
             _cancelToolbarItem.Clicked += HandleCancelToolBarItemClicked;
-            _saveToobarItem.Clicked += HandleSaveToolbarItemClicked;
+            ViewModel.SaveContactCompleted += HandleSaveContactCompleted;
         }
 
         protected override void UnsubscribeEventHandlers()
         {
             _cancelToolbarItem.Clicked -= HandleCancelToolBarItemClicked;
-            _saveToobarItem.Clicked -= HandleSaveToolbarItemClicked;
+            ViewModel.SaveContactCompleted -= HandleSaveContactCompleted;
         }
 
-        async Task SaveContactAndPopPage()
+        void PopPage()
         {
-            await ContactDatabase.SaveContact(_contactModel);
-            PopPage();
+            switch (_isNewContact)
+            {
+                case true:
+                    Device.BeginInvokeOnMainThread(async () => await Navigation.PopModalAsync());
+                    break;
+
+                default:
+                    Device.BeginInvokeOnMainThread(async () => await Navigation.PopAsync());
+                    break;
+            }
         }
 
-        async void HandleSaveToolbarItemClicked(object sender, EventArgs e) =>
-            await SaveContactAndPopPage();
+        void HandleSaveContactCompleted(object sender, EventArgs e) => PopPage();
 
         void HandleCancelToolBarItemClicked(object sender, EventArgs e) => PopPage();
-        void PopPage() => Device.BeginInvokeOnMainThread(async () => await Navigation.PopModalAsync());
         #endregion
 
         #region Classes
         class ContactDetailEntry : CustomReturnEntry
         {
-            public ContactDetailEntry(bool canEdit)
-            {
-                IsEnabled = canEdit;
-                TextColor = Color.FromHex("2B3E50");
-            }
+            public ContactDetailEntry() => TextColor = Color.FromHex("2B3E50");
+
         }
 
         class ContactDetailLabel : Label

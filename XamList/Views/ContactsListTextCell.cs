@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
@@ -16,8 +17,8 @@ namespace XamList
         #region Constructors
         public ContactsListTextCell()
         {
-            TextColor = Color.FromHex("1B2A38");
-            DetailColor = Color.FromHex("2B3E50");
+            TextColor = ColorConstants.TextColor;
+            DetailColor = ColorConstants.DetailColor;
 
             _deleteAction = new MenuItem
             {
@@ -25,6 +26,7 @@ namespace XamList
                 IsDestructive = true
             };
             _deleteAction.Clicked += HandleDeleteClicked;
+
             ContextActions.Add(_deleteAction);
         }
         #endregion
@@ -73,7 +75,10 @@ namespace XamList
         {
             var contactSelected = BindingContext as ContactModel;
 
-            await ContactDatabase.DeleteContact(contactSelected);
+#pragma warning disable CS4014 // Await omitted intentionally
+            Task.Run(async () => await APIService.DeleteContactModel(contactSelected)).ConfigureAwait(false);
+#pragma warning restore CS4014 // Await omitted intentionally
+			await ContactDatabase.DeleteContact(contactSelected).ConfigureAwait(false);
 
             ContactsListViewModel.RefreshCommand?.Execute(null);
         }

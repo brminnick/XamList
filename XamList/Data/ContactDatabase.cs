@@ -41,7 +41,9 @@ namespace XamList
         {
 			var databaseConnection = await GetDatabaseConnectionAsync();
 
-            await databaseConnection.DeleteAsync(contact);
+            contact.IsDeleted = true;
+
+            await databaseConnection.UpdateAsync(contact);
 		}
         #endregion
     }

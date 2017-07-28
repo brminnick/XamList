@@ -57,7 +57,6 @@ namespace XamList.Shared
 #if API
         [Column(Name = "deleted", IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #else
-        [JsonProperty("deleted")]
 #endif
         public bool IsDeleted { get; set; }
         #endregion

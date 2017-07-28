@@ -15,6 +15,7 @@
         #region Contacts List Page
         public const string ContactsListPageAppeared = "Contacts List Page Appeared";
         public const string AddContactButtonTapped = "Add Contact Button Tapped";
+        public const string RestoreDeletedContactsTapped = "Restore Deleted Contacts Tapped";
         #endregion
     }
 }

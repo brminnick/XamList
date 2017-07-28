@@ -14,7 +14,7 @@ namespace XamList
     {
         #region Fields
         bool _isRefreshCommandExecuting;
-        ICommand _refreshCommand;
+        ICommand _refreshCommand, _restoreDeletedContactsCommand;
         IList<ContactModel> _allContactsList;
         #endregion
 
@@ -28,6 +28,13 @@ namespace XamList
             {
                 MobileCenterHelpers.TrackEvent(MobileCenterConstants.PullToRefreshTriggered);
                 await ExecuteRefreshCommand();
+            }));
+
+        public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
+            (_restoreDeletedContactsCommand = new Command(async () =>
+            {
+                MobileCenterHelpers.TrackEvent(MobileCenterConstants.RestoreDeletedContactsTapped);
+                await ExecuteRestoreDeletedContactsCommand();
             }));
 
         public IList<ContactModel> AllContactsList
@@ -47,7 +54,9 @@ namespace XamList
             try
             {
                 await SyncRemoteAndLocalDatabases().ConfigureAwait(false);
-                AllContactsList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
+
+                var contactList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
+                AllContactsList = contactList.Where(x => !x.IsDeleted).OrderBy(x => x.FullName).ToList();
             }
             catch (Exception e)
             {
@@ -63,7 +72,7 @@ namespace XamList
         async Task SyncRemoteAndLocalDatabases()
         {
             var contactListFromLocalDatabaseTask = ContactDatabase.GetAllContacts();
-            var contactListFromRemoteDatabaseTask = HttpHelpers.GetAllContactModels();
+            var contactListFromRemoteDatabaseTask = APIService.GetAllContactModels();
 
             await Task.WhenAll(contactListFromLocalDatabaseTask, contactListFromRemoteDatabaseTask).ConfigureAwait(false);
 
@@ -87,24 +96,29 @@ namespace XamList
                 var contactFromLocalDatabase = contactListFromLocalDatabaseTask.Result.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
                 var contactFromRemoteDatabase = contactListFromRemoteDatabaseTask.Result.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
 
-                if (contactFromLocalDatabase?.UpdatedAt.CompareTo(contactFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) >= 0)
+                if (contactFromLocalDatabase?.UpdatedAt.CompareTo(contactFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) > 0)
                     contactsToPatchToRemoteDatabase.Add(contact);
-                else
+                else if (contactFromLocalDatabase?.UpdatedAt.CompareTo(contactFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) < 0)
                     contactsToPatchToLocalDatabase.Add(contact);
             }
 
             var saveContactTaskList = new List<Task>();
             foreach (var contact in contactsInLocalDatabaseButNotStoredRemotely)
-                saveContactTaskList.Add(HttpHelpers.PostContactModel(contact));
+                saveContactTaskList.Add(APIService.PostContactModel(contact));
 
             foreach (var contact in contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase))
                 saveContactTaskList.Add(ContactDatabase.SaveContact(contact));
 
             foreach (var contact in contactsToPatchToRemoteDatabase)
-                saveContactTaskList.Add(HttpHelpers.PatchContactModel(contact));
+                saveContactTaskList.Add(APIService.PatchContactModel(contact));
 
             await Task.WhenAll(saveContactTaskList).ConfigureAwait(false);
         }
+
+		async Task ExecuteRestoreDeletedContactsCommand()
+		{
+            throw new Exception("ExecuteRestoreDeletedContactsCommand Not Implemented");
+		}
 
         void OnPullToRefreshCompleted() =>
             PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);
