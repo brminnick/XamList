@@ -12,6 +12,7 @@
 		<PackageReference Include="Microsoft.Azure.Mobile.Crashes" Version="0.14.0" />
 		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="3.1.1" />
 		<PackageReference Include="Microsoft.Azure.Mobile.Distribute" Version="0.14.0" />
+		<PackageReference Include="System.ValueTuple" Version="4.3.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Data\" />

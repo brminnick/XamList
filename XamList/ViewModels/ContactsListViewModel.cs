@@ -71,30 +71,26 @@ namespace XamList
 
         async Task SyncRemoteAndLocalDatabases()
         {
-            var contactListFromLocalDatabaseTask = ContactDatabase.GetAllContacts();
-            var contactListFromRemoteDatabaseTask = APIService.GetAllContactModels();
+            var (contactListFromLocalDatabase, contactListFromRemoteDatabase) = await GetAllSavedContacts();
 
-            await Task.WhenAll(contactListFromLocalDatabaseTask, contactListFromRemoteDatabaseTask).ConfigureAwait(false);
+            var (contactsInLocalDatabaseButNotStoredRemotely, contactsInRemoteDatabaseButNotStoredLocally, contactsInBothDatabases) = GetMatchingContacts(contactListFromLocalDatabase, contactListFromRemoteDatabase);
 
-            var contactIdFromRemoteDatabaseList = contactListFromRemoteDatabaseTask.Result.Select(x => x.Id).ToList();
-            var contactIdFromLocalDatabaseList = contactListFromLocalDatabaseTask.Result.Select(x => x.Id).ToList();
+            var (contactsToPatchToLocalDatabase, contactsToPatchToRemoteDatabase) = GetContactListsThatNeedUpdating(contactListFromRemoteDatabase, contactListFromRemoteDatabase, contactsInBothDatabases);
 
-            var contactIdsInRemoteDatabaseButNotStoredLocally = contactIdFromRemoteDatabaseList?.Except(contactIdFromLocalDatabaseList)?.ToList() ?? new List<string>();
-            var contactIdsInLocalDatabaseButNotStoredRemotely = contactIdFromLocalDatabaseList?.Except(contactIdFromRemoteDatabaseList)?.ToList() ?? new List<string>();
-            var contactIdsInBothDatabases = contactIdFromRemoteDatabaseList?.Where(x => contactIdFromLocalDatabaseList?.Contains(x) ?? false).ToList() ?? new List<string>();
+            await SaveContacts(contactsToPatchToRemoteDatabase,
+                                      contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase).ToList(),
+                                      contactsInLocalDatabaseButNotStoredRemotely);
+        }
 
-            var contactsInRemoteDatabaseButNotStoredLocally = contactListFromRemoteDatabaseTask?.Result?.Where(x => contactIdsInRemoteDatabaseButNotStoredLocally?.Contains(x?.Id) ?? false).ToList() ?? new List<ContactModel>();
-            var contactsInLocalDatabaseButNotStoredRemotely = contactListFromLocalDatabaseTask?.Result?.Where(x => contactIdsInLocalDatabaseButNotStoredRemotely?.Contains(x?.Id) ?? false).ToList() ?? new List<ContactModel>();
-
-            var contactsInBothDatabases = contactListFromLocalDatabaseTask?.Result?.Where(x => contactIdsInBothDatabases?.Contains(x?.Id) ?? false)
-                                            .Concat(contactListFromRemoteDatabaseTask?.Result?.Where(x => contactIdsInBothDatabases?.Contains(x?.Id) ?? false)).ToList() ?? new List<ContactModel>();
-
+        (List<ContactModel> contactsToPatchToLocalDatabase, 
+         List<ContactModel> contactsToPatchToRemoteDatabase) GetContactListsThatNeedUpdating(List<ContactModel> contactListFromLocalDatabase, List<ContactModel> contactListFromRemoteDatabase, List<ContactModel> contactsInBothDatabases)
+        {
             var contactsToPatchToRemoteDatabase = new List<ContactModel>();
             var contactsToPatchToLocalDatabase = new List<ContactModel>();
             foreach (var contact in contactsInBothDatabases)
             {
-                var contactFromLocalDatabase = contactListFromLocalDatabaseTask.Result.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
-                var contactFromRemoteDatabase = contactListFromRemoteDatabaseTask.Result.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
+                var contactFromLocalDatabase = contactListFromLocalDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
+                var contactFromRemoteDatabase = contactListFromRemoteDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
 
                 if (contactFromLocalDatabase?.UpdatedAt.CompareTo(contactFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) > 0)
                     contactsToPatchToRemoteDatabase.Add(contact);
@@ -102,11 +98,54 @@ namespace XamList
                     contactsToPatchToLocalDatabase.Add(contact);
             }
 
+            return (contactsToPatchToLocalDatabase ?? new List<ContactModel>(), 
+                    contactsToPatchToRemoteDatabase ?? new List<ContactModel>());
+        }
+
+        (List<ContactModel> contactsInLocalDatabaseButNotStoredRemotely,
+         List<ContactModel> contactsInRemoteDatabaseButNotStoredLocally,
+         List<ContactModel> contactsInBothDatabases) GetMatchingContacts(List<ContactModel> contactListFromLocalDatabase, List<ContactModel> contactListFromRemoteDatabase)
+        {
+            var contactIdFromRemoteDatabaseList = contactListFromRemoteDatabase?.Select(x => x.Id).ToList() ?? new List<string>();
+            var contactIdFromLocalDatabaseList = contactListFromLocalDatabase?.Select(x => x.Id).ToList() ?? new List<string>();
+
+            var contactIdsInRemoteDatabaseButNotStoredLocally = contactIdFromRemoteDatabaseList?.Except(contactIdFromLocalDatabaseList)?.ToList() ?? new List<string>();
+            var contactIdsInLocalDatabaseButNotStoredRemotely = contactIdFromLocalDatabaseList?.Except(contactIdFromRemoteDatabaseList)?.ToList() ?? new List<string>();
+            var contactIdsInBothDatabases = contactIdFromRemoteDatabaseList?.Where(x => contactIdFromLocalDatabaseList?.Contains(x) ?? false).ToList() ?? new List<string>();
+
+            var contactsInRemoteDatabaseButNotStoredLocally = contactListFromRemoteDatabase?.Where(x => contactIdsInRemoteDatabaseButNotStoredLocally?.Contains(x?.Id) ?? false).ToList() ?? new List<ContactModel>();
+            var contactsInLocalDatabaseButNotStoredRemotely = contactListFromLocalDatabase?.Where(x => contactIdsInLocalDatabaseButNotStoredRemotely?.Contains(x?.Id) ?? false).ToList() ?? new List<ContactModel>();
+
+            var contactsInBothDatabases = contactListFromLocalDatabase?.Where(x => contactIdsInBothDatabases?.Contains(x?.Id) ?? false)
+                                            .Concat(contactListFromRemoteDatabase?.Where(x => contactIdsInBothDatabases?.Contains(x?.Id) ?? false)).ToList() ?? new List<ContactModel>();
+
+            return (contactsInLocalDatabaseButNotStoredRemotely ?? new List<ContactModel>(), 
+                    contactsInRemoteDatabaseButNotStoredLocally ?? new List<ContactModel>(), 
+                    contactsInBothDatabases ?? new List<ContactModel>());
+
+        }
+
+        async Task<(List<ContactModel> contactListFromLocalDatabase, 
+                    List<ContactModel> contactListFromRemoteDatabase)> GetAllSavedContacts()
+        {
+            var contactListFromLocalDatabaseTask = ContactDatabase.GetAllContacts();
+            var contactListFromRemoteDatabaseTask = APIService.GetAllContactModels();
+
+            await Task.WhenAll(contactListFromLocalDatabaseTask, contactListFromRemoteDatabaseTask).ConfigureAwait(false);
+
+            return (contactListFromLocalDatabaseTask.Result ?? new List<ContactModel>(), 
+                    contactListFromRemoteDatabaseTask.Result ?? new List<ContactModel>());
+        }
+
+        async Task SaveContacts(List<ContactModel> contactsToPatchToRemoteDatabase, 
+                                List<ContactModel> contactsToSaveToLocalDatabase, 
+                                List<ContactModel> contactsToPostToRemoteDatabase)
+        {
             var saveContactTaskList = new List<Task>();
-            foreach (var contact in contactsInLocalDatabaseButNotStoredRemotely)
+            foreach (var contact in contactsToPostToRemoteDatabase)
                 saveContactTaskList.Add(APIService.PostContactModel(contact));
 
-            foreach (var contact in contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase))
+            foreach (var contact in contactsToSaveToLocalDatabase)
                 saveContactTaskList.Add(ContactDatabase.SaveContact(contact));
 
             foreach (var contact in contactsToPatchToRemoteDatabase)
@@ -115,10 +154,10 @@ namespace XamList
             await Task.WhenAll(saveContactTaskList).ConfigureAwait(false);
         }
 
-		async Task ExecuteRestoreDeletedContactsCommand()
-		{
+        async Task ExecuteRestoreDeletedContactsCommand()
+        {
             throw new Exception("ExecuteRestoreDeletedContactsCommand Not Implemented");
-		}
+        }
 
         void OnPullToRefreshCompleted() =>
             PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);

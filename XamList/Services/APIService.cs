@@ -158,7 +158,6 @@ namespace XamList
             var currentPage = baseNavigationPage.CurrentPage as ContentPage;
             var currentViewModel = currentPage.BindingContext as BaseViewModel;
 
-
             if (isActivityIndicatorDisplayed)
             {
                 currentViewModel.IsInternetConnectionActive = true;
