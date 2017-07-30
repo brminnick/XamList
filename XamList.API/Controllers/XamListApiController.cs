@@ -14,18 +14,18 @@ namespace XamList.API.Controllers
     {
         [HttpGet, Route("api/GetAllContacts"), EnableQuery]
         public async Task<IList<ContactModel>> GetAllContacts() =>
-             await Database.XamListDatabase.GetAllContactModels();
+             await XamListDatabase.GetAllContactModels();
 
         [HttpGet, Route("api/GetContact")]
         public async Task<ContactModel> GetContact(string id) =>
-             await Database.XamListDatabase.GetContactModel(id);
+             await XamListDatabase.GetContactModel(id);
 
         [HttpPost, Route("api/PostContact")]
         public async Task<HttpResponseMessage> PostContact(ContactModel contact)
         {
             try
             {
-                var contactFromDatabase = await Database.XamListDatabase.InsertContactModel(contact);
+                var contactFromDatabase = await XamListDatabase.InsertContactModel(contact);
                 return Request.CreateResponse(HttpStatusCode.Created, contactFromDatabase);
             }
             catch (Exception e)
@@ -39,7 +39,7 @@ namespace XamList.API.Controllers
         {
             try
             {
-                var contactFromDatabase = await Database.XamListDatabase.PatchContactModel(id, contact);
+                var contactFromDatabase = await XamListDatabase.PatchContactModel(id, contact);
                 return Request.CreateResponse(HttpStatusCode.OK, contactFromDatabase);
             }
             catch (Exception e)
@@ -53,7 +53,7 @@ namespace XamList.API.Controllers
         {
             try
             {
-                var contactFromDatabase = await Database.XamListDatabase.DeleteContactModel(id);
+                var contactFromDatabase = await XamListDatabase.DeleteContactModel(id);
                 return Request.CreateResponse(HttpStatusCode.OK, contactFromDatabase);
             }
             catch (Exception e)

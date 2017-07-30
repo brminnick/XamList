@@ -1,5 +1,5 @@
 ﻿using System;
-#if API
+#if Backend
 using System.Data.Linq.Mapping;
 #else
 using SQLite;
@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace XamList.Shared
 {
-#if API
+#if Backend
     [Table(Name = "ContactModels")]
 #endif
     public class ContactModel
@@ -18,43 +18,43 @@ namespace XamList.Shared
         #endregion
 
         #region Properties
-#if API
+#if Backend
 #else
         public string FullName => $"{FirstName} {LastName}";
 #endif
 
-#if API
+#if Backend
         [Column(Name = nameof(Id), IsPrimaryKey = true, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #else
         [PrimaryKey, Unique]
 #endif
         public string Id { get; set; }
-#if API
+#if Backend
         [Column(Name = nameof(FirstName), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #endif
         public string FirstName { get; set; }
 
-#if API
+#if Backend
         [Column(Name = nameof(LastName), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #endif
         public string LastName { get; set; }
 
-#if API
+#if Backend
         [Column(Name = nameof(PhoneNumber), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #endif
         public string PhoneNumber { get; set; }
 
-#if API
+#if Backend
         [Column(Name = nameof(CreatedAt), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #endif
         public DateTimeOffset CreatedAt { get; set; }
 
-#if API
+#if Backend
         [Column(Name = nameof(UpdatedAt), IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #endif
         public DateTimeOffset UpdatedAt { get; set; }
 
-#if API
+#if Backend
         [Column(Name = "deleted", IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
 #else
 #endif

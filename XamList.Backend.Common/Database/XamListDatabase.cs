@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Data.Linq;
 using System.Diagnostics;
+using System.Configuration;
 using System.Web.Http.OData;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -9,13 +10,12 @@ using System.Collections.Generic;
 
 using XamList.Shared;
 
-namespace XamList.API.Database
+namespace XamList.Backend.Common
 {
     public class XamListDatabase
     {
         #region Constant Fields
-        readonly static string _connectionString = "Server=tcp:xamlistserver.database.windows.net,1433;Initial Catalog=XamList;Persist Security Info=False;User ID=bminnick;Password=}{POIiomega28;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        //readonly static string _connectionString = ConfigurationManager.ConnectionStrings["XamListDatabaseConnectionString"].ConnectionString;
+        readonly static string _connectionString = ConfigurationManager.ConnectionStrings["XamListDatabaseConnectionString"].ConnectionString;
         #endregion
 
         #region Methods
@@ -47,6 +47,18 @@ namespace XamList.API.Database
             };
 
             return await PerformDatabaseFunction(insertContactModelFunction);
+        }
+
+        public static async Task<ContactModel> PatchContactModel(ContactModel contact)
+        {
+            var contactModelDelta = new Delta<ContactModel>(typeof(ContactModel));
+            contactModelDelta.TrySetPropertyValue(nameof(ContactModel.CreatedAt), contact.CreatedAt);
+            contactModelDelta.TrySetPropertyValue(nameof(ContactModel.FirstName), contact.FirstName);
+            contactModelDelta.TrySetPropertyValue(nameof(ContactModel.IsDeleted), contact.IsDeleted);
+            contactModelDelta.TrySetPropertyValue(nameof(ContactModel.LastName), contact.LastName);
+            contactModelDelta.TrySetPropertyValue(nameof(ContactModel.PhoneNumber), contact.PhoneNumber);
+
+            return await PatchContactModel(contact.Id, contactModelDelta);
         }
 
         public static async Task<ContactModel> PatchContactModel(string id, Delta<ContactModel> contact)
