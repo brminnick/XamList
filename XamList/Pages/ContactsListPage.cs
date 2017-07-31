@@ -80,6 +80,7 @@ namespace XamList
             _contactsListView.ItemSelected += HandleItemSelected;
             _addContactButton.Clicked += HandleAddContactButtonClicked;
             ViewModel.PullToRefreshCompleted += HandlePullToRefreshCompleted;
+            ViewModel.RestoreDeletedContactsCompleted += HandleRestoreDeletedContactsCompleted;
         }
 
         protected override void UnsubscribeEventHandlers()
@@ -87,6 +88,7 @@ namespace XamList
             _contactsListView.ItemSelected -= HandleItemSelected;
             _addContactButton.Clicked -= HandleAddContactButtonClicked;
             ViewModel.PullToRefreshCompleted -= HandlePullToRefreshCompleted;
+            ViewModel.RestoreDeletedContactsCompleted -= HandleRestoreDeletedContactsCompleted;
         }
 
         void HandleItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -108,6 +110,9 @@ namespace XamList
             Device.BeginInvokeOnMainThread(async () =>
                await Navigation.PushModalAsync(new BaseNavigationPage(new ContactDetailPage(new ContactModel(), true))));
         }
+
+        void HandleRestoreDeletedContactsCompleted(object sender, EventArgs e) =>
+            Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
 
         public void HandlePullToRefreshCompleted(object sender, EventArgs e) =>
             Device.BeginInvokeOnMainThread(_contactsListView.EndRefresh);

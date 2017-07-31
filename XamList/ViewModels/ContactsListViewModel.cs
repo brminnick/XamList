@@ -20,6 +20,7 @@ namespace XamList
 
         #region Events
         public event EventHandler PullToRefreshCompleted;
+        public event EventHandler RestoreDeletedContactsCompleted;
         #endregion
 
         #region Properties
@@ -75,7 +76,7 @@ namespace XamList
 
             var (contactsInLocalDatabaseButNotStoredRemotely, contactsInRemoteDatabaseButNotStoredLocally, contactsInBothDatabases) = GetMatchingContacts(contactListFromLocalDatabase, contactListFromRemoteDatabase);
 
-            var (contactsToPatchToLocalDatabase, contactsToPatchToRemoteDatabase) = GetContactListsThatNeedUpdating(contactListFromRemoteDatabase, contactListFromRemoteDatabase, contactsInBothDatabases);
+            var (contactsToPatchToLocalDatabase, contactsToPatchToRemoteDatabase) = GetContactListsThatNeedUpdating(contactListFromLocalDatabase, contactListFromRemoteDatabase, contactsInBothDatabases);
 
             await SaveContacts(contactsToPatchToRemoteDatabase,
                                       contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase).ToList(),
@@ -156,11 +157,15 @@ namespace XamList
 
         async Task ExecuteRestoreDeletedContactsCommand()
         {
-            throw new Exception("ExecuteRestoreDeletedContactsCommand Not Implemented");
+            await APIService.RestoreDeletedContacts().ConfigureAwait(false);
+            OnRestoreDeletedContactsCompleted();
         }
 
         void OnPullToRefreshCompleted() =>
             PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);
+
+        void OnRestoreDeletedContactsCompleted() =>
+            RestoreDeletedContactsCompleted?.Invoke(this, EventArgs.Empty);
         #endregion
     }
 }

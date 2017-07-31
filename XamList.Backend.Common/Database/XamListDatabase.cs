@@ -58,7 +58,6 @@ namespace XamList.Backend.Common
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.IsDeleted), contact.IsDeleted);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.LastName), contact.LastName);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.PhoneNumber), contact.PhoneNumber);
-            contactModelDelta.TrySetPropertyValue(nameof(ContactModel.UpdatedAt), DateTimeOffset.UtcNow);
 
             return await PatchContactModel(contact.Id, contactModelDelta);
         }
