@@ -30,13 +30,7 @@ namespace XamList.UITests
             App.WaitForElement(ContactDetailsPage.Title);
 
             ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, shouldUseReturnKey);
-
-            switch (shouldUseReturnKey)
-            {
-                case false:
-                    ContactDetailsPage.TapSaveButton();
-                    break;
-            }
+            ContactDetailsPage.TapSaveButton();
 
             await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
             await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
@@ -48,11 +42,11 @@ namespace XamList.UITests
         [TestCase("Brandon", "Minnick", "123-456-7890")]
         public void EnterContactInformationThenPressCancel(string firstName, string lastName, string phoneNumber)
         {
-			ContactsListPage.TapAddContactButton();
+            ContactsListPage.TapAddContactButton();
 
-			App.WaitForElement(ContactDetailsPage.Title);
+            App.WaitForElement(ContactDetailsPage.Title);
 
-			ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, false);
+            ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, false);
             ContactDetailsPage.TapCancelButton();
 
             Assert.IsFalse(ContactsListPage.DoesViewCellExist($"{firstName} {lastName}"));
