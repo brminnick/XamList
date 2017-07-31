@@ -19,7 +19,7 @@ namespace XamList.Functions
             var contactModelList = await XamListDatabase.GetAllContactModels();
             var deletedContactModelList = contactModelList.Where(x => x.IsDeleted);
 
-            var undeletedContactModelList = deletedContactModelList.Select(x => { x.IsDeleted = true; return x; }).ToList();
+            var undeletedContactModelList = deletedContactModelList.Select(x => { x.IsDeleted = false; return x; }).ToList();
 
             foreach (var contact in undeletedContactModelList)
                 await XamListDatabase.PatchContactModel(contact);

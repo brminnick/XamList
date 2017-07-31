@@ -51,12 +51,14 @@ namespace XamList.Backend.Common
 
         public static async Task<ContactModel> PatchContactModel(ContactModel contact)
         {
-            var contactModelDelta = new Delta<ContactModel>(typeof(ContactModel));
+            var contactModelDelta = new Delta<ContactModel>();
+
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.CreatedAt), contact.CreatedAt);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.FirstName), contact.FirstName);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.IsDeleted), contact.IsDeleted);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.LastName), contact.LastName);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.PhoneNumber), contact.PhoneNumber);
+            contactModelDelta.TrySetPropertyValue(nameof(ContactModel.UpdatedAt), DateTimeOffset.UtcNow);
 
             return await PatchContactModel(contact.Id, contactModelDelta);
         }
@@ -68,6 +70,7 @@ namespace XamList.Backend.Common
                 var contactFromDatabase = dataContext.GetTable<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
 
                 contact.Patch(contactFromDatabase);
+                contactFromDatabase.UpdatedAt = DateTimeOffset.UtcNow;
 
                 return contactFromDatabase;
             };
@@ -80,7 +83,9 @@ namespace XamList.Backend.Common
             Func<DataContext, ContactModel> deleteContactModelFunction = dataContext =>
             {
                 var contactFromDatabase = dataContext.GetTable<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+
                 contactFromDatabase.IsDeleted = true;
+                contactFromDatabase.UpdatedAt = DateTimeOffset.UtcNow;
 
                 return contactFromDatabase;
             };

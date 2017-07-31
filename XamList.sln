@@ -30,7 +30,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		XamList.Shared\XamList.Shared.projitems*{41adaa6d-6b2d-45fa-8174-98deb032897b}*SharedItemsImports = 13
 		XamList.Constants\XamList.Constants.projitems*{8b1cf86b-1668-4470-8b17-c456807a8adc}*SharedItemsImports = 13
-		XamList.Shared\XamList.Shared.projitems*{a4ca45ab-6099-4b88-948c-477e13d531cc}*SharedItemsImports = 4
 		XamList.Constants\XamList.Constants.projitems*{e289972f-b8e9-4df5-b0af-b62133735256}*SharedItemsImports = 4
 		XamList.Shared\XamList.Shared.projitems*{e5bce4c8-74f5-4a4a-93e4-fc4b79961dea}*SharedItemsImports = 4
 	EndGlobalSection
