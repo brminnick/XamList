@@ -6,22 +6,22 @@ using System.Web.Http.OData;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using XamList.Shared;
+using XamList.Backend.Common;
 
 namespace XamList.API.Controllers
 {
     public class XamListApiController : ApiController
     {
         [HttpGet, Route("api/GetAllContacts"), EnableQuery]
-        public async Task<IList<ContactModel>> GetAllContacts() =>
+        public async Task<IList<Shared.ContactModel>> GetAllContacts() =>
              await XamListDatabase.GetAllContactModels();
 
         [HttpGet, Route("api/GetContact")]
-        public async Task<ContactModel> GetContact(string id) =>
+        public async Task<Shared.ContactModel> GetContact(string id) =>
              await XamListDatabase.GetContactModel(id);
 
         [HttpPost, Route("api/PostContact")]
-        public async Task<HttpResponseMessage> PostContact(ContactModel contact)
+        public async Task<HttpResponseMessage> PostContact(Shared.ContactModel contact)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace XamList.API.Controllers
         }
 
         [HttpPatch, Route("api/PatchContact/{id}")]
-        public async Task<HttpResponseMessage> PatchContact(string id, Delta<ContactModel> contact)
+        public async Task<HttpResponseMessage> PatchContact(string id, Delta<Shared.ContactModel> contact)
         {
             try
             {
