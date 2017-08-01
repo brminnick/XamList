@@ -21,8 +21,8 @@ namespace XamList.UITests
 
         }
 
-        [TestCase("Brandon", "Minnick", "123-456-7890", true)]
-        [TestCase("Brandon", "Minnick", "123-456-7890", false)]
+        [TestCase(Constants.TestFirstName, Constants.TestLastName, Constants.TestPhoneNumber, true)]
+        [TestCase(Constants.TestFirstName, Constants.TestLastName, Constants.TestPhoneNumber, false)]
         public async Task AddContactTest(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
         {
             ContactsListPage.TapAddContactButton();
@@ -39,7 +39,7 @@ namespace XamList.UITests
             Assert.IsTrue(ContactsListPage.DoesViewCellExist(phoneNumber));
         }
 
-        [TestCase("Brandon", "Minnick", "123-456-7890")]
+        [TestCase(Constants.TestFirstName, Constants.TestLastName, Constants.TestPhoneNumber)]
         public void EnterContactInformationThenPressCancel(string firstName, string lastName, string phoneNumber)
         {
             ContactsListPage.TapAddContactButton();
@@ -52,9 +52,9 @@ namespace XamList.UITests
             Assert.IsFalse(ContactsListPage.DoesViewCellExist($"{firstName} {lastName}"));
         }
 
-        protected override void BeforeEachTest()
+        protected override async Task BeforeEachTest()
         {
-            base.BeforeEachTest();
+           await base.BeforeEachTest();
 
             App.Screenshot("App Launched");
             App.WaitForElement(ContactsListPage.Title);

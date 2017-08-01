@@ -92,6 +92,20 @@ namespace XamList.Backend.Common
             return await PerformDatabaseFunction(deleteContactModelFunction);
         }
 
+        public static async Task<ContactModel> RemoveContactModel(string id)
+        {
+            Func<DataContext, ContactModel> removeContactDatabaseFunction = dataContext =>
+            {
+                var contactFromDatabase = dataContext.GetTable<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+
+                dataContext.GetTable<ContactModel>().DeleteOnSubmit(contactFromDatabase);
+
+                return contactFromDatabase;
+            };
+
+            return await PerformDatabaseFunction(removeContactDatabaseFunction);
+        }
+
         static async Task<TResult> PerformDatabaseFunction<TResult>(Func<DataContext, TResult> databaseFunction) where TResult : class
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))

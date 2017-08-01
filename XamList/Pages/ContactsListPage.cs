@@ -3,7 +3,7 @@
 using Xamarin.Forms;
 
 using XamList.Constants;
-
+using XamList.Mobile.Common;
 using XamList.Shared;
 
 namespace XamList
@@ -21,7 +21,7 @@ namespace XamList
             _addContactButton = new ToolbarItem
             {
                 Text = "+",
-                AutomationId = AutomationIdConstants.AddContactButon
+                AutomationId = Mobile.Common.AutomationIdConstants.AddContactButon
             };
             ToolbarItems.Add(_addContactButton);
 
@@ -45,7 +45,7 @@ namespace XamList
             };
             restoreDeletedContactsButton.SetBinding(Button.CommandProperty, nameof(ViewModel.RestoreDeletedContactsCommand));
 
-            Title = PageTitles.ContactsListPage;
+            Title = Mobile.Common.PageTitles.ContactsListPage;
 
             var relativeLayout = new RelativeLayout();
 

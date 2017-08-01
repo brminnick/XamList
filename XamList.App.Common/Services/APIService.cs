@@ -10,11 +10,12 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 using Xamarin.Forms;
+
 using XamList.Shared;
 
-namespace XamList
+namespace XamList.Mobile.Common
 {
-    static class APIService
+    public static class APIService
     {
         #region Constant Fields
         static readonly TimeSpan _httpTimeout = TimeSpan.FromSeconds(60);
@@ -44,6 +45,9 @@ namespace XamList
 
         public static async Task<HttpResponseMessage> RestoreDeletedContacts() =>
             await PostObjectToAPI("https://xamlistfunctions.azurewebsites.net/api/RestoreDeletedContacts/?code=Mnl87ggoCqlHjMrieftOpq5gSL4BJHfmMT76tq87RbAmC6gaehcL2g==", new object());
+
+        public static async Task<HttpResponseMessage> RemoveContactFromDatabase(ContactModel contact) =>
+            await PostObjectToAPI($"https://xamlistfunctions.azurewebsites.net/api/RemoveItemFromDatabase/{contact.Id}?code=qZGcFbpqxBTpdz4K0f45m81qS9eHzSOMBWjGH5o1SfH8cycnYbaf3Q==", new object());
 
         static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
             await GetDataObjectFromAPI<T, object>(apiUrl);
@@ -157,9 +161,9 @@ namespace XamList
 
         static void UpdateActivityIndicatorStatus(bool isActivityIndicatorDisplayed)
         {
-            var baseNavigationPage = Application.Current.MainPage as BaseNavigationPage;
+            var baseNavigationPage = Application.Current.MainPage as NavigationPage;
             var currentPage = baseNavigationPage.CurrentPage as ContentPage;
-            var currentViewModel = currentPage.BindingContext as BaseViewModel;
+            var currentViewModel = currentPage.BindingContext as IBaseViewModel;
 
             if (isActivityIndicatorDisplayed)
             {

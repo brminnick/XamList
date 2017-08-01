@@ -1,7 +1,7 @@
 ﻿using System;
 #if Backend
 using System.Data.Linq.Mapping;
-#else
+#elif MOBILE
 using SQLite;
 using Newtonsoft.Json;
 #endif
@@ -19,13 +19,13 @@ namespace XamList.Shared
 
         #region Properties
 #if Backend
-#else
+#elif MOBILE
         public string FullName => $"{FirstName} {LastName}";
 #endif
 
 #if Backend
         [Column(Name = nameof(Id), IsPrimaryKey = true, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
-#else
+#elif MOBILE
         [PrimaryKey, Unique]
 #endif
         public string Id { get; set; }
@@ -56,7 +56,6 @@ namespace XamList.Shared
 
 #if Backend
         [Column(Name = "deleted", IsPrimaryKey = false, CanBeNull = false, UpdateCheck = UpdateCheck.Never)]
-#else
 #endif
         public bool IsDeleted { get; set; }
         #endregion

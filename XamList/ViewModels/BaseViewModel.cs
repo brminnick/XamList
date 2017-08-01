@@ -3,9 +3,11 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
+using XamList.Mobile.Common;
+
 namespace XamList
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : IBaseViewModel
     {
         #region Fields
         bool _isInternetConnectionActive;
