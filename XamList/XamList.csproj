@@ -22,6 +22,4 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\XamList.App.Common\XamList.Mobile.Common.csproj" />
 	</ItemGroup>
-	<Import Project="..\XamList.Constants\XamList.Constants.projitems" Label="Shared" Condition="Exists('..\XamList.Constants\XamList.Constants.projitems')" />
-	<Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" />
 </Project>

@@ -2,6 +2,8 @@
 
 using Xamarin.Forms;
 
+using XamList.Mobile.Common;
+
 namespace XamList
 {
     public class App : Application

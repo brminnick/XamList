@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Collections.Generic;
 
 using Xamarin.Forms;
 
 using XamList.Shared;
-using System.Collections.Generic;
+using XamList.Mobile.Common;
 
 namespace XamList
 {

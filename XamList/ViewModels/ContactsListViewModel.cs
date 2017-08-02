@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 
 using XamList.Shared;
+using XamList.Mobile.Common;
 
 namespace XamList
 {

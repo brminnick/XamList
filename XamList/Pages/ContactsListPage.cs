@@ -2,7 +2,6 @@
 
 using Xamarin.Forms;
 
-using XamList.Constants;
 using XamList.Mobile.Common;
 using XamList.Shared;
 

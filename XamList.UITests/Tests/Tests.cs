@@ -52,9 +52,9 @@ namespace XamList.UITests
             Assert.IsFalse(ContactsListPage.DoesViewCellExist($"{firstName} {lastName}"));
         }
 
-        protected override async Task BeforeEachTest()
+        protected override void BeforeEachTest()
         {
-           await base.BeforeEachTest();
+            base.BeforeEachTest();
 
             App.Screenshot("App Launched");
             App.WaitForElement(ContactsListPage.Title);

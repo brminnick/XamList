@@ -54,7 +54,7 @@ namespace XamList.Mobile.Common
 
         static async Task<T> GetDataObjectFromAPI<T, U>(string apiUrl, U data = default(U))
         {
-            string stringPayload = string.Empty;
+            var stringPayload = string.Empty;
 
             if (data != null)
                 stringPayload = await Task.Run(() => JsonConvert.SerializeObject(data)).ConfigureAwait(false);

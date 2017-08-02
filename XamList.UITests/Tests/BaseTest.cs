@@ -9,8 +9,6 @@ using Xamarin.UITest;
 
 using XamList.Mobile.Common;
 
-using XamList.Shared;
-
 namespace XamList.UITests
 {
     [TestFixture(Platform.iOS)]
@@ -37,9 +35,9 @@ namespace XamList.UITests
 
         #region Methods
         [SetUp]
-        protected virtual async Task BeforeEachTest()
+        protected virtual void BeforeEachTest()
         {
-            var contactList = await APIService.GetAllContactModels();
+            var contactList = Task.Run(async () => await APIService.GetAllContactModels()).Result;
             Assert.IsNotNull(contactList, "Error Retriecing Contact List From Remote Database");
 
             var testContactList = contactList.Where(x =>
@@ -51,11 +49,12 @@ namespace XamList.UITests
             foreach (var contact in testContactList)
                 removedContactTaskList.Add(APIService.RemoveContactFromDatabase(contact));
 
-            await Task.WhenAll(removedContactTaskList);
+            Task.Run(async () => await Task.WhenAll(removedContactTaskList)).Wait();
 
             var successfullyRemovedContactCount = removedContactTaskList.Count(x => x.Result.IsSuccessStatusCode);
-            Assert.IsTrue(testContactList.Count == successfullyRemovedContactCount, 
+            Assert.IsTrue(testContactList.Count == successfullyRemovedContactCount,
                 $"Error Removing Test Data from Remote Datase\n Found {testContactList.Count} Test Contacts and Removed {successfullyRemovedContactCount} Test Contacts");
+
 
             _app = AppInitializer.StartApp(Platform);
         }
