@@ -18,7 +18,8 @@ namespace XamList.Shared
         #endregion
 
         #region Properties
-#if MOBILE
+#if Backend
+#else
         public string FullName => $"{FirstName} {LastName}";
 #endif
 

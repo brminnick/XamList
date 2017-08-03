@@ -7,7 +7,7 @@ using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Distribute;
 
-namespace XamList.Mobile.Common
+namespace XamList
 {
     public static class MobileCenterHelpers
     {

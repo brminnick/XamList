@@ -18,6 +18,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Data\" />
+		<Folder Include="Helpers\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\XamList.App.Common\XamList.Mobile.Common.csproj" />

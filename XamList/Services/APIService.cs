@@ -13,7 +13,7 @@ using Xamarin.Forms;
 
 using XamList.Shared;
 
-namespace XamList.Mobile.Common
+namespace XamList
 {
     public static class APIService
     {
@@ -46,10 +46,7 @@ namespace XamList.Mobile.Common
         public static async Task<HttpResponseMessage> RestoreDeletedContacts() =>
             await PostObjectToAPI("https://xamlistfunctions.azurewebsites.net/api/RestoreDeletedContacts/?code=Mnl87ggoCqlHjMrieftOpq5gSL4BJHfmMT76tq87RbAmC6gaehcL2g==", new object());
 
-        public static async Task<HttpResponseMessage> RemoveContactFromDatabase(ContactModel contact) =>
-            await PostObjectToAPI($"https://xamlistfunctions.azurewebsites.net/api/RemoveItemFromDatabase/{contact.Id}?code=qZGcFbpqxBTpdz4K0f45m81qS9eHzSOMBWjGH5o1SfH8cycnYbaf3Q==", new object());
-
-        static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
+		static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
             await GetDataObjectFromAPI<T, object>(apiUrl);
 
         static async Task<T> GetDataObjectFromAPI<T, U>(string apiUrl, U data = default(U))
@@ -163,7 +160,7 @@ namespace XamList.Mobile.Common
         {
             var baseNavigationPage = Application.Current.MainPage as NavigationPage;
             var currentPage = baseNavigationPage.CurrentPage as ContentPage;
-            var currentViewModel = currentPage.BindingContext as IBaseViewModel;
+            var currentViewModel = currentPage.BindingContext as BaseViewModel;
 
             if (isActivityIndicatorDisplayed)
             {
