@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.iOS", "iOS\XamList.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Droid", "Droid\XamList.Droid.csproj", "{C534602B-AE1C-4B79-A1A7-261513613A06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList", "XamList\XamList.csproj", "{6E272597-7247-4D80-AEFB-0B93F5D2A9B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList", "XamList\XamList.csproj", "{6E272597-7247-4D80-AEFB-0B93F5D2A9B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.UITests", "XamList.UITests\XamList.UITests.csproj", "{E289972F-B8E9-4DF5-B0AF-B62133735256}"
 EndProject
@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C84F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8AF8B5CD-DC10-4AE9-9076-0849C2305A60}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList.Functions", "XamList.Functions\XamList.Functions.csproj", "{EC90A67A-AEC4-4B23-8C6C-8F63DBC773FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Functions", "XamList.Functions\XamList.Functions.csproj", "{EC90A67A-AEC4-4B23-8C6C-8F63DBC773FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Backend.Common", "XamList.Backend.Common\XamList.Backend.Common.csproj", "{E5BCE4C8-74F5-4A4A-93E4-FC4B79961DEA}"
 EndProject

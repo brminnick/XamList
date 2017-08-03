@@ -15,12 +15,14 @@ namespace XamList.UITests
     {
         #region Constant Fields
         readonly Query _addContactButon;
+        readonly Query _restoreContactsButton;
         #endregion
 
         #region Constructors
         public ContactsListPage(IApp app, Platform platform) : base(app, platform, PageTitles.ContactsListPage)
         {
             _addContactButon = x => x.Marked(AutomationIdConstants.AddContactButon);
+            _restoreContactsButton = x => x.Marked(AutomationIdConstants.RestoreDeletedContactsButton);
         }
         #endregion
 
@@ -30,6 +32,21 @@ namespace XamList.UITests
         #endregion
 
         #region Methods
+        public void TapRestoreDeletedContactsButton(bool shouldConfirmAlertDialog)
+        {
+            App.Tap(_restoreContactsButton);
+
+            switch(shouldConfirmAlertDialog)
+            {
+                case true:
+                    App.Tap(AlertDialogConstants.Yes);
+                    break;
+                case false:
+                    App.Tap(AlertDialogConstants.Cancel);
+                    break;
+            }
+        }
+
         public void TapAddContactButton()
         {
             switch (OniOS)

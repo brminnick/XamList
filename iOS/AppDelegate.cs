@@ -8,8 +8,11 @@ namespace XamList.iOS
     {
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
-            global::Xamarin.Forms.Forms.Init();
+			#if DEBUG
+			Xamarin.Calabash.Start();
+			#endif
 
+            global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(uiApplication, launchOptions);

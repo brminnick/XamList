@@ -30,7 +30,13 @@ namespace XamList.UITests
             App.WaitForElement(ContactDetailsPage.Title);
 
             ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, shouldUseReturnKey);
-            ContactDetailsPage.TapSaveButton();
+
+            switch (shouldUseReturnKey)
+            {
+                case false:
+                    ContactDetailsPage.TapSaveButton();
+                    break;
+            }
 
             await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
             await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
@@ -14,7 +13,6 @@ namespace XamList
     {
         #region Constant Fields
         readonly bool _isNewContact;
-        readonly ContactModel _contactModel;
         ToolbarItem _saveToobarItem, _cancelToolbarItem;
         #endregion
 
@@ -28,9 +26,10 @@ namespace XamList
             {
                 ReturnType = ReturnType.Go,
                 AutomationId = AutomationIdConstants.PhoneNumberEntry,
-                ReturnCommand = new Command(Unfocus)
+                CommandParameter = _isNewContact
             };
             phoneNumberDataEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhoneNumberText));
+            phoneNumberDataEntry.SetBinding(CustomReturnEntry.ReturnCommandProperty, nameof(ViewModel.SaveButtonTappedCommand));
 
             var lastNameDataEntry = new ContactDetailEntry
             {
@@ -139,7 +138,6 @@ namespace XamList
         class ContactDetailEntry : CustomReturnEntry
         {
             public ContactDetailEntry() => TextColor = Color.FromHex("2B3E50");
-
         }
 
         class ContactDetailLabel : Label

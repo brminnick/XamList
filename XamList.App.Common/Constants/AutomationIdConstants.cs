@@ -12,6 +12,7 @@
 
         #region Contacts List Page
         public const string AddContactButon = "AddContactButton";
+        public const string RestoreDeletedContactsButton = "RestoreDeletedContacts";
         #endregion
     }
 }

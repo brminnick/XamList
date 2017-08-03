@@ -12,6 +12,7 @@ namespace XamList
         #region Constant Fields
         readonly ListView _contactsListView;
         readonly ToolbarItem _addContactButton;
+        readonly Button _restoreDeletedContactsButton;
         #endregion
 
         #region Constructors
@@ -20,7 +21,7 @@ namespace XamList
             _addContactButton = new ToolbarItem
             {
                 Text = "+",
-                AutomationId = Mobile.Common.AutomationIdConstants.AddContactButon
+                AutomationId = AutomationIdConstants.AddContactButon
             };
             ToolbarItems.Add(_addContactButton);
 
@@ -33,30 +34,30 @@ namespace XamList
             _contactsListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
             _contactsListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
 
-            var restoreDeletedContactsButton = new Button
+            _restoreDeletedContactsButton = new Button
             {
                 Text = "  Restore Deleted Contacts  ",
                 TextColor = ColorConstants.TextColor,
-                BackgroundColor = new Color(ColorConstants.NavigationBarBackgroundColor.R, 
-                                            ColorConstants.NavigationBarBackgroundColor.G, 
-                                            ColorConstants.NavigationBarBackgroundColor.B, 
+				AutomationId = AutomationIdConstants.RestoreDeletedContactsButton,
+                BackgroundColor = new Color(ColorConstants.NavigationBarBackgroundColor.R,
+                                            ColorConstants.NavigationBarBackgroundColor.G,
+                                            ColorConstants.NavigationBarBackgroundColor.B,
                                             0.25)
             };
-            restoreDeletedContactsButton.SetBinding(Button.CommandProperty, nameof(ViewModel.RestoreDeletedContactsCommand));
 
-            Title = Mobile.Common.PageTitles.ContactsListPage;
+            Title = PageTitles.ContactsListPage;
 
             var relativeLayout = new RelativeLayout();
 
-            Func<RelativeLayout, double> getRestoreDeletedContactsButtonHeight = parent => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Height;
-            Func<RelativeLayout, double> getRestoreDeletedContactsButtonWidth = parent => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Width;
+            Func<RelativeLayout, double> getRestoreDeletedContactsButtonHeight = parent => _restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Height;
+            Func<RelativeLayout, double> getRestoreDeletedContactsButtonWidth = parent => _restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Width;
 
             relativeLayout.Children.Add(_contactsListView,
                                        Constraint.Constant(0),
                                        Constraint.Constant(0),
                                        Constraint.RelativeToParent(parent => parent.Width),
                                        Constraint.RelativeToParent(parent => parent.Height));
-            relativeLayout.Children.Add(restoreDeletedContactsButton,
+            relativeLayout.Children.Add(_restoreDeletedContactsButton,
                                         Constraint.RelativeToParent(parent => parent.Width / 2 - getRestoreDeletedContactsButtonWidth(parent) / 2),
                                         Constraint.RelativeToParent(parent => parent.Height - getRestoreDeletedContactsButtonHeight(parent) - 10));
 
@@ -80,6 +81,7 @@ namespace XamList
             _addContactButton.Clicked += HandleAddContactButtonClicked;
             ViewModel.PullToRefreshCompleted += HandlePullToRefreshCompleted;
             ViewModel.RestoreDeletedContactsCompleted += HandleRestoreDeletedContactsCompleted;
+            _restoreDeletedContactsButton.Clicked += HandleRestoreDeletedContactsButtonClicked;
         }
 
         protected override void UnsubscribeEventHandlers()
@@ -109,6 +111,22 @@ namespace XamList
             Device.BeginInvokeOnMainThread(async () =>
                await Navigation.PushModalAsync(new BaseNavigationPage(new ContactDetailPage(new ContactModel(), true))));
         }
+
+        async void HandleRestoreDeletedContactsButtonClicked(object sender, EventArgs e)
+        {
+            var isDisplayAlertDialogConfirmed = await DisplayAlert("Restore Deleted Contacts", 
+                                                        "Would you like to restore deleted contacts?", 
+                                                        AlertDialogConstants.Yes, 
+                                                        AlertDialogConstants.Cancel);
+
+            switch(isDisplayAlertDialogConfirmed)
+            {
+                case true:
+                    ViewModel.RestoreDeletedContactsCommand?.Execute(null);
+                    break;
+            }
+        }
+
 
         void HandleRestoreDeletedContactsCompleted(object sender, EventArgs e) =>
             Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
