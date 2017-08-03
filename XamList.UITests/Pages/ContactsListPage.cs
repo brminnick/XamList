@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
 
 using Xamarin.UITest;
 
+using XamList.Shared;
 using XamList.Mobile.Common;
 
 using Query = System.Func<Xamarin.UITest.Queries.AppQuery, Xamarin.UITest.Queries.AppQuery>;
@@ -47,6 +49,27 @@ namespace XamList.UITests
             }
         }
 
+        public async Task DeleteContact(string firstName, string lastName, string phoneNumber)
+        {
+            var contact = new ContactModel
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                PhoneNumber = phoneNumber
+            };
+
+			App.ScrollDownTo(contact.FullName);
+
+			if (OniOS)
+				App.SwipeRightToLeft(contact.FullName);
+			else
+				App.TouchAndHold(contact.FullName);
+
+			App.Tap("Delete");
+
+            await Task.Delay(1000);
+        }
+
         public void TapAddContactButton()
         {
             switch (OniOS)
@@ -62,18 +85,26 @@ namespace XamList.UITests
             App.Screenshot("Tapped Add Contact Button");
         }
 
-        public bool DoesViewCellExist(string fullName)
-        {
-            try
-            {
-                App.ScrollDownTo(fullName);
-                return true;
-            }
-            catch (System.Exception e)
-            {
-                return false;
-            }
-        }
+        public bool DoesContactExist(string firstName, string lastName, string phoneNumber, int timeoutInSeconds = 10)
+		{
+			var contact = new ContactModel
+			{
+				FirstName = firstName,
+				LastName = lastName,
+				PhoneNumber = phoneNumber
+			};
+
+			try
+			{
+				App.ScrollDownTo(contact.FullName, timeout: TimeSpan.FromSeconds(timeoutInSeconds));
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+
+			return true;
+		}
 
         public async Task WaitForNoPullToRefreshActivityIndicatorAsync(int timeoutInSeconds = 10)
         {

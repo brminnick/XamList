@@ -25,29 +25,54 @@ namespace XamList.UITests
         [TestCase(Constants.TestFirstName, Constants.TestLastName, Constants.TestPhoneNumber, false)]
         public async Task AddContactTest(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
         {
-            ContactsListPage.TapAddContactButton();
+            //Arrange
 
-            App.WaitForElement(ContactDetailsPage.Title);
+            //Act
+            await AddContact(firstName, lastName, phoneNumber, shouldUseReturnKey);
 
-            ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, shouldUseReturnKey);
+            //Assert
+            Assert.IsTrue(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
+        }
 
-            switch (shouldUseReturnKey)
+        [TestCase(true)]
+        [TestCase(false)]
+        public async Task RestoreDeletedContactTest(bool shouldConfirmAlertDialog)
+        {
+            //Arrange
+            var firstName = Constants.TestFirstName;
+            var lastName = Constants.TestLastName;
+            var phoneNumber = Constants.TestPhoneNumber;
+
+
+            //Act
+            await AddContact(firstName, lastName, phoneNumber, false);
+
+            await ContactsListPage.DeleteContact(firstName, lastName, phoneNumber);
+            Assert.IsFalse(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
+
+            ContactsListPage.TapRestoreDeletedContactsButton(shouldConfirmAlertDialog);
+			
+            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+			await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+
+            //Assert
+            switch (shouldConfirmAlertDialog)
             {
+                case true:
+                    Assert.IsTrue(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
+                    break;
                 case false:
-                    ContactDetailsPage.TapSaveButton();
+                    Assert.IsFalse(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
                     break;
             }
-
-            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
-            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
-
-            Assert.IsTrue(ContactsListPage.DoesViewCellExist($"{firstName} {lastName}"));
-            Assert.IsTrue(ContactsListPage.DoesViewCellExist(phoneNumber));
         }
 
         [TestCase(Constants.TestFirstName, Constants.TestLastName, Constants.TestPhoneNumber)]
-        public void EnterContactInformationThenPressCancel(string firstName, string lastName, string phoneNumber)
+        public async Task EnterContactInformationThenPressCancel(string firstName, string lastName, string phoneNumber)
         {
+            //Arrange
+
+            //Act
             ContactsListPage.TapAddContactButton();
 
             App.WaitForElement(ContactDetailsPage.Title);
@@ -55,7 +80,11 @@ namespace XamList.UITests
             ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, false);
             ContactDetailsPage.TapCancelButton();
 
-            Assert.IsFalse(ContactsListPage.DoesViewCellExist($"{firstName} {lastName}"));
+			await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+			await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+
+            //Assert
+            Assert.IsFalse(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
         }
 
         protected override void BeforeEachTest()
@@ -64,6 +93,19 @@ namespace XamList.UITests
 
             App.Screenshot("App Launched");
             App.WaitForElement(ContactsListPage.Title);
+        }
+
+        async Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
+        {
+            ContactsListPage.TapAddContactButton();
+
+            App.WaitForElement(ContactDetailsPage.Title);
+
+            ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, shouldUseReturnKey);
+            ContactDetailsPage.TapSaveButton();
+
+            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
         }
         #endregion
     }

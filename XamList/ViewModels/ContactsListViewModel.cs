@@ -54,10 +54,14 @@ namespace XamList
             _isRefreshCommandExecuting = true;
             try
             {
+                var oneSecondTaskToShowSpinner = Task.Delay(1000);
+
                 await SyncRemoteAndLocalDatabases().ConfigureAwait(false);
 
                 var contactList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
                 AllContactsList = contactList.Where(x => !x.IsDeleted).OrderBy(x => x.FullName).ToList();
+
+                await oneSecondTaskToShowSpinner;
             }
             catch (Exception e)
             {

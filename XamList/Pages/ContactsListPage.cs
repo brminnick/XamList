@@ -90,6 +90,7 @@ namespace XamList
             _addContactButton.Clicked -= HandleAddContactButtonClicked;
             ViewModel.PullToRefreshCompleted -= HandlePullToRefreshCompleted;
             ViewModel.RestoreDeletedContactsCompleted -= HandleRestoreDeletedContactsCompleted;
+			_restoreDeletedContactsButton.Clicked -= HandleRestoreDeletedContactsButtonClicked;
         }
 
         void HandleItemSelected(object sender, SelectedItemChangedEventArgs e)

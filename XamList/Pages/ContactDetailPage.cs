@@ -26,10 +26,9 @@ namespace XamList
             {
                 ReturnType = ReturnType.Go,
                 AutomationId = AutomationIdConstants.PhoneNumberEntry,
-                CommandParameter = _isNewContact
+                ReturnCommand = new Command(Unfocus)
             };
             phoneNumberDataEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhoneNumberText));
-            phoneNumberDataEntry.SetBinding(CustomReturnEntry.ReturnCommandProperty, nameof(ViewModel.SaveButtonTappedCommand));
 
             var lastNameDataEntry = new ContactDetailEntry
             {
