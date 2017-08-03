@@ -21,6 +21,6 @@
 		<Folder Include="Helpers\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\XamList.App.Common\XamList.Mobile.Common.csproj" />
+	  <ProjectReference Include="..\XamList.Mobile.Common\XamList.Mobile.Common.csproj" />
 	</ItemGroup>
 </Project>
