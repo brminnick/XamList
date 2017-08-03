@@ -75,8 +75,8 @@
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\XamList.App.Common\XamList.Mobile.Common.csproj">
-      <Project>{fc43c6ee-e472-4cb9-8d95-c95a31108b29}</Project>
+    <ProjectReference Include="..\XamList.Mobile.Common\XamList.Mobile.Common.csproj">
+      <Project>{33f1e177-60a3-4845-9720-0cc9edf3d87e}</Project>
       <Name>XamList.Mobile.Common</Name>
     </ProjectReference>
   </ItemGroup>
