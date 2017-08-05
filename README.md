@@ -4,7 +4,7 @@ An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Data
 
 ### Visual Studio for Mac Requirements
 
-To run this on Visual Studio for Mac, this solution requires Visual Studio for Mac Version 7.1 Build 1294; earlier versions of VSMac don't support Shared Project references from .NET Standard libraries.
+This solution requires Visual Studio for Mac Version 7.1 Build 1294 or later; earlier versions of VSMac don't support Shared Project references from .NET Standard libraries.
 
 ## Azure SQL Database
 
