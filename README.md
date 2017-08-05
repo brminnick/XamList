@@ -2,6 +2,10 @@
 
 An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Database, Azure API and Mobile Center.
 
+### Visual Studio for Mac Requirements
+
+To run this on Visual Studio for Mac, this solution requires Visual Studio for Mac Version 7.1 Build 1294; earlier versions of VSMac don't support Shared Project references from .NET Standard libraries.
+
 ## Azure SQL Database
 
 All data for this mobile app is stored in the cloud using an [Azure SQL Databse](https://azure.microsoft.com/en-us/services/sql-database/). Azure SQL Database allows you to store your data securely in the cloud and scale performance in real-time.
