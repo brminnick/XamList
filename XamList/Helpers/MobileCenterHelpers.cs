@@ -11,15 +11,19 @@ namespace XamList
 {
     public static class MobileCenterHelpers
     {
-        public static async Task Start(string appSecret)
+        public static void Start()
         {
-            MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
-#if DEBUG
-            await Distribute.SetEnabledAsync(false);
-#else
-			await Distribute.SetEnabledAsync(true);
-#endif
-            await Analytics.SetEnabledAsync(true);
+            switch (Xamarin.Forms.Device.RuntimePlatform)
+            {
+                case Xamarin.Forms.Device.iOS:
+                    Task.Run(async () => await Start(MobileCenterConstants.MobileCenterAPIKey_iOS));
+                    break;
+                case Xamarin.Forms.Device.Android:
+                    Task.Run(async () => await Start(MobileCenterConstants.MobileCenterAPIKey_Droid));
+                    break;
+                default:
+                    throw new Exception("Runtime Platform Not Supported");
+            }
         }
 
         public static void TrackEvent(string trackIdentifier, IDictionary<string, string> table = null) =>
@@ -67,6 +71,18 @@ namespace XamList
                     throw new Exception("MobileCenterLogType Does Not Exist");
             }
         }
+
+
+		static async Task Start(string appSecret)
+		{
+			MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
+#if DEBUG
+			await Distribute.SetEnabledAsync(false);
+#else
+            await Distribute.SetEnabledAsync(true);
+#endif
+			await Analytics.SetEnabledAsync(true);
+		}
     }
 
     public enum MobileCenterLogType

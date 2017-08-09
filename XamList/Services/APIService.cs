@@ -27,26 +27,30 @@ namespace XamList
         static int _networkIndicatorCount = 0;
         #endregion
 
+        #region Properties
+        public static string APIUrl => "https://xamlistapi.azurewebsites.net/";
+        #endregion
+
         #region Methods
         public static async Task<List<ContactModel>> GetAllContactModels() =>
-            await GetDataObjectFromAPI<List<ContactModel>>("https://xamlistapi.azurewebsites.net/api/GetAllContacts");
+        await GetDataObjectFromAPI<List<ContactModel>>($"{APIUrl}api/GetAllContacts");
 
         public static async Task<ContactModel> GetContactModel(ContactModel contact) =>
-            await GetDataObjectFromAPI<ContactModel, string>("https://xamlistapi.azurewebsites.net/api/GetContact", contact.Id);
+            await GetDataObjectFromAPI<ContactModel, string>($"{APIUrl}api/GetContact", contact.Id);
 
         public static async Task<HttpResponseMessage> PostContactModel(ContactModel contact) =>
-            await PostObjectToAPI("https://xamlistapi.azurewebsites.net/api/PostContact", contact);
+            await PostObjectToAPI($"{APIUrl}/api/PostContact", contact);
 
         public static async Task<HttpResponseMessage> PatchContactModel(ContactModel contact) =>
-            await PatchObjectToAPI($"https://xamlistapi.azurewebsites.net/api/PatchContact/{contact.Id}", contact);
+            await PatchObjectToAPI($"{APIUrl}api/PatchContact/{contact.Id}", contact);
 
         public static async Task<HttpResponseMessage> DeleteContactModel(ContactModel contact) =>
-            await DeleteObjectFromAPI($"https://xamlistapi.azurewebsites.net/api/DeleteContact/{contact.Id}");
+            await DeleteObjectFromAPI($"{APIUrl}api/DeleteContact/{contact.Id}");
 
         public static async Task<HttpResponseMessage> RestoreDeletedContacts() =>
             await PostObjectToAPI("https://xamlistfunctions.azurewebsites.net/api/RestoreDeletedContacts/?code=Mnl87ggoCqlHjMrieftOpq5gSL4BJHfmMT76tq87RbAmC6gaehcL2g==", new object());
 
-		static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
+        static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
             await GetDataObjectFromAPI<T, object>(apiUrl);
 
         static async Task<T> GetDataObjectFromAPI<T, U>(string apiUrl, U data = default(U))

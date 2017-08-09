@@ -15,6 +15,7 @@
 		<PackageReference Include="System.ValueTuple" Version="4.3.1" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
 		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="3.1.1" />
+		<PackageReference Include="Xam.Plugin.Connectivity" Version="3.0.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Data\" />
