@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Models\ContactModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\IBaseModel.cs" />
   </ItemGroup>
 </Project>

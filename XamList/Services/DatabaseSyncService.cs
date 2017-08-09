@@ -1,0 +1,100 @@
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using XamList.Shared;
+
+namespace XamList
+{
+    public static class DatabaseSyncService
+    {
+        public static async Task SyncRemoteAndLocalDatabases()
+        {
+            var (contactListFromLocalDatabase, contactListFromRemoteDatabase) = await GetAllSavedContacts();
+
+            var (contactsInLocalDatabaseButNotStoredRemotely, contactsInRemoteDatabaseButNotStoredLocally, contactsInBothDatabases) = GetMatchingModels(contactListFromLocalDatabase, contactListFromRemoteDatabase);
+
+            var (contactsToPatchToLocalDatabase, contactsToPatchToRemoteDatabase) = GetModelsThatNeedUpdating(contactListFromLocalDatabase, contactListFromRemoteDatabase, contactsInBothDatabases);
+
+            await SaveContacts(contactsToPatchToRemoteDatabase,
+                                      contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase).ToList(),
+                                      contactsInLocalDatabaseButNotStoredRemotely);
+        }
+
+		static async Task<(List<ContactModel> contactListFromLocalDatabase,
+	        List<ContactModel> contactListFromRemoteDatabase)> GetAllSavedContacts()
+		{
+			var contactListFromLocalDatabaseTask = ContactDatabase.GetAllContacts();
+			var contactListFromRemoteDatabaseTask = APIService.GetAllContactModels();
+
+			await Task.WhenAll(contactListFromLocalDatabaseTask, contactListFromRemoteDatabaseTask).ConfigureAwait(false);
+
+			return (contactListFromLocalDatabaseTask.Result ?? new List<ContactModel>(),
+					contactListFromRemoteDatabaseTask.Result ?? new List<ContactModel>());
+		}
+
+        static (List<T> contactsInLocalDatabaseButNotStoredRemotely,
+            List<T> contactsInRemoteDatabaseButNotStoredLocally,
+            List<T> contactsInBothDatabases) GetMatchingModels<T>(List<T> modelListFromLocalDatabase, 
+                                                                      List<T> modelListFromRemoteDatabase) where T: IBaseModel
+        {
+            var modelIdFromRemoteDatabaseList = modelListFromRemoteDatabase?.Select(x => x.Id).ToList() ?? new List<string>();
+            var modelIdFromLocalDatabaseList = modelListFromLocalDatabase?.Select(x => x.Id).ToList() ?? new List<string>();
+
+            var modelIdsInRemoteDatabaseButNotStoredLocally = modelIdFromRemoteDatabaseList?.Except(modelIdFromLocalDatabaseList)?.ToList() ?? new List<string>();
+            var modelIdsInLocalDatabaseButNotStoredRemotely = modelIdFromLocalDatabaseList?.Except(modelIdFromRemoteDatabaseList)?.ToList() ?? new List<string>();
+            var modelIdsInBothDatabases = modelIdFromRemoteDatabaseList?.Where(x => modelIdFromLocalDatabaseList?.Contains(x) ?? false).ToList() ?? new List<string>();
+
+            var modelsInRemoteDatabaseButNotStoredLocally = modelListFromRemoteDatabase?.Where(x => modelIdsInRemoteDatabaseButNotStoredLocally?.Contains(x?.Id) ?? false).ToList() ?? new List<T>();
+            var modelsInLocalDatabaseButNotStoredRemotely = modelListFromLocalDatabase?.Where(x => modelIdsInLocalDatabaseButNotStoredRemotely?.Contains(x?.Id) ?? false).ToList() ?? new List<T>();
+
+            var modelsInBothDatabases = modelListFromLocalDatabase?.Where(x => modelIdsInBothDatabases?.Contains(x?.Id) ?? false)
+                                            .Concat(modelListFromRemoteDatabase?.Where(x => modelIdsInBothDatabases?.Contains(x?.Id) ?? false)).ToList() ?? new List<T>();
+
+            return (modelsInLocalDatabaseButNotStoredRemotely ?? new List<T>(),
+                    modelsInRemoteDatabaseButNotStoredLocally ?? new List<T>(),
+                    modelsInBothDatabases ?? new List<T>());
+
+        }
+
+		static (List<T> contactsToPatchToLocalDatabase,
+		List<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
+																			  List<T> modelListFromRemoteDatabase,
+																			  List<T> modelsFoundInBothDatabases) where T : IBaseModel
+		{
+            var modelsToPatchToRemoteDatabase = new List<T>();
+            var modelsToPatchToLocalDatabase = new List<T>();
+			foreach (var contact in modelsFoundInBothDatabases)
+			{
+                var modelFromLocalDatabase = modelListFromLocalDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
+                var modelFromRemoteDatabase = modelListFromRemoteDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
+
+				if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) > 0)
+					modelsToPatchToRemoteDatabase.Add(contact);
+				else if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) < 0)
+					modelsToPatchToLocalDatabase.Add(contact);
+			}
+
+			return (modelsToPatchToLocalDatabase ?? new List<T>(),
+					modelsToPatchToRemoteDatabase ?? new List<T>());
+		}
+
+        static async Task SaveContacts(List<ContactModel> contactsToPatchToRemoteDatabase,
+                                        List<ContactModel> contactsToSaveToLocalDatabase,
+                                        List<ContactModel> contactsToPostToRemoteDatabase)
+        {
+            var saveContactTaskList = new List<Task>();
+            foreach (var contact in contactsToPostToRemoteDatabase)
+                saveContactTaskList.Add(APIService.PostContactModel(contact));
+
+            foreach (var contact in contactsToSaveToLocalDatabase)
+                saveContactTaskList.Add(ContactDatabase.SaveContact(contact));
+
+            foreach (var contact in contactsToPatchToRemoteDatabase)
+                saveContactTaskList.Add(APIService.PatchContactModel(contact));
+
+            await Task.WhenAll(saveContactTaskList).ConfigureAwait(false);
+        }
+    }
+}

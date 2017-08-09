@@ -11,7 +11,7 @@ namespace XamList.Shared
 #if Backend
     [Table(Name = "ContactModels")]
 #endif
-    public class ContactModel
+    public class ContactModel : IBaseModel
     {
         #region Constructors
         public ContactModel() => Id = Guid.NewGuid().ToString();
