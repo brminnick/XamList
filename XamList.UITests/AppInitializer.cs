@@ -6,10 +6,15 @@ namespace XamList.UITests
     {
         public static IApp StartApp(Platform platform)
         {
-            if (platform == Platform.Android)
-                return ConfigureApp.Android.StartApp(Xamarin.UITest.Configuration.AppDataMode.Clear);
-
-            return ConfigureApp.iOS.StartApp(Xamarin.UITest.Configuration.AppDataMode.Clear);
+            switch (platform)
+            {
+                case Platform.Android:
+                    return ConfigureApp.Android.StartApp(Xamarin.UITest.Configuration.AppDataMode.Clear);
+                case Platform.iOS:
+                    return ConfigureApp.iOS.StartApp(Xamarin.UITest.Configuration.AppDataMode.Clear);
+                default:
+                    throw new System.Exception($"Platform Not Supported: {platform}");
+            }
         }
     }
 }

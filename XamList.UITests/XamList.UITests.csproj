@@ -30,9 +30,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Xamarin.UITest, Version=2.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.UITest.2.0.9\lib\Xamarin.UITest.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -51,16 +48,19 @@
     <Reference Include="SQLitePCLRaw.batteries_v2">
       <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.8\lib\net45\SQLitePCLRaw.batteries_v2.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.UITest">
+      <HintPath>..\packages\Xamarin.UITest.2.0.9\lib\Xamarin.UITest.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppInitializer.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Tests\BaseTest.cs" />
     <Compile Include="Pages\ContactDetailsPage.cs" />
     <Compile Include="Pages\ContactsListPage.cs" />
     <Compile Include="Tests\ReplTests.cs" />
     <Compile Include="Tests\Tests.cs" />
+    <Compile Include="Helpers\BackdoorMethodHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Droid\XamList.Droid.csproj">
@@ -85,6 +85,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.8\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.8\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />

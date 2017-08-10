@@ -1,6 +1,10 @@
-﻿using Android.OS;
+﻿using System.Threading.Tasks;
+
+using Android.OS;
 using Android.App;
 using Android.Content.PM;
+
+using Java.Interop;
 
 namespace XamList.Droid
 {
@@ -19,5 +23,11 @@ namespace XamList.Droid
 
             LoadApplication(new App());
         }
+
+#if DEBUG
+        [Export("RemoveTestContactsFromLocalDatabase")]
+        public void RemoveTestContactsFromLocalDatabase() =>
+            Task.Run(async () => await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase()).Wait();
+#endif
     }
 }

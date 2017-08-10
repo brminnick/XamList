@@ -1,4 +1,6 @@
-﻿using UIKit;
+﻿using System.Threading.Tasks;
+
+using UIKit;
 using Foundation;
 
 namespace XamList.iOS
@@ -19,5 +21,11 @@ namespace XamList.iOS
 
             return base.FinishedLaunching(uiApplication, launchOptions);
         }
-    }
+
+#if DEBUG
+        [Export("removeTestContactsFromLocalDatabase:")]
+		public void RemoveTestContactsFromLocalDatabase(NSString unusedString) =>
+            Task.Run(async () => await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase()).Wait();
+#endif
+	}
 }

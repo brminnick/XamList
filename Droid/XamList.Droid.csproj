@@ -172,6 +172,7 @@
     <Reference Include="EntryCustomReturn.Forms.Plugin.Android">
       <HintPath>..\packages\Xam.Plugins.Forms.CustomReturnEntry.3.1.1\lib\MonoAndroid10\EntryCustomReturn.Forms.Plugin.Android.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Android.Export" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
