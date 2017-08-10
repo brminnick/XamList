@@ -28,10 +28,10 @@ Open a browser, navigate to the [Azure Portal](portal.azure.com) and log in.
 
 After logging in, click on New -> Enter `API App` into the Search Bar -> Selected `API App` from the search results -> Click Create
 
-![](https://user-images.githubusercontent.com/13558917/29183032-048619ee-7db6-11e7-86bd-d8aa56e8b579.png)
+![](https://user-images.githubusercontent.com/13558917/29196930-7af3d342-7dec-11e7-9b40-3bf92f4ee5f0.png)
 
 1. Name the API App
-    - I named mine XamListAPI
+    - I named mine XamListAPIApp
 2. Select the Subscription
     - I selected my Visual Studio Enterprise subscription
     - If you do not have a VS Enterprise Subscription, you will need to select a different option
@@ -68,6 +68,12 @@ In the Azure portal, click on New -> Enter `Function App` into the Search Bar ->
 5. Under Storage, Select Create New
     - I named my storage "xamlistfunctionapp"
 6. Click Create
+
+### Create Azure SQL Database
+
+![](https://user-images.githubusercontent.com/13558917/29196780-9324ac1c-7deb-11e7-9d87-8a95ab62b0c5.png)
+
+In the Azure portal, click on New -> Enter `SQL Database` into the Search Bar -> Selected `SQL Database` from the search results -> Click Create
 
 ## Azure SQL Database
 
