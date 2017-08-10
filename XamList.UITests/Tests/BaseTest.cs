@@ -49,6 +49,9 @@ namespace XamList.UITests
 
             Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
 
+			App.WaitForElement(ContactsListPage.Title);
+			ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().Wait();
+
             ContactsListPage.PullToRefresh();
         }
 

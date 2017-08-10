@@ -93,7 +93,6 @@ namespace XamList.UITests
             base.BeforeEachTest();
 
             App.Screenshot("App Launched");
-            App.WaitForElement(ContactsListPage.Title);
         }
 
         async Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
