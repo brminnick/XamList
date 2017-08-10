@@ -22,7 +22,7 @@ namespace XamList.UITests
     {
         #region Fields
         IApp _app;
-		HttpClient _client;
+        HttpClient _client;
         Platform _platform;
         ContactsListPage _contactsListPage;
         ContactDetailsPage _contactsDetailsPage;
@@ -47,18 +47,18 @@ namespace XamList.UITests
         {
             _app = AppInitializer.StartApp(Platform);
 
-			Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
+            Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
 
             ContactsListPage.PullToRefresh();
         }
 
-		[TearDown]
-		protected virtual void AfterEachTest()
-		{
-			Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
-		}
+        [TearDown]
+        protected virtual void AfterEachTest()
+        {
+            Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
+        }
 
-        static HttpClient CreateHttpClient()
+        HttpClient CreateHttpClient()
         {
             var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip })
             {
@@ -73,8 +73,8 @@ namespace XamList.UITests
 
         async Task RemoveTestContactsFromDatabases()
         {
+            await RemoveTestContactsFromRemoteDatabase();
             BackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase(App);
-			await RemoveTestContactsFromRemoteDatabase();
         }
 
         async Task RemoveTestContactsFromRemoteDatabase()

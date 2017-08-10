@@ -13,13 +13,11 @@ namespace XamList.UITests
             switch(app)
             {
                 case iOSApp app_iOS:
-                   app_iOS.Invoke("removeTestContactsFromLocalDatabase:");
+                   app_iOS.Invoke("removeTestContactsFromLocalDatabase:", "");
                     break;
                 case AndroidApp app_Android:
 					app.Invoke("RemoveTestContactsFromLocalDatabase");
                     break;
-                default:
-                    throw new Exception("App Type Not Supported");
             }
 		}
     }

@@ -1,9 +1,10 @@
-﻿using Android.OS;
+﻿using System.Threading.Tasks;
+
+using Android.OS;
 using Android.App;
 using Android.Content.PM;
 
 using Java.Interop;
-using System.Threading.Tasks;
 
 namespace XamList.Droid
 {
