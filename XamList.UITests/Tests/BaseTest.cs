@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Xamarin.UITest;
 
 using XamList.Shared;
+using XamList.Mobile.Common;
 
 namespace XamList.UITests
 {
@@ -44,10 +45,18 @@ namespace XamList.UITests
         [SetUp]
         protected virtual void BeforeEachTest()
         {
-            Task.Run(async () => await RemoveTestContactsFromDatabase()).Wait();
-
             _app = AppInitializer.StartApp(Platform);
+
+			Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
+
+            ContactsListPage.PullToRefresh();
         }
+
+		[TearDown]
+		protected virtual void AfterEachTest()
+		{
+			Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
+		}
 
         static HttpClient CreateHttpClient()
         {
@@ -62,16 +71,22 @@ namespace XamList.UITests
             return client;
         }
 
-        async Task RemoveTestContactsFromDatabase()
+        async Task RemoveTestContactsFromDatabases()
+        {
+            BackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase(App);
+			await RemoveTestContactsFromRemoteDatabase();
+        }
+
+        async Task RemoveTestContactsFromRemoteDatabase()
         {
             var contactList = await GetContactsFromRemoteDatabase();
 
             Assert.IsNotNull(contactList, "Error Retriecing Contact List From Remote Database");
 
             var testContactList = contactList.Where(x =>
-                                                    x.FirstName.Equals(Constants.TestFirstName) &&
-                                                    x.LastName.Equals(Constants.TestLastName) &&
-                                                    x.PhoneNumber.Equals(Constants.TestPhoneNumber)).ToList();
+                                                    x.FirstName.Equals(TestConstants.TestFirstName) &&
+                                                    x.LastName.Equals(TestConstants.TestLastName) &&
+                                                    x.PhoneNumber.Equals(TestConstants.TestPhoneNumber)).ToList();
 
             var removedContactTaskList = new List<Task<HttpResponseMessage>>();
             foreach (var contact in testContactList)

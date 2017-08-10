@@ -2,6 +2,9 @@
 using Android.App;
 using Android.Content.PM;
 
+using Java.Interop;
+using System.Threading.Tasks;
+
 namespace XamList.Droid
 {
     [Activity(Label = "XamList.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -19,5 +22,11 @@ namespace XamList.Droid
 
             LoadApplication(new App());
         }
+
+#if DEBUG
+        [Export("RemoveTestContactsFromLocalDatabase")]
+        public void RemoveTestContactsFromLocalDatabase() =>
+            Task.Run(async () => await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase()).Wait();
+#endif
     }
 }

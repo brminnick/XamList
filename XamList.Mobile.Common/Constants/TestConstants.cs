@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace XamList.UITests
+﻿namespace XamList.Mobile.Common
 {
-    static class Constants
+    public static class TestConstants
     {
         public const string TestFirstName = "Brandon";
         public const string TestLastName = "Minnick";

@@ -29,7 +29,8 @@ namespace XamList
             {
                 ItemTemplate = new DataTemplate(typeof(ContactsListTextCell)),
                 IsPullToRefreshEnabled = true,
-                BackgroundColor = Color.Transparent
+                BackgroundColor = Color.Transparent,
+                AutomationId = AutomationIdConstants.ContactsListView
             };
             _contactsListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
             _contactsListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));

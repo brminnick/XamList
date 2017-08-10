@@ -18,6 +18,7 @@ namespace XamList.UITests
         #region Constant Fields
         readonly Query _addContactButon;
         readonly Query _restoreContactsButton;
+        readonly Query _contactsListView;
         #endregion
 
         #region Constructors
@@ -25,6 +26,7 @@ namespace XamList.UITests
         {
             _addContactButon = x => x.Marked(AutomationIdConstants.AddContactButon);
             _restoreContactsButton = x => x.Marked(AutomationIdConstants.RestoreDeletedContactsButton);
+            _contactsListView = x => x.Marked(AutomationIdConstants.ContactsListView);
         }
         #endregion
 
@@ -132,6 +134,19 @@ namespace XamList.UITests
                 loopCount++;
                 await Task.Delay(100);
             }
+        }
+
+        public void PullToRefresh()
+        {
+			var listViewQuery = App.Query(_contactsListView).FirstOrDefault();
+
+			var topYCoordinate = listViewQuery.Rect.Y;
+			var bottomYCoordinate = listViewQuery.Rect.Y + listViewQuery.Rect.Height;
+			var centerXCoordinate = listViewQuery.Rect.CenterX;
+
+			App.DragCoordinates(centerXCoordinate, topYCoordinate + 20, centerXCoordinate, bottomYCoordinate - 20);
+
+			App.Screenshot("Pull To Refresh Triggered");
         }
 
         bool GetIsRefreshActivityIndicatorDisplayed()

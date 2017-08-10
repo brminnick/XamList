@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using XamList.Shared;
@@ -25,26 +24,35 @@ namespace XamList
 
         public static async Task<List<ContactModel>> GetAllContacts()
         {
-			var databaseConnection = await GetDatabaseConnectionAsync();
+            var databaseConnection = await GetDatabaseConnectionAsync();
 
-			return await databaseConnection.Table<ContactModel>().ToListAsync();
+            return await databaseConnection.Table<ContactModel>().ToListAsync();
         }
 
         public static async Task<ContactModel> GetContact(string id)
         {
-			var databaseConnection = await GetDatabaseConnectionAsync();
+            var databaseConnection = await GetDatabaseConnectionAsync();
 
             return await databaseConnection.Table<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
         public static async Task DeleteContact(ContactModel contact)
         {
-			var databaseConnection = await GetDatabaseConnectionAsync();
+            var databaseConnection = await GetDatabaseConnectionAsync();
 
             contact.IsDeleted = true;
 
             await databaseConnection.UpdateAsync(contact);
-		}
+        }
+
+#if DEBUG
+        public static async Task RemoveContact(ContactModel contact)
+        {
+            var databaseConnection = await GetDatabaseConnectionAsync();
+
+            await databaseConnection.DeleteAsync(contact);
+        }
+#endif  
         #endregion
     }
 }
