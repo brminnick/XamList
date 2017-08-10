@@ -1,12 +1,41 @@
 # XamList
 
+[![Build status](https://build.mobile.azure.com/v0.1/apps/e53e8e26-f6c5-4bb0-823b-355acf4d6100/branches/master/badge)](https://mobile.azure.com)
+
 An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Database, Azure API and Mobile Center.
 
-### Visual Studio for Mac Requirements
+## Visual Studio Requirements
 
-This solution requires Visual Studio for Mac Version 7.1 Build 1294 or later. 
+### Visual Studio for Mac
+
+This solution requires Visual Studio for Mac Version 7.1 Build 1294 or later.
 
 Earlier versions of VSMac don't support Shared Project references from .NET Standard libraries.
+
+### Visual Studio for PC
+
+This solution requires Visual Studio for PC Version 15.3 or later.
+
+Earlier versions of VS don't support Azure Functions.
+
+## Getting Started
+
+### Create Azure API App
+
+Open a browser, navigate to the [Azure Portal](portal.azure.com) and log in.
+
+![](https://user-images.githubusercontent.com/13558917/29183032-048619ee-7db6-11e7-86bd-d8aa56e8b579.png)
+
+After logging in, click on New -> Enter `API App` into the Search Bar -> Selected `API App` from the search results -> Click Create
+
+![](https://user-images.githubusercontent.com/13558917/29183972-7861d33c-7db9-11e7-9883-a2b4f51729db.png)
+
+- Name the API App
+  - I named my XamListAPI
+- Select the Subscription
+  - I selected my Visual Studio Enterprise subscription
+  - If you do not have a VS Enterprise Subscription, you will need to select a different option
+  - 
 
 ## Azure SQL Database
 
@@ -42,5 +71,3 @@ A REST API acts as the perfect intermediary to interpret and process CRUD reques
 - Mobile App Push Notifications
 - Gather Realtime Crash Reports
 - Monitor Mobile App Usage and Analytics
-
-[![Build status](https://build.mobile.azure.com/v0.1/apps/e53e8e26-f6c5-4bb0-823b-355acf4d6100/branches/master/badge)](https://mobile.azure.com)
