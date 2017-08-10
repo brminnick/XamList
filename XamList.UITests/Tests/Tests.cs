@@ -3,6 +3,7 @@
 using NUnit.Framework;
 
 using Xamarin.UITest;
+using XamList.Mobile.Common;
 
 namespace XamList.UITests
 {
@@ -21,8 +22,8 @@ namespace XamList.UITests
 
         }
 
-        [TestCase(Constants.TestFirstName, Constants.TestLastName, Constants.TestPhoneNumber, true)]
-        [TestCase(Constants.TestFirstName, Constants.TestLastName, Constants.TestPhoneNumber, false)]
+        [TestCase(TestConstants.TestFirstName, TestConstants.TestLastName, TestConstants.TestPhoneNumber, true)]
+        [TestCase(TestConstants.TestFirstName, TestConstants.TestLastName, TestConstants.TestPhoneNumber, false)]
         public async Task AddContactTest(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
         {
             //Arrange
@@ -39,9 +40,9 @@ namespace XamList.UITests
         public async Task RestoreDeletedContactTest(bool shouldConfirmAlertDialog)
         {
             //Arrange
-            var firstName = Constants.TestFirstName;
-            var lastName = Constants.TestLastName;
-            var phoneNumber = Constants.TestPhoneNumber;
+            var firstName = TestConstants.TestFirstName;
+            var lastName = TestConstants.TestLastName;
+            var phoneNumber = TestConstants.TestPhoneNumber;
 
 
             //Act
@@ -67,7 +68,7 @@ namespace XamList.UITests
             }
         }
 
-        [TestCase(Constants.TestFirstName, Constants.TestLastName, Constants.TestPhoneNumber)]
+        [TestCase(TestConstants.TestFirstName, TestConstants.TestLastName, TestConstants.TestPhoneNumber)]
         public async Task EnterContactInformationThenPressCancel(string firstName, string lastName, string phoneNumber)
         {
             //Arrange
@@ -92,7 +93,6 @@ namespace XamList.UITests
             base.BeforeEachTest();
 
             App.Screenshot("App Launched");
-            App.WaitForElement(ContactsListPage.Title);
         }
 
         async Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
