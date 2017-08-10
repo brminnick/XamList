@@ -28,14 +28,46 @@ Open a browser, navigate to the [Azure Portal](portal.azure.com) and log in.
 
 After logging in, click on New -> Enter `API App` into the Search Bar -> Selected `API App` from the search results -> Click Create
 
-![](https://user-images.githubusercontent.com/13558917/29183972-7861d33c-7db9-11e7-9883-a2b4f51729db.png)
+![](https://user-images.githubusercontent.com/13558917/29183032-048619ee-7db6-11e7-86bd-d8aa56e8b579.png)
 
-- Name the API App
-  - I named my XamListAPI
-- Select the Subscription
-  - I selected my Visual Studio Enterprise subscription
-  - If you do not have a VS Enterprise Subscription, you will need to select a different option
-  - 
+1. Name the API App
+    - I named mine XamListAPI
+2. Select the Subscription
+    - I selected my Visual Studio Enterprise subscription
+    - If you do not have a VS Enterprise Subscription, you will need to select a different option
+3. Create a new Resource Group
+    - I named my resource group XamList
+4. Create a new App Service Plan
+    1. Click App Service Plam
+    2. Click Create New
+    3. Name the App Service Plan
+       - I named my Ap Service Plan XamListAppService
+    4. Select the location closest to you
+       - I selected South Central US
+    5. Select the Free Pricing Tier
+       1. Click "Pricing Tier"
+       2. Select "Free"
+       3. Click "Select"
+    6. Click "OK"
+    7. Click "Create"
+
+### Create Azure Function App
+
+![](https://user-images.githubusercontent.com/13558917/29196481-756d88bc-7de9-11e7-9d81-33c14d1077b0.png)
+
+In the Azure portal, click on New -> Enter `Function App` into the Search Bar -> Selected `Function App` from the search results -> Click Create
+
+![](https://user-images.githubusercontent.com/13558917/29196641-8380a136-7dea-11e7-91bf-fb93fb3b8bf2.png)
+
+1. Name the Function App
+    - I named mine XamListAPI
+2. Select Consumption for the Hosting Plane
+3. Select the XamList Resource Group
+    - We created this resource group when we made our API App, above
+4. Select the Location closest to you
+5. Under Storage, Select Create New
+    - I named my storage "xamlistfunctionapp"
+6. Click Create
 
 ## Azure SQL Database
 
