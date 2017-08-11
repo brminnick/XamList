@@ -41,7 +41,7 @@ After logging in, click on New -> Enter `API App` into the Search Bar -> Selecte
     1. Click App Service Plam
     2. Click Create New
     3. Name the App Service Plan
-       - I named my Ap Service Plan XamListAppService
+       - I named my App Service Plan XamListAppService
     4. Select the location closest to you
        - I selected South Central US
     5. Select the Free Pricing Tier
@@ -57,11 +57,11 @@ After logging in, click on New -> Enter `API App` into the Search Bar -> Selecte
 
 In the Azure portal, click on New -> Enter `Function App` into the Search Bar -> Selected `Function App` from the search results -> Click Create
 
-![](https://user-images.githubusercontent.com/13558917/29196641-8380a136-7dea-11e7-91bf-fb93fb3b8bf2.png)
+![](https://user-images.githubusercontent.com/13558917/29196973-ea5fb796-7dec-11e7-92d3-fda7ba5a6f6b.png)
 
 1. Name the Function App
-    - I named mine XamListAPI
-2. Select Consumption for the Hosting Plane
+    - I named mine XamListFunctionApp
+2. Select Consumption for the Hosting Plan
 3. Select the XamList Resource Group
     - We created this resource group when we made our API App, above
 4. Select the Location closest to you
@@ -74,6 +74,87 @@ In the Azure portal, click on New -> Enter `Function App` into the Search Bar ->
 ![](https://user-images.githubusercontent.com/13558917/29196780-9324ac1c-7deb-11e7-9d87-8a95ab62b0c5.png)
 
 In the Azure portal, click on New -> Enter `SQL Database` into the Search Bar -> Selected `SQL Database` from the search results -> Click Create
+
+![](https://user-images.githubusercontent.com/13558917/29197883-2b850292-7df4-11e7-8bfd-8016d72f799a.png)
+
+1. Name the SQL Database
+    - I named mine XamListDatabase
+2. Select the Subscription
+    - I selected my Visual Studio Enterprise subscription
+    - If you do not have a VS Enterprise Subscription, you will need to select a different option
+3. Select the XamList Resource Group
+    - We created this resource group when we made our API App, above
+4. Select Blank Database
+
+![](https://user-images.githubusercontent.com/13558917/29198124-efa3b08c-7df5-11e7-87f4-42cf0dc95862.png)
+
+5. Select Server
+6. Select Create New Server
+7. Enter the Server Name
+    - I named mine xamlistdatabaseserver
+8. Create a Server admin login
+    - Store this password somewhere safe, because we will need to use it for our database connection later!
+9. Create a password
+10. Select the closest location
+11. Click "Select"
+
+![](https://user-images.githubusercontent.com/13558917/29198240-f8b25cae-7df6-11e7-8f76-b8977645a712.png)
+
+12. Select "Not Now" for the SQL Elastic Pool option
+13. Select Pricing Tier
+    1. Select Basic
+    2. Move the slider to maximum, 2GB
+        - Don't worry, it's the same price for 2GB as it is for 100MB. No clue why!
+    3. Click Apply
+14. Click Create
+
+### Get SQL Database Connection String
+
+![](https://user-images.githubusercontent.com/13558917/29198409-9d0dcab2-7df8-11e7-8c41-4797228ee4ab.png)
+
+1. On the Azure Portal, navigate to the SQL Database we created, above
+2. Click on "Connection Strings" -> "ADO.NET"
+3. Copy the entire Connection String into a text editor
+
+ ![](https://user-images.githubusercontent.com/13558917/29198528-b26f19f0-7df9-11e7-82c2-b4d46f60389a.png)
+
+4. In the text editor, change "{your_username}" and "{your_password}" to match the SQL Database Username / Password created above
+    - Don't use my username / password because it won't work ;-)
+
+### Connect SQL Database to the API App
+
+![](https://user-images.githubusercontent.com/13558917/29198731-7d63f31e-7dfb-11e7-9985-35f6f3ed971b.png)
+
+1. In the Azure Portal, navigate to the API App
+    - I named mine XamListAPIApp
+2. Click Application Settings
+3. In the Application Settings, scroll down to "Connection Strings"
+4. Create a new connection string
+    - Set the name as `XamListDatabaseConnectionString`
+      - Make sure to use this _exact_ name, otherwise the source code will not work
+    - Copy/paste the connection string from the text editor
+    - From the drop-down menu, Select SQLDatabase
+5. Click Save
+
+### Connect SQL Database to the Azure Function App
+
+![](https://user-images.githubusercontent.com/13558917/29198794-f3673e5e-7dfb-11e7-89fc-ee042fe34704.png)
+
+1. On the Azure Portal, navigate to the Functions App we create above
+2. Select "Application Settings"
+
+![](https://user-images.githubusercontent.com/13558917/29198881-aaebd0c6-7dfc-11e7-870b-2f4d358139cb.png)
+
+3. In the Application Settings, scroll down to "Connection Strings"
+4. Create a new connection string
+    - Set the name as `XamListDatabaseConnectionString`
+      - Make sure to use this _exact_ name, otherwise the source code will not work
+    - Copy/paste the connection string from the text editor
+    - From the drop-down menu, Select SQLDatabase
+5. Click Save
+
+### Create the ContactModel Table in the SQL Database
+
 
 ## Azure SQL Database
 
