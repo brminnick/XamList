@@ -245,5 +245,15 @@ Earlier versions of VS don't support Azure Functions.
 
 ### 10. Configure API URL for Mobile App
 
-1. In [APIService.cs](https://github.com/brminnick/XamList/blob/master/XamList/Services/APIService.cs#L31), change the value of `APIUrl` to match the Azure API App URL
+![](https://user-images.githubusercontent.com/13558917/29290868-7651182e-80f6-11e7-826f-d6b293ff53e9.png)
+
+1. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureAPIUrl` to match your Azure API App URL
    - The address for the one I created in this tutorial is http://xamlistapiapp.azurewebsites.net/
+   
+![](https://user-images.githubusercontent.com/13558917/29292989-28b1d6c8-80fe-11e7-8493-663c5b53a25d.png)   
+   
+2. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureFunctionUrl` to match your Azure Function URL
+   - The address for the one I created in this tutorial is https://xamlistfunctionapp.azurewebsites.net
+   
+   
+### 11. Configure Azure Function
