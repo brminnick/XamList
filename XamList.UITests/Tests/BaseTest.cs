@@ -47,10 +47,10 @@ namespace XamList.UITests
         {
             _app = AppInitializer.StartApp(Platform);
 
-            Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
+            Task.Run(async () => await RemoveTestContactsFromDatabases()).GetAwaiter().GetResult();
 
-			App.WaitForElement(ContactsListPage.Title);
-			ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().Wait();
+            App.WaitForElement(ContactsListPage.Title);
+            ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().Wait();
 
             ContactsListPage.PullToRefresh();
         }
@@ -58,7 +58,7 @@ namespace XamList.UITests
         [TearDown]
         protected virtual void AfterEachTest()
         {
-            Task.Run(async () => await RemoveTestContactsFromDatabases()).Wait();
+            Task.Run(async () => await RemoveTestContactsFromDatabases()).GetAwaiter().GetResult();
         }
 
         HttpClient CreateHttpClient()
@@ -68,7 +68,6 @@ namespace XamList.UITests
                 Timeout = System.TimeSpan.FromSeconds(30)
             };
 
-            client.DefaultRequestHeaders.Add("ZUMO-API-VERSION", "2.0.0");
             client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
 
             return client;
@@ -99,19 +98,18 @@ namespace XamList.UITests
 
             var successfullyRemovedContactCount = removedContactTaskList.Count(x => x.Result.IsSuccessStatusCode);
             Assert.IsTrue(testContactList.Count == successfullyRemovedContactCount,
-                $"Error Removing Test Data from Remote Datase\n Found {testContactList.Count} Test Contacts and Removed {successfullyRemovedContactCount} Test Contacts");
-
+                $"Error Removing Test Data from Remote Database\n Found {testContactList.Count} Test Contacts and Removed {successfullyRemovedContactCount} Test Contacts");
         }
 
         async Task<List<ContactModel>> GetContactsFromRemoteDatabase()
         {
-            var jsonString = await Client.GetStringAsync("https://xamlistapi.azurewebsites.net/api/GetAllContacts");
+            var jsonString = await Client.GetStringAsync($"{BackendConstants.AzureAPIUrl}GetAllContacts");
             return JsonConvert.DeserializeObject<List<ContactModel>>(jsonString);
         }
 
         async Task<HttpResponseMessage> RemoveContactFromRemoteDatabase(ContactModel contact)
         {
-            var apiUrl = $"https://xamlistfunctions.azurewebsites.net/api/RemoveItemFromDatabase/{contact.Id}?code=qZGcFbpqxBTpdz4K0f45m81qS9eHzSOMBWjGH5o1SfH8cycnYbaf3Q==";
+            var apiUrl = $"{BackendConstants.AzureFunctionUrl}RemoveItemFromDatabase/{contact.Id}?code={BackendConstants.AzureFunctionKey_RemoveItemFromDatabase}";
 
             return await Client.PostAsync(apiUrl, null).ConfigureAwait(false);
         }

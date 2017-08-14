@@ -200,4 +200,5 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Xamarin.Forms.2.3.5.256-pre6\build\netstandard1.0\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.2.3.5.256-pre6\build\netstandard1.0\Xamarin.Forms.targets'))" />
   </Target>
+  <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
 </Project>
