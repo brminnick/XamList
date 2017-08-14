@@ -245,5 +245,5 @@ Earlier versions of VS don't support Azure Functions.
 
 ### 10. Configure API URL for Mobile App
 
-1. In [APIService.cs](https://github.com/brminnick/XamList/blob/master/XamList/Services/APIService.cs#L31), change the value of `APIUrl` to match the SQL Server URL
-   - The address for the one I created in this tutorial is https://xamlistdatabaseserver.database.windows.net/
+1. In [APIService.cs](https://github.com/brminnick/XamList/blob/master/XamList/Services/APIService.cs#L31), change the value of `APIUrl` to match the Azure API App URL
+   - The address for the one I created in this tutorial is http://xamlistapiapp.azurewebsites.net/
