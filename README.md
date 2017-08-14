@@ -211,7 +211,7 @@ Earlier versions of VS don't support Azure Functions.
     - Azure Functions and Web Jobs Tools
 
 
-### 8. Publish API APP to Azure
+### 8. Publish API App to Azure
 
 ![](https://user-images.githubusercontent.com/13558917/29254418-0a1be884-804a-11e7-8c8d-ff13d8b124ff.png)
 
