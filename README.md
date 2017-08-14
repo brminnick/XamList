@@ -186,13 +186,13 @@ Earlier versions of VS don't support Azure Functions.
 ![](https://user-images.githubusercontent.com/13558917/29254263-8ad418e2-8046-11e7-8916-0ba84ed45b53.PNG)
 
 8. Create New Columns
-    - Id -> nvarchar(128) -> Allow Nulls: False
-    - FirstName -> nvarchar(128) -> Allow Nulls: False
-    - LastName -> nvarchar(128) -> Allow Nulls: False
-    - PhoneNumber -> nvarchar(128) -> Allow Nulls: False
-    - CreatedAt -> datetimeoffset(7) -> Allow Nulls: False
-    - UpdatedAt -> datetimeoffset(7) -> Allow Nulls: False
-    - Deleted -> bit -> Allow Nulls: False
+    - Id -> nvarchar(128) -> False
+    - FirstName -> nvarchar(128) -> False
+    - LastName -> nvarchar(128) -> False
+    - PhoneNumber -> nvarchar(128) -> False
+    - CreatedAt -> datetimeoffset(7) -> False
+    - UpdatedAt -> datetimeoffset(7) -> False
+    - Deleted -> bit -> False
 
 ![](https://user-images.githubusercontent.com/13558917/29254294-4c1ab682-8047-11e7-9053-458b5d744ba2.png)
 
