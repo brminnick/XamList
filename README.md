@@ -159,7 +159,7 @@ Earlier versions of VS don't support Azure Functions.
 1. In the Azure Portal, navigate to the SQL Database Server we created in a previous step
 2. Enter your public IP Address
     - Your public IP address is listed on this page as "Client IP Address"
-    - Alternatively, you can discover your public IP Address by navigation to http://whatismyipaddress.com
+    - Alternatively, you can discover your public IP Address by navigating to http://whatismyipaddress.com
 3. Click Save 
 
 ![](https://user-images.githubusercontent.com/13558917/29254113-fd4605b0-8042-11e7-97ea-0600bf3f948c.png)
