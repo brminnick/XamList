@@ -22,22 +22,22 @@ Earlier versions of VS don't support Azure Functions.
 
 ### 1. Create Azure API App
 
-Open a browser, navigate to the [Azure Portal](portal.azure.com) and log in.
+1. Open a browser, navigate to the [Azure Portal](portal.azure.com) and log in.
 
 ![](https://user-images.githubusercontent.com/13558917/29183032-048619ee-7db6-11e7-86bd-d8aa56e8b579.png)
 
-After logging in, click on New -> Enter `API App` into the Search Bar -> Selected `API App` from the search results -> Click Create
+2. After logging in, click on New -> Enter `API App` into the Search Bar -> Selected `API App` from the search results -> Click Create
 
 ![](https://user-images.githubusercontent.com/13558917/29196930-7af3d342-7dec-11e7-9b40-3bf92f4ee5f0.png)
 
-1. Name the API App
+3. Name the API App
     - I named mine XamListAPIApp
-2. Select the Subscription
+4. Select the Subscription
     - I selected my Visual Studio Enterprise subscription
     - If you do not have a VS Enterprise Subscription, you will need to select a different option
-3. Create a new Resource Group
+5. Create a new Resource Group
     - I named my resource group XamList
-4. Create a new App Service Plan
+6. Create a new App Service Plan
     1. Click App Service Plam
     2. Click Create New
     3. Name the App Service Plan
@@ -55,58 +55,58 @@ After logging in, click on New -> Enter `API App` into the Search Bar -> Selecte
 
 ![](https://user-images.githubusercontent.com/13558917/29196481-756d88bc-7de9-11e7-9d81-33c14d1077b0.png)
 
-In the Azure portal, click on New -> Enter `Function App` into the Search Bar -> Selected `Function App` from the search results -> Click Create
+1. In the Azure portal, click on New -> Enter `Function App` into the Search Bar -> Selected `Function App` from the search results -> Click Create
 
 ![](https://user-images.githubusercontent.com/13558917/29196973-ea5fb796-7dec-11e7-92d3-fda7ba5a6f6b.png)
 
-1. Name the Function App
+2. Name the Function App
     - I named mine XamListFunctionApp
-2. Select Consumption for the Hosting Plan
-3. Select the XamList Resource Group
+3. Select Consumption for the Hosting Plan
+4. Select the XamList Resource Group
     - We created this resource group when we made our API App, above
-4. Select the Location closest to you
-5. Under Storage, Select Create New
+5. Select the Location closest to you
+6. Under Storage, Select Create New
     - I named my storage "xamlistfunctionapp"
-6. Click Create
+7. Click Create
 
 ### 3. Create Azure SQL Database
 
 ![](https://user-images.githubusercontent.com/13558917/29196780-9324ac1c-7deb-11e7-9d87-8a95ab62b0c5.png)
 
-In the Azure portal, click on New -> Enter `SQL Database` into the Search Bar -> Selected `SQL Database` from the search results -> Click Create
+1. In the Azure portal, click on New -> Enter `SQL Database` into the Search Bar -> Selected `SQL Database` from the search results -> Click Create
 
 ![](https://user-images.githubusercontent.com/13558917/29197883-2b850292-7df4-11e7-8bfd-8016d72f799a.png)
 
-1. Name the SQL Database
+2. Name the SQL Database
     - I named mine XamListDatabase
-2. Select the Subscription
+3. Select the Subscription
     - I selected my Visual Studio Enterprise subscription
     - If you do not have a VS Enterprise Subscription, you will need to select a different option
-3. Select the XamList Resource Group
+4. Select the XamList Resource Group
     - We created this resource group when we made our API App, above
-4. Select Blank Database
+5. Select Blank Database
 
 ![](https://user-images.githubusercontent.com/13558917/29198124-efa3b08c-7df5-11e7-87f4-42cf0dc95862.png)
 
-5. Select Server
-6. Select Create New Server
-7. Enter the Server Name
+6. Select Server
+7. Select Create New Server
+8. Enter the Server Name
     - I named mine xamlistdatabaseserver
-8. Create a Server admin login
+9. Create a Server admin login
     - Store this password somewhere safe, because we will need to use it for our database connection later!
-9. Create a password
-10. Select the closest location
-11. Click "Select"
+10. Create a password
+11. Select the closest location
+12. Click "Select"
 
 ![](https://user-images.githubusercontent.com/13558917/29198240-f8b25cae-7df6-11e7-8f76-b8977645a712.png)
 
-12. Select "Not Now" for the SQL Elastic Pool option
-13. Select Pricing Tier
+13. Select "Not Now" for the SQL Elastic Pool option
+14. Select Pricing Tier
     1. Select Basic
     2. Move the slider to maximum, 2GB
         - Don't worry, it's the same price for 2GB as it is for 100MB. No clue why!
     3. Click Apply
-14. Click Create
+15. Click Create
 
 ### 4. Get SQL Database Connection String
 
