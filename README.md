@@ -20,7 +20,7 @@ Earlier versions of VS don't support Azure Functions.
 
 ## Getting Started
 
-### Create Azure API App
+### 1. Create Azure API App
 
 Open a browser, navigate to the [Azure Portal](portal.azure.com) and log in.
 
@@ -51,7 +51,7 @@ After logging in, click on New -> Enter `API App` into the Search Bar -> Selecte
     6. Click "OK"
     7. Click "Create"
 
-### Create Azure Function App
+### 2. Create Azure Function App
 
 ![](https://user-images.githubusercontent.com/13558917/29196481-756d88bc-7de9-11e7-9d81-33c14d1077b0.png)
 
@@ -69,7 +69,7 @@ In the Azure portal, click on New -> Enter `Function App` into the Search Bar ->
     - I named my storage "xamlistfunctionapp"
 6. Click Create
 
-### Create Azure SQL Database
+### 3. Create Azure SQL Database
 
 ![](https://user-images.githubusercontent.com/13558917/29196780-9324ac1c-7deb-11e7-9d87-8a95ab62b0c5.png)
 
@@ -108,7 +108,7 @@ In the Azure portal, click on New -> Enter `SQL Database` into the Search Bar ->
     3. Click Apply
 14. Click Create
 
-### Get SQL Database Connection String
+### 4. Get SQL Database Connection String
 
 ![](https://user-images.githubusercontent.com/13558917/29198409-9d0dcab2-7df8-11e7-8c41-4797228ee4ab.png)
 
@@ -121,7 +121,7 @@ In the Azure portal, click on New -> Enter `SQL Database` into the Search Bar ->
 4. In the text editor, change "{your_username}" and "{your_password}" to match the SQL Database Username / Password created above
     - Don't use my username / password because it won't work ;-)
 
-### Connect SQL Database to the API App
+### 5. Connect SQL Database to the API App
 
 ![](https://user-images.githubusercontent.com/13558917/29198731-7d63f31e-7dfb-11e7-9985-35f6f3ed971b.png)
 
@@ -136,7 +136,7 @@ In the Azure portal, click on New -> Enter `SQL Database` into the Search Bar ->
     - From the drop-down menu, Select SQLDatabase
 5. Click Save
 
-### Connect SQL Database to the Azure Function App
+### 6. Connect SQL Database to the Azure Function App
 
 ![](https://user-images.githubusercontent.com/13558917/29198794-f3673e5e-7dfb-11e7-89fc-ee042fe34704.png)
 
@@ -153,40 +153,97 @@ In the Azure portal, click on New -> Enter `SQL Database` into the Search Bar ->
     - From the drop-down menu, Select SQLDatabase
 5. Click Save
 
-### Create the ContactModel Table in the SQL Database
+### 7. Create the ContactModel Table in the SQL Database
+
+![](https://user-images.githubusercontent.com/13558917/29254139-a74c1360-8043-11e7-93a1-1d6610d803bc.png)
+1. In the Azure Portal, navigate to the SQL Database Server we created in a previous step
+2. Enter your public IP Address
+    - Your public IP address is listed on this page as "Client IP Address"
+    - Alternatively, you can discover your public IP Address by navigation to http://whatismyipaddress.com
+3. Click Save 
+
+![](https://user-images.githubusercontent.com/13558917/29254113-fd4605b0-8042-11e7-97ea-0600bf3f948c.png)
+
+4. On the Azure Portal, retrieve the URL of the database we created in the previous steps.
+
+![](https://user-images.githubusercontent.com/13558917/29254220-5e23dea0-8045-11e7-9c50-0901b03f8efb.PNG)
+
+5. Open SQL Server Management Studio and enter the following connection information:
+   - Server Type: Database Engine
+   - Server Name: [your database server url]
+     - Mine is xamlistdatabaseserver.database.windows.net
+   - Authentication: SQL Server Authentication
+   - User: [your database admin username]
+   - Password: [your database admin password]
+6. Click Connect
+
+![](https://user-images.githubusercontent.com/13558917/29254236-b457c0d4-8045-11e7-9b25-20c75cf0a22d.png)
+
+7. In SSMS, create a new Table
+    - In the Object Explorer, navigate to the database we created in a previous step
+    - Right-click Tables -> New -> Table...
+
+![](https://user-images.githubusercontent.com/13558917/29254263-8ad418e2-8046-11e7-8916-0ba84ed45b53.PNG)
+
+8. Create New Columns
+    - Id -> nvarchar(128) -> Allow Nulls: False
+    - FirstName -> nvarchar(128) -> Allow Nulls: False
+    - LastName -> nvarchar(128) -> Allow Nulls: False
+    - PhoneNumber -> nvarchar(128) -> Allow Nulls: False
+    - CreatedAt -> datetimeoffset(7) -> Allow Nulls: False
+    - UpdatedAt -> datetimeoffset(7) -> Allow Nulls: False
+    - Deleted -> bit -> Allow Nulls: False
+
+![](https://user-images.githubusercontent.com/13558917/29254294-4c1ab682-8047-11e7-9053-458b5d744ba2.png)
+
+9. Create Table Name
+    - In the Properties window, enter "ContactModels" for the Name
+    - Click SaveAll
+
+### 8. Install Visual Studio Azure Functions Extension
+
+1. Open [XamList.sln](https://github.com/brminnick/XamList/blob/master/XamList.sln) using Visual Studio for PC (Version 15.3 or later)
+
+![](https://user-images.githubusercontent.com/13558917/29254393-8a1b69e8-8049-11e7-8426-5e1d3ccb3193.png)
+
+2. Ensure the following Extensions are installed
+    - Visual Studio 2017 Tools for Azure Functions
+    - Azure Functions and Web Jobs Tools
 
 
-## Azure SQL Database
+### 8. Publish API APP to Azure
 
-All data for this mobile app is stored in the cloud using an [Azure SQL Databse](https://azure.microsoft.com/en-us/services/sql-database/). Azure SQL Database allows you to store your data securely in the cloud and scale performance in real-time.
+![](https://user-images.githubusercontent.com/13558917/29254418-0a1be884-804a-11e7-8c8d-ff13d8b124ff.png)
 
-## Azure Functions
+1. In Visual Studio, right-click on XamList.API and select Publish
 
-It is rare that servers run at 100% CPU & Memory capacity 24/7. Why pay for an idle server when it's not in use? Azure Functions allows you to do just this!
+![](https://user-images.githubusercontent.com/13558917/29254459-98227cf6-804a-11e7-8fc6-e404d551159e.png)
 
-[Azure Functions](https://azure.microsoft.com/en-us/services/functions/) allows you to run code on a cloud server on-demand, giving you the ability to save cost and pay only for the server time you need.
+2. In the Publish window, choose "Select Existing" -> "Publish"
 
-This app utilizes Azure Functions to access the Azure SQL Database and restore deleted contacts.
+![](https://user-images.githubusercontent.com/13558917/29254501-266009d4-804b-11e7-8046-1607506cfaea.png)
 
-[The code for the Azure Functions](./XamList.Functions/) was built and published using Visual Studio 2017 Preview 15.3 Build 6.
+3. In the App Service window, select the API App we created earlier, and click OK
 
-## Azure API
+4. Visual Studio is now publishing the XamList.API code to your Azure API App
 
-[Azure API Apps](https://azure.microsoft.com/en-us/services/app-service/api/?cdn=disable) allow you to quickly stand up a REST API in the cloud.
+### 9. Publish Function App to Azure
 
-For mobile apps communicating with a backend database, REST APIs are critical. Mobile apps can't rely on a direct connection to a backend database because mobile internet connections are unreliable and we risk corrupting the database.
+![](https://user-images.githubusercontent.com/13558917/29254534-ad6861a6-804b-11e7-886a-bfb267546afe.png)
 
-A REST API acts as the perfect intermediary to interpret and process CRUD requests between a mobile app and its backend SQL Database.
+1. In Visual Studio, right-click on XamList.Functions and select Publish
 
-[The code for the API](./XamList.API/) was built and published using ASP.NET in [Visual Studio 2017 Preview 15.3 Build 6](https://www.visualstudio.com/vs/preview/).
+![](https://user-images.githubusercontent.com/13558917/29254603-9d52477c-804c-11e7-8da5-7a8d1389e1d5.png)
 
-## Mobile Center
+2. Choose AzureFunctionApp -> Select Existing -> Publish
 
-[Mobile Center](https://mobile.azure.com) is the next generation of mobile app DevOps:
+![](https://user-images.githubusercontent.com/13558917/29254618-fd69c400-804c-11e7-9ba6-97f1da527b94.png)
 
-- Continuous Integration
-- Mobile UI Testing
-- Mobile App Distribution
-- Mobile App Push Notifications
-- Gather Realtime Crash Reports
-- Monitor Mobile App Usage and Analytics
+3. In the App Service window, select the Functions App we created earlier, and click OK 
+
+4. Visual Studio is now publishing the XamList.API code to your Azure API App
+
+### 10. Configure API URL for Mobile App
+
+1. In [APIService.cs](https://github.com/brminnick/XamList/blob/master/XamList/Services/APIService.cs#L31), change the APIUrl to match the SQL Server URL
+   - The address for the one I created in this tutorial is https://xamlistdatabaseserver.database.windows.net/
