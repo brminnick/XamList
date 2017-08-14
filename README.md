@@ -250,16 +250,18 @@ Earlier versions of VS don't support Azure Functions.
 1. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureAPIUrl` to match your Azure API App URL
    - The address for the one I created in this tutorial is http://xamlistapiapp.azurewebsites.net/
    
+### 11. Configure Azure Function Url & Keys for Mobile App
+   
 ![](https://user-images.githubusercontent.com/13558917/29292989-28b1d6c8-80fe-11e7-8493-663c5b53a25d.png)   
    
-2. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureFunctionUrl` to match your Azure Function URL
+1. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureFunctionUrl` to match your Azure Function URL
    - The address for the one I created in this tutorial is https://xamlistfunctionapp.azurewebsites.net
 
 ![](https://user-images.githubusercontent.com/13558917/29293190-0ab43e4e-80ff-11e7-96ca-aa42a8ba7dd2.png)
 
-3. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureFunctionKey_RemoveItemFromDatabase` to match your Azure Function Key for Remove Item From Database
+2. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureFunctionKey_RemoveItemFromDatabase` to match your Azure Function Key for Remove Item From Database
    
 ![](https://user-images.githubusercontent.com/13558917/29293431-fad232aa-80ff-11e7-8852-d49e0ee5551a.png)
 
-4. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureFunctionKey_RestoreDeletedContacts` to match your Azure Function Key for Restore Deleted Contacts
-### 11. Configure Azure Function
+3. In [BackendConstants.cs](https://github.com/brminnick/XamList/blob/master/XamList.Mobile.Common/Constants/BackendConstants.cs), change the value of `AzureFunctionKey_RestoreDeletedContacts` to match your Azure Function Key for Restore Deleted Contacts
+
