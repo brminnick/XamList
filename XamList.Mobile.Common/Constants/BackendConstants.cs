@@ -1,5 +1,6 @@
 ﻿namespace XamList.Mobile.Common
 {
+#warning: To utilize your own Azure API and Azure Function, replace the content of the constants in this class
     public static class BackendConstants
     {
         public const string AzureAPIUrl = "https://xamlistapi.azurewebsites.net/api/";
