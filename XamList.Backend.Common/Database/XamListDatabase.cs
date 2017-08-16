@@ -12,7 +12,7 @@ using XamList.Shared;
 
 namespace XamList.Backend.Common
 {
-    public class XamListDatabase
+    public static class XamListDatabase
     {
         #region Constant Fields
         readonly static string _connectionString = ConfigurationManager.ConnectionStrings["XamListDatabaseConnectionString"].ConnectionString;
