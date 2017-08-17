@@ -59,7 +59,7 @@ namespace XamList
         }
 
 		static (List<T> contactsToPatchToLocalDatabase,
-		List<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
+		    List<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
 																			  List<T> modelListFromRemoteDatabase,
 																			  List<T> modelsFoundInBothDatabases) where T : IBaseModel
 		{
