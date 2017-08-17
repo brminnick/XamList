@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "105166773100",
+    "firebase_url": "https://xamlist-e7e54.firebaseio.com",
+    "project_id": "xamlist-e7e54",
+    "storage_bucket": "xamlist-e7e54.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105166773100:android:5b67b0ed7257135f",
+        "android_client_info": {
+          "package_name": "com.minnick.xamlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105166773100-na94j3kda504qopflogqo57rqo5odp9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVWNpbtFe4ePwRwycjPBc83MGp1SxduCQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
