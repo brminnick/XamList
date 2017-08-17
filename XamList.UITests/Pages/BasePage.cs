@@ -45,7 +45,7 @@ namespace XamList.UITests
                     break;
 
                 default:
-                    titleQuery = App.Query(x => x.Class("AppCompatTextView").Marked(_pageTitleText));
+                    titleQuery = App.Query(x => x.Class("android.support.v7.widget.AppCompatTextView").Marked(_pageTitleText));
                     break;
             }
 
