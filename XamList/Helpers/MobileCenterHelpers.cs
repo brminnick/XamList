@@ -6,6 +6,7 @@ using Microsoft.Azure.Mobile;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.Azure.Mobile.Push;
 
 namespace XamList
 {
@@ -75,7 +76,7 @@ namespace XamList
 
 		static async Task Start(string appSecret)
 		{
-			MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
+			MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 #if DEBUG
 			await Distribute.SetEnabledAsync(false);
 #else
