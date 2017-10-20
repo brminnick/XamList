@@ -73,16 +73,13 @@ namespace XamList
         }
 
 
-		static async Task Start(string appSecret)
-		{
-			MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
+        static void Start(string appSecret)
+        {
+            MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
 #if DEBUG
-			await Distribute.SetEnabledAsync(false);
-#else
-            await Distribute.SetEnabledAsync(true);
+            Distribute.DontCheckForUpdatesInDebug();
 #endif
-			await Analytics.SetEnabledAsync(true);
-		}
+        }
     }
 
     public enum MobileCenterLogType
