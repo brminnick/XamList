@@ -188,10 +188,12 @@
       <HintPath>..\packages\Microsoft.Azure.Mobile.Distribute.0.14.2\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Distribute.iOS.Bindings.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Push">
-      <HintPath>..\packages\Microsoft.Azure.Mobile.Push.0.14.2\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Push.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Mobile.Push.0.16.0\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Push.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.Mobile.Push.iOS.Bindings">
-      <HintPath>..\packages\Microsoft.Azure.Mobile.Push.0.14.2\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Push.iOS.Bindings.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Azure.Mobile.Push.0.16.0\lib\Xamarin.iOS10\Microsoft.Azure.Mobile.Push.iOS.Bindings.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

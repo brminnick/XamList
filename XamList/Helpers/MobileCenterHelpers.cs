@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using Microsoft.Azure.Mobile;
@@ -73,14 +72,8 @@ namespace XamList
             }
         }
 
-
-        static void Start(string appSecret)
-        {
+        static void Start(string appSecret) =>
             MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
-#if DEBUG
-            Distribute.DontCheckForUpdatesInDebug();
-#endif
-        }
     }
 
     public enum MobileCenterLogType
