@@ -72,14 +72,8 @@ namespace XamList
             }
         }
 
-
-        static void Start(string appSecret)
-        {
+        static void Start(string appSecret) =>
             MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
-#if DEBUG
-            Distribute.DontCheckForUpdatesInDebug();
-#endif
-        }
     }
 
     public enum MobileCenterLogType

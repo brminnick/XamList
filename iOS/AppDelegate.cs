@@ -2,6 +2,7 @@
 
 using UIKit;
 using Foundation;
+using Microsoft.Azure.Mobile.Distribute;
 
 namespace XamList.iOS
 {
@@ -16,6 +17,7 @@ namespace XamList.iOS
 
             global::Xamarin.Forms.Forms.Init();
             EntryCustomReturn.Forms.Plugin.iOS.CustomReturnEntryRenderer.Init();
+            Distribute.DontCheckForUpdatesInDebug();
 
             LoadApplication(new App());
 
