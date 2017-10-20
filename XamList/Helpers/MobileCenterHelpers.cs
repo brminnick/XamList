@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Push;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Distribute;
-using Microsoft.Azure.Mobile.Push;
 
 namespace XamList
 {
@@ -74,15 +74,9 @@ namespace XamList
         }
 
 
-<<<<<<< HEAD
-		static async Task Start(string appSecret)
-		{
-			MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
-=======
         static void Start(string appSecret)
         {
-            MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
->>>>>>> master
+            MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Push));
 #if DEBUG
             Distribute.DontCheckForUpdatesInDebug();
 #endif
