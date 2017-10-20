@@ -21,12 +21,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="Xamarin.Forms" Version="2.3.5.256-pre6" />
     <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
-    <PackageReference Include="Microsoft.Azure.Mobile.Push" Version="0.14.2" />
-    <PackageReference Include="Microsoft.Azure.Mobile.Crashes" Version="0.14.2" />
-    <PackageReference Include="Microsoft.Azure.Mobile.Distribute" Version="0.14.2" />
-    <PackageReference Include="Microsoft.Azure.Mobile.Analytics" Version="0.14.2" />
+    <PackageReference Include="Xamarin.Forms" Version="2.4.0.282" />
+    <PackageReference Include="Microsoft.Azure.Mobile.Distribute" Version="0.16.0" />
+    <PackageReference Include="Microsoft.Azure.Mobile.Crashes" Version="0.16.0" />
+    <PackageReference Include="Microsoft.Azure.Mobile.Analytics" Version="0.16.0" />
   </ItemGroup>
   <Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" Condition="Exists('..\XamList.Shared\XamList.Shared.projitems')" />
 </Project>

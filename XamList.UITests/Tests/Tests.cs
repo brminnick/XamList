@@ -44,7 +44,6 @@ namespace XamList.UITests
             var lastName = TestConstants.TestLastName;
             var phoneNumber = TestConstants.TestPhoneNumber;
 
-
             //Act
             await AddContact(firstName, lastName, phoneNumber, false);
 
@@ -53,8 +52,13 @@ namespace XamList.UITests
 
             ContactsListPage.TapRestoreDeletedContactsButton(shouldConfirmAlertDialog);
 			
-            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
-			await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+            switch(shouldConfirmAlertDialog)
+            {
+                case true:
+					await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+					await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+                    break;
+            }
 
             //Assert
             switch (shouldConfirmAlertDialog)

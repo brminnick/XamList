@@ -53,7 +53,6 @@ namespace XamList.Backend.Common
         {
             var contactModelDelta = new Delta<ContactModel>();
 
-            contactModelDelta.TrySetPropertyValue(nameof(ContactModel.CreatedAt), contact.CreatedAt);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.FirstName), contact.FirstName);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.IsDeleted), contact.IsDeleted);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.LastName), contact.LastName);
