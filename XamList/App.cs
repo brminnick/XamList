@@ -14,19 +14,5 @@ namespace XamList
 
             ConnectivityService.SubscribeEventHandlers();
         }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-
-            ConnectivityService.SubscribeEventHandlers();
-        }
-
-        protected override void OnSleep()
-        {
-            base.OnSleep();
-
-            ConnectivityService.UnsubscribeEventHandlers();
-        }
     }
 }

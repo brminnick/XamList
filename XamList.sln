@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.API", "XamList.API\
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "XamList.Shared", "XamList.Shared\XamList.Shared.shproj", "{41ADAA6D-6B2D-45FA-8174-98DEB032897B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{0F70E615-701B-4DDD-9DC3-B369C5DD4EE6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{0F70E615-701B-4DDD-9DC3-B369C5DD4EE6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C84F7686-AEC3-45AD-81BB-2E59144A63F1}"
 EndProject
@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Functions", "XamLis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Backend.Common", "XamList.Backend.Common\XamList.Backend.Common.csproj", "{E5BCE4C8-74F5-4A4A-93E4-FC4B79961DEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList.Mobile.Common", "XamList.Mobile.Common\XamList.Mobile.Common.csproj", "{33F1E177-60A3-4845-9720-0CC9EDF3D87E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Mobile.Common", "XamList.Mobile.Common\XamList.Mobile.Common.csproj", "{33F1E177-60A3-4845-9720-0CC9EDF3D87E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
