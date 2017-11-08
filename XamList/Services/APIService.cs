@@ -136,7 +136,7 @@ namespace XamList
             }
         }
 
-        static async Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
+        static Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri(apiUrl));
 
@@ -144,7 +144,7 @@ namespace XamList
             {
                 UpdateActivityIndicatorStatus(true);
 
-                return await _client.SendAsync(httpRequest).ConfigureAwait(false);
+                return _client.SendAsync(httpRequest);
             }
             catch (Exception e)
             {

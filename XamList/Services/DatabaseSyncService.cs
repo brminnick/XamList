@@ -30,8 +30,8 @@ namespace XamList
 
 			await Task.WhenAll(contactListFromLocalDatabaseTask, contactListFromRemoteDatabaseTask).ConfigureAwait(false);
 
-			return (contactListFromLocalDatabaseTask.Result ?? new List<ContactModel>(),
-					contactListFromRemoteDatabaseTask.Result ?? new List<ContactModel>());
+			return (await contactListFromLocalDatabaseTask ?? new List<ContactModel>(),
+					await contactListFromRemoteDatabaseTask ?? new List<ContactModel>());
 		}
 
         static (List<T> contactsInLocalDatabaseButNotStoredRemotely,

@@ -50,7 +50,7 @@ namespace XamList.UITests
             Task.Run(async () => await RemoveTestContactsFromDatabases()).GetAwaiter().GetResult();
 
             App.WaitForElement(ContactsListPage.Title);
-            ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().Wait();
+            ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().GetAwaiter().GetResult();
 
             ContactsListPage.PullToRefresh();
         }
@@ -107,11 +107,11 @@ namespace XamList.UITests
             return JsonConvert.DeserializeObject<List<ContactModel>>(jsonString);
         }
 
-        async Task<HttpResponseMessage> RemoveContactFromRemoteDatabase(ContactModel contact)
+        Task<HttpResponseMessage> RemoveContactFromRemoteDatabase(ContactModel contact)
         {
             var apiUrl = $"{BackendConstants.AzureFunctionUrl}RemoveItemFromDatabase/{contact.Id}?code={BackendConstants.AzureFunctionKey_RemoveItemFromDatabase}";
 
-            return await Client.PostAsync(apiUrl, null).ConfigureAwait(false);
+            return Client.PostAsync(apiUrl, null);
         }
 
 

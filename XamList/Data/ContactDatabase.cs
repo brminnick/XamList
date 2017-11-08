@@ -15,11 +15,11 @@ namespace XamList
             await databaseConnection.InsertOrReplaceAsync(contact);
         }
 
-        public static async Task<int> GetContactCount()
+        public static Task<int> GetContactCount()
         {
             var databaseConnection = await GetDatabaseConnectionAsync();
 
-            return await databaseConnection.Table<ContactModel>().CountAsync();
+            return databaseConnection.Table<ContactModel>().CountAsync();
         }
 
         public static async Task<List<ContactModel>> GetAllContacts()

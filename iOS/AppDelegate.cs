@@ -27,7 +27,7 @@ namespace XamList.iOS
 #if DEBUG
         [Export("removeTestContactsFromLocalDatabase:")]
 		public void RemoveTestContactsFromLocalDatabase(NSString unusedString) =>
-            Task.Run(async () => await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase()).Wait();
+            Task.Run(async () => await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase()).GetAwaiter().GetResult();
 #endif
 	}
 }

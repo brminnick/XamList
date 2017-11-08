@@ -27,7 +27,7 @@ namespace XamList.Droid
 #if DEBUG
         [Export("RemoveTestContactsFromLocalDatabase")]
         public void RemoveTestContactsFromLocalDatabase() =>
-            Task.Run(async () => await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase()).Wait();
+            Task.Run(async () => await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase()).GetAwaiter().GetResult();
 #endif
     }
 }
