@@ -30,7 +30,7 @@ namespace XamList
 
         #region Methods
         public static async Task<List<ContactModel>> GetAllContactModels() =>
-        await GetDataObjectFromAPI<List<ContactModel>>($"{BackendConstants.AzureAPIUrl}GetAllContacts");
+            await GetDataObjectFromAPI<List<ContactModel>>($"{BackendConstants.AzureAPIUrl}GetAllContacts");
 
         public static async Task<ContactModel> GetContactModel(ContactModel contact) =>
             await GetDataObjectFromAPI<ContactModel, string>($"{BackendConstants.AzureAPIUrl}GetContact", contact.Id);
@@ -50,7 +50,7 @@ namespace XamList
         static async Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
             await GetDataObjectFromAPI<T, object>(apiUrl);
 
-        static async Task<T> GetDataObjectFromAPI<T, U>(string apiUrl, U data = default(U))
+        static async Task<TDataObject> GetDataObjectFromAPI<TDataObject, TPayloadData>(string apiUrl, TPayloadData data = default(TPayloadData))
         {
             var stringPayload = string.Empty;
 
@@ -68,15 +68,15 @@ namespace XamList
                 using (var json = new JsonTextReader(reader))
                 {
                     if (json == null)
-                        return default(T);
+                        return default(TDataObject);
 
-                    return await Task.Run(() => _serializer.Deserialize<T>(json)).ConfigureAwait(false);
+                    return await Task.Run(() => _serializer.Deserialize<TDataObject>(json)).ConfigureAwait(false);
                 }
             }
             catch (Exception e)
             {
                 MobileCenterHelpers.Log(e);
-                return default(T);
+                return default(TDataObject);
             }
             finally
             {
@@ -168,10 +168,10 @@ namespace XamList
                 currentViewModel.IsInternetConnectionActive = true;
                 _networkIndicatorCount++;
             }
-            else
+            else if (--_networkIndicatorCount <= 0)
             {
-                if (--_networkIndicatorCount == 0)
-                    currentViewModel.IsInternetConnectionActive = false;
+                currentViewModel.IsInternetConnectionActive = false;
+                _networkIndicatorCount = 0;
             }
         }
 

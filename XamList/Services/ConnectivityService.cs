@@ -1,5 +1,6 @@
 ﻿using Plugin.Connectivity;
 using Plugin.Connectivity.Abstractions;
+
 using XamList.Mobile.Common;
 
 namespace XamList
