@@ -107,7 +107,7 @@ namespace XamList.Backend.Common
 
         static async Task<TResult> PerformDatabaseFunction<TResult>(Func<DataContext, TResult> databaseFunction) where TResult : class
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 

@@ -15,7 +15,7 @@ namespace XamList
 
 		static async void HandleConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
 		{
-            var isRemoteDatabaseReachable = CrossConnectivity.Current.IsConnected 
+            var isRemoteDatabaseReachable = e.IsConnected 
                                              && await CrossConnectivity.Current.IsRemoteReachable(BackendConstants.AzureAPIUrl);
 
             if (isRemoteDatabaseReachable)
