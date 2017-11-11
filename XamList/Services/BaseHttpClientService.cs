@@ -15,12 +15,17 @@ namespace XamList
     abstract class BaseHttpClientService
     {
         #region Constant Fields
-        static readonly JsonSerializer _serializer = new JsonSerializer();
-        static readonly HttpClient _client = CreateHttpClient(TimeSpan.FromSeconds(60));
+        static readonly Lazy<JsonSerializer> _serializerHolder = new Lazy<JsonSerializer>();
+        static readonly Lazy<HttpClient> _clientHolder = new Lazy<HttpClient>(() => CreateHttpClient(TimeSpan.FromSeconds(60)));
         #endregion
 
         #region Fields
         static int _networkIndicatorCount = 0;
+        #endregion
+
+        #region Properties
+        static HttpClient Client => _clientHolder.Value;
+        static JsonSerializer Serializer => _serializerHolder.Value;
         #endregion
 
         #region Methods
@@ -40,14 +45,14 @@ namespace XamList
             {
                 UpdateActivityIndicatorStatus(true);
 
-                using (var stream = await _client.GetStreamAsync(apiUrl).ConfigureAwait(false))
+                using (var stream = await Client.GetStreamAsync(apiUrl).ConfigureAwait(false))
                 using (var reader = new StreamReader(stream))
                 using (var json = new JsonTextReader(reader))
                 {
                     if (json == null)
                         return default(TDataObject);
 
-                    return await Task.Run(() => _serializer.Deserialize<TDataObject>(json)).ConfigureAwait(false);
+                    return await Task.Run(() => Serializer.Deserialize<TDataObject>(json)).ConfigureAwait(false);
                 }
             }
             catch (Exception e)
@@ -70,7 +75,7 @@ namespace XamList
             {
                 UpdateActivityIndicatorStatus(true);
 
-                return await _client.PostAsync(apiUrl, httpContent).ConfigureAwait(false);
+                return await Client.PostAsync(apiUrl, httpContent).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -100,7 +105,7 @@ namespace XamList
             {
                 UpdateActivityIndicatorStatus(true);
 
-                return await _client.SendAsync(httpRequest).ConfigureAwait(false);
+                return await Client.SendAsync(httpRequest).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -121,7 +126,7 @@ namespace XamList
             {
                 UpdateActivityIndicatorStatus(true);
 
-                return _client.SendAsync(httpRequest);
+                return Client.SendAsync(httpRequest);
             }
             catch (Exception e)
             {
