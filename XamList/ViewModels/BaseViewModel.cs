@@ -7,20 +7,8 @@ namespace XamList
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
-        #region Fields
-        bool _isInternetConnectionActive;
-        #endregion
-
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
-        #endregion
-
-        #region Properties
-        public bool IsInternetConnectionActive
-        {
-            get => _isInternetConnectionActive;
-            set => SetProperty(ref _isInternetConnectionActive, value);
-        }
         #endregion
 
         #region Methods

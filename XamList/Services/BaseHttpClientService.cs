@@ -141,18 +141,14 @@ namespace XamList
 
         static void UpdateActivityIndicatorStatus(bool isActivityIndicatorDisplayed)
         {
-            var baseNavigationPage = Application.Current.MainPage as NavigationPage;
-            var currentPage = baseNavigationPage.CurrentPage as ContentPage;
-            var currentViewModel = currentPage.BindingContext as BaseViewModel;
-
             if (isActivityIndicatorDisplayed)
             {
-                currentViewModel.IsInternetConnectionActive = true;
+                Device.BeginInvokeOnMainThread(() => Application.Current.MainPage.IsBusy = true);
                 _networkIndicatorCount++;
             }
             else if (--_networkIndicatorCount <= 0)
             {
-                currentViewModel.IsInternetConnectionActive = false;
+                Device.BeginInvokeOnMainThread(() => Application.Current.MainPage.IsBusy = false);
                 _networkIndicatorCount = 0;
             }
         }
