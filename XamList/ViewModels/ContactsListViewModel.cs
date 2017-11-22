@@ -27,14 +27,14 @@ namespace XamList
         public ICommand RefreshCommand => _refreshCommand ??
             (_refreshCommand = new Command(async () =>
             {
-                MobileCenterHelpers.TrackEvent(MobileCenterConstants.PullToRefreshTriggered);
+                AppCenterHelpers.TrackEvent(MobileCenterConstants.PullToRefreshTriggered);
                 await ExecuteRefreshCommand();
             }));
 
         public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
             (_restoreDeletedContactsCommand = new Command(async () =>
             {
-                MobileCenterHelpers.TrackEvent(MobileCenterConstants.RestoreDeletedContactsTapped);
+                AppCenterHelpers.TrackEvent(MobileCenterConstants.RestoreDeletedContactsTapped);
                 await ExecuteRestoreDeletedContactsCommand();
             }));
 
@@ -65,7 +65,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                AppCenterHelpers.Log(e);
             }
             finally
             {

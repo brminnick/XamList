@@ -10,7 +10,7 @@ namespace XamList
         {
             base.OnStart();
 
-            MobileCenterHelpers.Start();
+            AppCenterHelpers.Start();
 
             ConnectivityService.SubscribeEventHandlers();
         }

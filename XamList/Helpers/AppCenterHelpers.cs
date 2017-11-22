@@ -9,7 +9,7 @@ using Microsoft.Azure.Mobile.Distribute;
 
 namespace XamList
 {
-    public static class MobileCenterHelpers
+    public static class AppCenterHelpers
     {
         public static void Start()
         {

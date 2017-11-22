@@ -57,7 +57,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                AppCenterHelpers.Log(e);
                 return default(TDataObject);
             }
             finally
@@ -79,7 +79,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                AppCenterHelpers.Log(e);
                 return null;
             }
             finally
@@ -109,7 +109,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                AppCenterHelpers.Log(e);
                 return null;
             }
             finally
@@ -130,7 +130,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                AppCenterHelpers.Log(e);
                 return null;
             }
             finally

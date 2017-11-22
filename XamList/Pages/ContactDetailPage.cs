@@ -99,7 +99,7 @@ namespace XamList
         {
             base.OnAppearing();
 
-            MobileCenterHelpers.TrackEvent(MobileCenterConstants.ContactDetailPageAppeared);
+            AppCenterHelpers.TrackEvent(MobileCenterConstants.ContactDetailPageAppeared);
         }
 
         protected override void SubscribeEventHandlers()
