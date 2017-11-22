@@ -13,7 +13,7 @@ namespace XamList
     public class ContactsListViewModel : BaseViewModel
     {
         #region Fields
-        bool _isRefreshCommandExecuting;
+        bool _isRefreshing;
         ICommand _refreshCommand, _restoreDeletedContactsCommand;
         IList<ContactModel> _allContactsList;
         #endregion
@@ -38,6 +38,12 @@ namespace XamList
                 await ExecuteRestoreDeletedContactsCommand();
             }));
 
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            set => SetProperty(ref _isRefreshing, value);
+        }
+
         public IList<ContactModel> AllContactsList
         {
             get => _allContactsList;
@@ -48,20 +54,18 @@ namespace XamList
         #region Methods
         async Task ExecuteRefreshCommand()
         {
-            if (_isRefreshCommandExecuting)
-                return;
+            IsRefreshing = true;
 
-            _isRefreshCommandExecuting = true;
             try
             {
-                var oneSecondTaskToShowSpinner = Task.Delay(1000);
+                var minimumSpinnerTime = Task.Delay(1000);
 
                 await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
 
                 var contactList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
                 AllContactsList = contactList.Where(x => !x.IsDeleted).OrderBy(x => x.FullName).ToList();
 
-                await oneSecondTaskToShowSpinner;
+                await minimumSpinnerTime;
             }
             catch (Exception e)
             {
@@ -69,8 +73,7 @@ namespace XamList
             }
             finally
             {
-                OnPullToRefreshCompleted();
-                _isRefreshCommandExecuting = false;
+                IsRefreshing = false;
             }
         }
 
@@ -79,9 +82,6 @@ namespace XamList
             await APIService.RestoreDeletedContacts().ConfigureAwait(false);
             OnRestoreDeletedContactsCompleted();
         }
-
-        void OnPullToRefreshCompleted() =>
-            PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);
 
         void OnRestoreDeletedContactsCompleted() =>
             RestoreDeletedContactsCompleted?.Invoke(this, EventArgs.Empty);

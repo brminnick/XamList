@@ -6,15 +6,20 @@ namespace XamList.UITests
 {
     public class ReplTests : BaseTest
     {
-        public ReplTests(Platform platform) : base(platform)
-        {
-        }
+        #region Fields
+        IApp _app;
+        #endregion
+
+        #region Constructors
+        public ReplTests(Platform platform) : base(platform) { }
+        #endregion
+
+        #region Methods
+        protected override void BeforeEachTest() => _app = AppInitializer.StartApp(Platform);
 
         [Ignore]
         [Test]
-        public void Repl()
-        {
-            App.Repl();
-        }
+        public void Repl() => _app.Repl();
+        #endregion
     }
 }

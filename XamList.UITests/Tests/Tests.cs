@@ -55,7 +55,7 @@ namespace XamList.UITests
             switch(shouldConfirmAlertDialog)
             {
                 case true:
-					await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+                    ContactsListPage.WaitForPageToLoad();
 					await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
                     break;
             }
@@ -80,12 +80,12 @@ namespace XamList.UITests
             //Act
             ContactsListPage.TapAddContactButton();
 
-            App.WaitForElement(ContactDetailsPage.Title);
+            ContactDetailsPage.WaitForPageToLoad();
 
             ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, false);
             ContactDetailsPage.TapCancelButton();
 
-			await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+            ContactsListPage.WaitForPageToLoad();
 			await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
 
             //Assert
@@ -103,12 +103,12 @@ namespace XamList.UITests
         {
             ContactsListPage.TapAddContactButton();
 
-            App.WaitForElement(ContactDetailsPage.Title);
+            ContactDetailsPage.WaitForPageToLoad();
 
             ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, shouldUseReturnKey);
             ContactDetailsPage.TapSaveButton();
 
-            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+            ContactsListPage.WaitForPageToLoad();
             await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
         }
         #endregion

@@ -49,17 +49,13 @@ namespace XamList.UITests
 
             Task.Run(async () => await RemoveTestContactsFromDatabases()).GetAwaiter().GetResult();
 
-            App.WaitForElement(ContactsListPage.Title);
+            ContactsListPage.WaitForPageToLoad();
             ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().GetAwaiter().GetResult();
-
-            ContactsListPage.PullToRefresh();
         }
 
         [TearDown]
-        protected virtual void AfterEachTest()
-        {
+        protected virtual void AfterEachTest() =>
             Task.Run(async () => await RemoveTestContactsFromDatabases()).GetAwaiter().GetResult();
-        }
 
         HttpClient CreateHttpClient()
         {

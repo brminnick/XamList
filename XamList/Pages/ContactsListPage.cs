@@ -34,6 +34,7 @@ namespace XamList
             };
             _contactsListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
             _contactsListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
+            _contactsListView.SetBinding(ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
 
             _restoreDeletedContactsButton = new Button
             {
@@ -80,7 +81,6 @@ namespace XamList
         {
             _contactsListView.ItemSelected += HandleItemSelected;
             _addContactButton.Clicked += HandleAddContactButtonClicked;
-            ViewModel.PullToRefreshCompleted += HandlePullToRefreshCompleted;
             ViewModel.RestoreDeletedContactsCompleted += HandleRestoreDeletedContactsCompleted;
             _restoreDeletedContactsButton.Clicked += HandleRestoreDeletedContactsButtonClicked;
         }
@@ -89,7 +89,6 @@ namespace XamList
         {
             _contactsListView.ItemSelected -= HandleItemSelected;
             _addContactButton.Clicked -= HandleAddContactButtonClicked;
-            ViewModel.PullToRefreshCompleted -= HandlePullToRefreshCompleted;
             ViewModel.RestoreDeletedContactsCompleted -= HandleRestoreDeletedContactsCompleted;
 			_restoreDeletedContactsButton.Clicked -= HandleRestoreDeletedContactsButtonClicked;
         }
@@ -129,12 +128,8 @@ namespace XamList
             }
         }
 
-
         void HandleRestoreDeletedContactsCompleted(object sender, EventArgs e) =>
             Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
-
-        public void HandlePullToRefreshCompleted(object sender, EventArgs e) =>
-            Device.BeginInvokeOnMainThread(_contactsListView.EndRefresh);
         #endregion
     }
 }
