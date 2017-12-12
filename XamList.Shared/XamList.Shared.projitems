@@ -13,9 +13,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\IBaseModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\AlertDialogConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\AutomationIdConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\BackendConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\PageTitleConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\TestConstants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Constants\BackendConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Constants\" />

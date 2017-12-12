@@ -37,7 +37,7 @@ namespace XamList.Tests.Shared
         {
             var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip })
             {
-                Timeout = System.TimeSpan.FromSeconds(30)
+                Timeout = TimeSpan.FromSeconds(30)
             };
 
             client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
