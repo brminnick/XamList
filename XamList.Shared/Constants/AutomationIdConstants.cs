@@ -1,4 +1,4 @@
-﻿namespace XamList.Mobile.Common
+﻿namespace XamList.Shared
 {
     public static class AutomationIdConstants
     {

@@ -3,14 +3,15 @@
 using NUnit.Framework;
 
 using Xamarin.UITest;
-using XamList.Mobile.Common;
+
+using XamList.Shared;
 
 namespace XamList.UITests
 {
-    public class Tests : BaseTest
+    public class Tests : BaseUITest
     {
         #region Constructors
-        public Tests(Platform platform) : base(platform)
+        public Tests(Platform platform): base(platform)
         {
         }
         #endregion

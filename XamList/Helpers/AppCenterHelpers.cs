@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using Microsoft.Azure.Mobile;
@@ -80,5 +79,4 @@ namespace XamList
     {
         Assert, Debug, Error, Info, Verbose, Warn
     }
-
 }

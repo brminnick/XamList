@@ -1,6 +1,6 @@
 ﻿using Xamarin.UITest;
 
-using XamList.Mobile.Common;
+using XamList.Shared;
 
 using Query = System.Func<Xamarin.UITest.Queries.AppQuery, Xamarin.UITest.Queries.AppQuery>;
 
@@ -14,7 +14,7 @@ namespace XamList.UITests
         #endregion
 
         #region Constructors
-        public ContactDetailsPage(IApp app, Platform platform) : base(app, platform, PageTitles.ContactDetailsPage)
+        public ContactDetailsPage(IApp app, Platform platform) : base(app, platform, PageTitleConstants.ContactDetailsPage)
         {
             _firstNameEntry = x => x.Marked(AutomationIdConstants.FirstNameEntry);
             _lastNameEntry = x => x.Marked(AutomationIdConstants.LastNameEntry);

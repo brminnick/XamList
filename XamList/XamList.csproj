@@ -17,12 +17,17 @@
 		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="3.1.2" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.9" />
 		<PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
+		<PackageReference Include="Microsoft.Azure.Mobile.Crashes" Version="0.17.1" />
+		<PackageReference Include="Microsoft.Azure.Mobile.Distribute" Version="0.17.1" />
+		<PackageReference Include="Microsoft.Azure.Mobile.Analytics" Version="0.17.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Data\" />
 		<Folder Include="Helpers\" />
+		<Folder Include="Interfaces\" />
+		<Folder Include="Services\Base\" />
+		<Folder Include="Data\Base\" />
 	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\XamList.Mobile.Common\XamList.Mobile.Common.csproj" />
-	</ItemGroup>
+	<Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" Condition="Exists('..\XamList.Shared\XamList.Shared.projitems')" />
 </Project>

@@ -4,7 +4,7 @@ using Xamarin.UITest;
 
 namespace XamList.UITests
 {
-    public class ReplTests : BaseTest
+    public class ReplTests : BaseUITest
     {
         #region Fields
         IApp _app;
@@ -15,11 +15,10 @@ namespace XamList.UITests
         #endregion
 
         #region Methods
-        protected override void BeforeEachTest() => _app = AppInitializer.StartApp(Platform);
-
-        [Ignore]
-        [Test]
+        [Ignore, Test]
         public void Repl() => _app.Repl();
+
+        protected override void BeforeEachTest() => _app = AppInitializer.StartApp(Platform);
         #endregion
     }
 }

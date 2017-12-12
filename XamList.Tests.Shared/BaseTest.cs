@@ -1,63 +1,39 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
 
-using NUnit.Framework;
-
 using Newtonsoft.Json;
 
-using Xamarin.UITest;
+using NUnit.Framework;
 
 using XamList.Shared;
-using XamList.Mobile.Common;
 
-namespace XamList.UITests
+namespace XamList.Tests.Shared
 {
-    [TestFixture(Platform.iOS)]
-    [TestFixture(Platform.Android)]
     public abstract class BaseTest
     {
-        #region Fields
-        IApp _app;
-        HttpClient _client;
-        Platform _platform;
-        ContactsListPage _contactsListPage;
-        ContactDetailsPage _contactsDetailsPage;
-        #endregion
-
-        #region Constructors
-        protected BaseTest(Platform platform) => _platform = platform;
+        #region constant Fields
+        readonly Lazy<HttpClient> _clientHolder = new Lazy<HttpClient>(CreateHttpClient);
         #endregion
 
         #region Properties
-        protected Platform Platform => _platform;
-        protected IApp App => _app;
-        protected ContactsListPage ContactsListPage => _contactsListPage ?? (_contactsListPage = new ContactsListPage(App, Platform));
-        protected ContactDetailsPage ContactDetailsPage => _contactsDetailsPage ?? (_contactsDetailsPage = new ContactDetailsPage(App, Platform));
-
-        HttpClient Client => _client ?? (_client = CreateHttpClient());
+        HttpClient Client => _clientHolder.Value;
         #endregion
 
         #region Methods
         [SetUp]
-        protected virtual void BeforeEachTest()
-        {
-            _app = AppInitializer.StartApp(Platform);
-
-            Task.Run(async () => await RemoveTestContactsFromDatabases()).GetAwaiter().GetResult();
-
-            ContactsListPage.WaitForPageToLoad();
-            ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().GetAwaiter().GetResult();
-        }
+        protected virtual void BeforeEachTest() =>
+            Task.Run(async () => await RemoveTestContactsFromRemoteDatabase()).GetAwaiter().GetResult();
 
         [TearDown]
         protected virtual void AfterEachTest() =>
-            Task.Run(async () => await RemoveTestContactsFromDatabases()).GetAwaiter().GetResult();
+            Task.Run(async () => await RemoveTestContactsFromRemoteDatabase()).GetAwaiter().GetResult();
 
-        HttpClient CreateHttpClient()
+        static HttpClient CreateHttpClient()
         {
             var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip })
             {
@@ -69,15 +45,9 @@ namespace XamList.UITests
             return client;
         }
 
-        async Task RemoveTestContactsFromDatabases()
-        {
-            await RemoveTestContactsFromRemoteDatabase();
-            BackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase(App);
-        }
-
         async Task RemoveTestContactsFromRemoteDatabase()
         {
-            var contactList = await GetContactsFromRemoteDatabase();
+            var contactList = await GetContactsFromRemoteDatabase().ConfigureAwait(false);
 
             Assert.IsNotNull(contactList, "Error Retriecing Contact List From Remote Database");
 
@@ -90,7 +60,7 @@ namespace XamList.UITests
             foreach (var contact in testContactList)
                 removedContactTaskList.Add(RemoveContactFromRemoteDatabase(contact));
 
-            await Task.WhenAll(removedContactTaskList);
+            await Task.WhenAll(removedContactTaskList).ConfigureAwait(false);
 
             var successfullyRemovedContactCount = removedContactTaskList.Count(x => x.Result.IsSuccessStatusCode);
             Assert.IsTrue(testContactList.Count == successfullyRemovedContactCount,
@@ -99,8 +69,8 @@ namespace XamList.UITests
 
         async Task<List<ContactModel>> GetContactsFromRemoteDatabase()
         {
-            var jsonString = await Client.GetStringAsync($"{BackendConstants.AzureAPIUrl}GetAllContacts");
-            return JsonConvert.DeserializeObject<List<ContactModel>>(jsonString);
+            var jsonString = await Client.GetStringAsync($"{BackendConstants.AzureAPIUrl}GetAllContacts").ConfigureAwait(false);
+            return await Task.Run(() => JsonConvert.DeserializeObject<List<ContactModel>>(jsonString)).ConfigureAwait(false);
         }
 
         Task<HttpResponseMessage> RemoveContactFromRemoteDatabase(ContactModel contact)
@@ -109,9 +79,6 @@ namespace XamList.UITests
 
             return Client.PostAsync(apiUrl, null);
         }
-
-
         #endregion
     }
 }
-

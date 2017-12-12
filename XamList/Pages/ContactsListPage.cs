@@ -2,7 +2,6 @@
 
 using Xamarin.Forms;
 
-using XamList.Mobile.Common;
 using XamList.Shared;
 
 namespace XamList
@@ -47,7 +46,7 @@ namespace XamList
                                             0.25)
             };
 
-            Title = PageTitles.ContactsListPage;
+            Title = PageTitleConstants.ContactsListPage;
 
             var relativeLayout = new RelativeLayout();
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-using Xamarin.UITest;
+﻿using Xamarin.UITest;
 using Xamarin.UITest.iOS;
 using Xamarin.UITest.Android;
 

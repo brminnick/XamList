@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 using XamList.Shared;
-using XamList.Mobile.Common;
 
 namespace XamList
 {

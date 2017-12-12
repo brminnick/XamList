@@ -5,7 +5,6 @@ using Xamarin.Forms;
 using EntryCustomReturn.Forms.Plugin.Abstractions;
 
 using XamList.Shared;
-using XamList.Mobile.Common;
 
 namespace XamList
 {
@@ -75,7 +74,7 @@ namespace XamList
                     break;
             }
 
-            Title = PageTitles.ContactDetailsPage;
+            Title = PageTitleConstants.ContactDetailsPage;
 
             Padding = new Thickness(20, 0, 20, 0);
 

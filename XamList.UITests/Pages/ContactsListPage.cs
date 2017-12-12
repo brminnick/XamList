@@ -7,7 +7,6 @@ using NUnit.Framework;
 using Xamarin.UITest;
 
 using XamList.Shared;
-using XamList.Mobile.Common;
 
 using Query = System.Func<Xamarin.UITest.Queries.AppQuery, Xamarin.UITest.Queries.AppQuery>;
 
@@ -22,7 +21,7 @@ namespace XamList.UITests
         #endregion
 
         #region Constructors
-        public ContactsListPage(IApp app, Platform platform) : base(app, platform, PageTitles.ContactsListPage)
+        public ContactsListPage(IApp app, Platform platform) : base(app, platform, PageTitleConstants.ContactsListPage)
         {
             _addContactButon = x => x.Marked(AutomationIdConstants.AddContactButon);
             _restoreContactsButton = x => x.Marked(AutomationIdConstants.RestoreDeletedContactsButton);

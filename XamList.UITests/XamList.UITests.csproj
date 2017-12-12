@@ -14,13 +14,14 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG; UITest;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
+    <DefineConstants> UITest;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -36,10 +37,6 @@
     <Reference Include="SQLite-net">
       <HintPath>..\packages\sqlite-net-pcl.1.4.118\lib\netstandard1.1\SQLite-net.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.UITest">
-      <HintPath>..\packages\Xamarin.UITest.2.2.1\lib\net45\Xamarin.UITest.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="SQLitePCLRaw.core">
       <HintPath>..\packages\SQLitePCLRaw.core.1.1.9\lib\net45\SQLitePCLRaw.core.dll</HintPath>
     </Reference>
@@ -52,11 +49,15 @@
     <Reference Include="SQLitePCLRaw.batteries_v2">
       <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.9\lib\net45\SQLitePCLRaw.batteries_v2.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.UITest">
+      <HintPath>..\packages\Xamarin.UITest.2.2.2\lib\net45\Xamarin.UITest.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppInitializer.cs" />
     <Compile Include="Pages\BasePage.cs" />
-    <Compile Include="Tests\BaseTest.cs" />
+    <Compile Include="Tests\BaseUITest.cs" />
     <Compile Include="Pages\ContactDetailsPage.cs" />
     <Compile Include="Pages\ContactsListPage.cs" />
     <Compile Include="Tests\ReplTests.cs" />
@@ -76,10 +77,6 @@
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\XamList.Mobile.Common\XamList.Mobile.Common.csproj">
-      <Project>{33f1e177-60a3-4845-9720-0cc9edf3d87e}</Project>
-      <Name>XamList.Mobile.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -90,6 +87,8 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
   </ItemGroup>
+  <Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" Condition="Exists('..\XamList.Shared\XamList.Shared.projitems')" />
+  <Import Project="..\XamList.Tests.Shared\XamList.Tests.Shared.projitems" Label="Shared" Condition="Exists('..\XamList.Tests.Shared\XamList.Tests.Shared.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.9\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.9\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.9\build\net35\SQLitePCLRaw.lib.e_sqlite3.osx.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.osx.1.1.9\build\net35\SQLitePCLRaw.lib.e_sqlite3.osx.targets')" />
