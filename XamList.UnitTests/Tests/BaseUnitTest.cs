@@ -1,22 +1,18 @@
-﻿using Xamarin.Forms.Mocks;
+﻿using NUnit.Framework;
 
-using XamList.Tests.Shared;
+using Xamarin.Forms.Mocks;
 
 namespace XamList.UnitTests
 {
-    public abstract class BaseUnitTest : BaseTest
+    public abstract class BaseUnitTest
     {
         #region Properties
         protected DependencyServiceStub DependencyService { get; private set; }
         #endregion
 
         #region Methods
-        protected override void BeforeEachTest()
-        {
-            base.BeforeEachTest();
-
-            MockForms.Init();
-        }
+        [SetUp]
+        protected virtual void BeforeEachTest() => MockForms.Init();
         #endregion
     }
 }

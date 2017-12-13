@@ -1,4 +1,6 @@
-﻿using Xamarin.UITest;
+﻿using System;
+
+using Xamarin.UITest;
 using Xamarin.UITest.iOS;
 using Xamarin.UITest.Android;
 
@@ -16,6 +18,9 @@ namespace XamList.UITests
                 case AndroidApp app_Android:
 					app.Invoke("RemoveTestContactsFromLocalDatabase");
                     break;
+
+                default:
+                    throw new NotSupportedException($"IApp {typeof(IApp)} is not supported");
             }
 		}
     }
