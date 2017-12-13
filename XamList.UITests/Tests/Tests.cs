@@ -3,14 +3,15 @@
 using NUnit.Framework;
 
 using Xamarin.UITest;
-using XamList.Mobile.Common;
+
+using XamList.Shared;
 
 namespace XamList.UITests
 {
-    public class Tests : BaseTest
+    public class Tests : BaseUITest
     {
         #region Constructors
-        public Tests(Platform platform) : base(platform)
+        public Tests(Platform platform): base(platform)
         {
         }
         #endregion
@@ -56,7 +57,10 @@ namespace XamList.UITests
             {
                 case true:
                     ContactsListPage.WaitForPageToLoad();
+                    await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
 					await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+                    ContactsListPage.PullToRefresh();
+                    await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
                     break;
             }
 
@@ -99,7 +103,7 @@ namespace XamList.UITests
             App.Screenshot("App Launched");
         }
 
-        async Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
+        Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
         {
             ContactsListPage.TapAddContactButton();
 
@@ -109,7 +113,7 @@ namespace XamList.UITests
             ContactDetailsPage.TapSaveButton();
 
             ContactsListPage.WaitForPageToLoad();
-            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+            return ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
         }
         #endregion
     }

@@ -11,15 +11,15 @@ namespace XamList
     {
         public static async Task SyncRemoteAndLocalDatabases()
         {
-            var (contactListFromLocalDatabase, contactListFromRemoteDatabase) = await GetAllSavedContacts();
+            var (contactListFromLocalDatabase, contactListFromRemoteDatabase) = await GetAllSavedContacts().ConfigureAwait(false);
 
             var (contactsInLocalDatabaseButNotStoredRemotely, contactsInRemoteDatabaseButNotStoredLocally, contactsInBothDatabases) = GetMatchingModels(contactListFromLocalDatabase, contactListFromRemoteDatabase);
 
             var (contactsToPatchToLocalDatabase, contactsToPatchToRemoteDatabase) = GetModelsThatNeedUpdating(contactListFromLocalDatabase, contactListFromRemoteDatabase, contactsInBothDatabases);
 
             await SaveContacts(contactsToPatchToRemoteDatabase,
-                                      contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase).ToList(),
-                                      contactsInLocalDatabaseButNotStoredRemotely);
+                                    contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase).ToList(),
+                                    contactsInLocalDatabaseButNotStoredRemotely).ConfigureAwait(false);
         }
 
 		static async Task<(List<ContactModel> contactListFromLocalDatabase,
@@ -30,8 +30,8 @@ namespace XamList
 
 			await Task.WhenAll(contactListFromLocalDatabaseTask, contactListFromRemoteDatabaseTask).ConfigureAwait(false);
 
-			return (await contactListFromLocalDatabaseTask ?? new List<ContactModel>(),
-					await contactListFromRemoteDatabaseTask ?? new List<ContactModel>());
+            return (await contactListFromLocalDatabaseTask.ConfigureAwait(false) ?? new List<ContactModel>(),
+                    await contactListFromRemoteDatabaseTask.ConfigureAwait(false) ?? new List<ContactModel>());
 		}
 
         static (List<T> contactsInLocalDatabaseButNotStoredRemotely,
@@ -59,7 +59,7 @@ namespace XamList
         }
 
 		static (List<T> contactsToPatchToLocalDatabase,
-		List<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
+		    List<T> contactsToPatchToRemoteDatabase) GetModelsThatNeedUpdating<T>(List<T> modelListFromLocalDatabase,
 																			  List<T> modelListFromRemoteDatabase,
 																			  List<T> modelsFoundInBothDatabases) where T : IBaseModel
 		{
@@ -80,7 +80,7 @@ namespace XamList
 					modelsToPatchToRemoteDatabase ?? new List<T>());
 		}
 
-        static async Task SaveContacts(List<ContactModel> contactsToPatchToRemoteDatabase,
+        static Task SaveContacts(List<ContactModel> contactsToPatchToRemoteDatabase,
                                         List<ContactModel> contactsToSaveToLocalDatabase,
                                         List<ContactModel> contactsToPostToRemoteDatabase)
         {
@@ -94,7 +94,7 @@ namespace XamList
             foreach (var contact in contactsToPatchToRemoteDatabase)
                 saveContactTaskList.Add(APIService.PatchContactModel(contact));
 
-            await Task.WhenAll(saveContactTaskList).ConfigureAwait(false);
+            return Task.WhenAll(saveContactTaskList);
         }
     }
 }

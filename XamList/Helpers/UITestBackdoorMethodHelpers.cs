@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using XamList.Mobile.Common;
+using XamList.Shared;
 
 namespace XamList
 {

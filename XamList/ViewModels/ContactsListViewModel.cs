@@ -18,11 +18,6 @@ namespace XamList
         IList<ContactModel> _allContactsList;
         #endregion
 
-        #region Events
-        public event EventHandler PullToRefreshCompleted;
-        public event EventHandler RestoreDeletedContactsCompleted;
-        #endregion
-
         #region Properties
         public ICommand RefreshCommand => _refreshCommand ??
             (_refreshCommand = new Command(async () =>
@@ -79,12 +74,20 @@ namespace XamList
 
         async Task ExecuteRestoreDeletedContactsCommand()
         {
-            await APIService.RestoreDeletedContacts().ConfigureAwait(false);
-            OnRestoreDeletedContactsCompleted();
-        }
+            IsRefreshing = true;
 
-        void OnRestoreDeletedContactsCompleted() =>
-            RestoreDeletedContactsCompleted?.Invoke(this, EventArgs.Empty);
+            var minimumSpinnerTime = Task.Delay(5000);
+
+            try
+            {
+                await APIService.RestoreDeletedContacts().ConfigureAwait(false);
+                await ExecuteRefreshCommand().ConfigureAwait(false);
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
+        }
         #endregion
     }
 }

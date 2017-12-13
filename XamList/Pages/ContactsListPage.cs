@@ -2,7 +2,6 @@
 
 using Xamarin.Forms;
 
-using XamList.Mobile.Common;
 using XamList.Shared;
 
 namespace XamList
@@ -47,7 +46,7 @@ namespace XamList
                                             0.25)
             };
 
-            Title = PageTitles.ContactsListPage;
+            Title = PageTitleConstants.ContactsListPage;
 
             var relativeLayout = new RelativeLayout();
 
@@ -81,7 +80,6 @@ namespace XamList
         {
             _contactsListView.ItemSelected += HandleItemSelected;
             _addContactButton.Clicked += HandleAddContactButtonClicked;
-            ViewModel.RestoreDeletedContactsCompleted += HandleRestoreDeletedContactsCompleted;
             _restoreDeletedContactsButton.Clicked += HandleRestoreDeletedContactsButtonClicked;
         }
 
@@ -89,7 +87,6 @@ namespace XamList
         {
             _contactsListView.ItemSelected -= HandleItemSelected;
             _addContactButton.Clicked -= HandleAddContactButtonClicked;
-            ViewModel.RestoreDeletedContactsCompleted -= HandleRestoreDeletedContactsCompleted;
 			_restoreDeletedContactsButton.Clicked -= HandleRestoreDeletedContactsButtonClicked;
         }
 
@@ -127,9 +124,6 @@ namespace XamList
                     break;
             }
         }
-
-        void HandleRestoreDeletedContactsCompleted(object sender, EventArgs e) =>
-            Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
         #endregion
     }
 }
