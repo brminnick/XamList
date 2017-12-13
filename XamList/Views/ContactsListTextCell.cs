@@ -46,14 +46,11 @@ namespace XamList
             {
                 var navigationPage = Application.Current.MainPage as NavigationPage;
                 return navigationPage.Navigation.NavigationStack.FirstOrDefault() as ContactsListPage;
-
             }
         }
 
-        ContactsListViewModel ContactsListViewModel
-        {
-            get => ContactsListPage.BindingContext as ContactsListViewModel;
-        }
+        ContactsListViewModel ContactsListViewModel => 
+            ContactsListPage.BindingContext as ContactsListViewModel;
 
         #endregion
 
@@ -75,10 +72,8 @@ namespace XamList
         {
             var contactSelected = BindingContext as ContactModel;
 
-#pragma warning disable CS4014 // Await omitted intentionally
-            Task.Run(async () => await APIService.DeleteContactModel(contactSelected)).ConfigureAwait(false);
-#pragma warning restore CS4014 // Await omitted intentionally
-			await ContactDatabase.DeleteContact(contactSelected).ConfigureAwait(false);
+            await Task.WhenAll(APIService.DeleteContactModel(contactSelected), 
+                               ContactDatabase.DeleteContact(contactSelected));
 
             ContactsListViewModel.RefreshCommand?.Execute(null);
         }

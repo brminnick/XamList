@@ -80,7 +80,6 @@ namespace XamList
         {
             _contactsListView.ItemSelected += HandleItemSelected;
             _addContactButton.Clicked += HandleAddContactButtonClicked;
-            ViewModel.RestoreDeletedContactsCompleted += HandleRestoreDeletedContactsCompleted;
             _restoreDeletedContactsButton.Clicked += HandleRestoreDeletedContactsButtonClicked;
         }
 
@@ -88,7 +87,6 @@ namespace XamList
         {
             _contactsListView.ItemSelected -= HandleItemSelected;
             _addContactButton.Clicked -= HandleAddContactButtonClicked;
-            ViewModel.RestoreDeletedContactsCompleted -= HandleRestoreDeletedContactsCompleted;
 			_restoreDeletedContactsButton.Clicked -= HandleRestoreDeletedContactsButtonClicked;
         }
 
@@ -126,9 +124,6 @@ namespace XamList
                     break;
             }
         }
-
-        void HandleRestoreDeletedContactsCompleted(object sender, EventArgs e) =>
-            Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
         #endregion
     }
 }

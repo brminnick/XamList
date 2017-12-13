@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using Xamarin.UITest;
+using Xamarin.UITest.iOS;
+using Xamarin.UITest.Android;
 
 using XamList.Shared;
 
@@ -39,7 +41,7 @@ namespace XamList.UITests
         {
             App.Tap(_restoreContactsButton);
 
-            switch(shouldConfirmAlertDialog)
+            switch (shouldConfirmAlertDialog)
             {
                 case true:
                     App.Tap(AlertDialogConstants.Yes);
@@ -48,6 +50,13 @@ namespace XamList.UITests
                     App.Tap(AlertDialogConstants.Cancel);
                     break;
             }
+        }
+
+        public void ScrollToTopOfList()
+        {
+            var query = App.Query().FirstOrDefault();
+
+            App.TapCoordinates(query.Rect.CenterX, query.Rect.Y);
         }
 
         public async Task DeleteContact(string firstName, string lastName, string phoneNumber)
@@ -59,14 +68,23 @@ namespace XamList.UITests
                 PhoneNumber = phoneNumber
             };
 
-			App.ScrollDownTo(contact.FullName);
+            App.ScrollDownTo(contact.FullName);
 
-			if (OniOS)
-				App.SwipeRightToLeft(contact.FullName);
-			else
-				App.TouchAndHold(contact.FullName);
+            switch (App)
+            {
+                case iOSApp iOSApp:
+                    iOSApp.SwipeRightToLeft(contact.FullName);
+                    break;
 
-			App.Tap("Delete");
+                case AndroidApp androidApp:
+                    androidApp.TouchAndHold(contact.FullName);
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+
+            App.Tap("Delete");
 
             await Task.Delay(1000);
         }
@@ -87,25 +105,29 @@ namespace XamList.UITests
         }
 
         public bool DoesContactExist(string firstName, string lastName, string phoneNumber, int timeoutInSeconds = 10)
-		{
-			var contact = new ContactModel
-			{
-				FirstName = firstName,
-				LastName = lastName,
-				PhoneNumber = phoneNumber
-			};
+        {
+            var contact = new ContactModel
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                PhoneNumber = phoneNumber
+            };
 
-			try
-			{
-				App.ScrollDownTo(contact.FullName, timeout: TimeSpan.FromSeconds(timeoutInSeconds));
-			}
-			catch (Exception)
-			{
-				return false;
-			}
+            try
+            {
+                App.ScrollDownTo(contact.FullName, timeout: TimeSpan.FromSeconds(timeoutInSeconds));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            finally
+            {
+                ScrollToTopOfList();
+            }
 
-			return true;
-		}
+        }
 
         public async Task WaitForNoPullToRefreshActivityIndicatorAsync(int timeoutInSeconds = 10)
         {
@@ -113,8 +135,8 @@ namespace XamList.UITests
 
             while (IsRefreshActivityIndicatorDisplayed)
             {
-				if (loopCount / 10 > timeoutInSeconds)
-					Assert.Fail("WaitForNoPullToRefreshActivityIndicatorAsync Failed");
+                if (loopCount / 10 > timeoutInSeconds)
+                    Assert.Fail("WaitForNoPullToRefreshActivityIndicatorAsync Failed");
 
                 loopCount++;
                 await Task.Delay(100);
@@ -137,15 +159,15 @@ namespace XamList.UITests
 
         public void PullToRefresh()
         {
-			var listViewQuery = App.Query(_contactsListView).FirstOrDefault();
+            var listViewQuery = App.Query(_contactsListView).FirstOrDefault();
 
-			var topYCoordinate = listViewQuery.Rect.Y;
-			var bottomYCoordinate = listViewQuery.Rect.Y + listViewQuery.Rect.Height;
-			var centerXCoordinate = listViewQuery.Rect.CenterX;
+            var topYCoordinate = listViewQuery.Rect.Y;
+            var bottomYCoordinate = listViewQuery.Rect.Y + listViewQuery.Rect.Height;
+            var centerXCoordinate = listViewQuery.Rect.CenterX;
 
-			App.DragCoordinates(centerXCoordinate, topYCoordinate + 20, centerXCoordinate, bottomYCoordinate - 20);
+            App.DragCoordinates(centerXCoordinate, topYCoordinate + 20, centerXCoordinate, bottomYCoordinate - 20);
 
-			App.Screenshot("Pull To Refresh Triggered");
+            App.Screenshot("Pull To Refresh Triggered");
         }
 
         bool GetIsRefreshActivityIndicatorDisplayed()

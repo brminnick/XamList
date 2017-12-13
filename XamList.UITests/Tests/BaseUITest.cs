@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Net;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
 
+using Newtonsoft.Json;
+
 using NUnit.Framework;
 
 using Xamarin.UITest;
+using XamList.Shared;
 
 namespace XamList.UITests
 {
@@ -29,6 +33,8 @@ namespace XamList.UITests
         protected ContactsListPage ContactsListPage { get; private set; }
         protected ContactDetailsPage ContactDetailsPage { get; private set; }
         protected IApp App { get; private set; }
+
+        HttpClient Client => _clientHolder.Value;
         #endregion
 
         #region Methods
