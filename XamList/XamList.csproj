@@ -13,13 +13,13 @@
 		<PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
 		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
 		<PackageReference Include="Xam.Plugin.Connectivity" Version="3.0.3" />
-		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="3.1.2" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.9" />
-		<PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
 		<PackageReference Include="Microsoft.Azure.Mobile.Crashes" Version="0.17.1" />
 		<PackageReference Include="Microsoft.Azure.Mobile.Distribute" Version="0.17.1" />
 		<PackageReference Include="Microsoft.Azure.Mobile.Analytics" Version="0.17.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+		<PackageReference Include="Xamarin.Forms" Version="2.5.0.121934" />
+		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="3.2.1" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Data\" />
