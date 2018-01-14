@@ -64,7 +64,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                AppCenterHelpers.Log(e);
+                AppCenterHelpers.LogException(e);
             }
             finally
             {

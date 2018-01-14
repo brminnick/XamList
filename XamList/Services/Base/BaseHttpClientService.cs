@@ -29,8 +29,7 @@ namespace XamList
         #endregion
 
         #region Methods
-        protected static Task<T> GetDataObjectFromAPI<T>(string apiUrl) =>
-            GetDataObjectFromAPI<T, object>(apiUrl);
+        protected static Task<T> GetDataObjectFromAPI<T>(string apiUrl) => GetDataObjectFromAPI<T, object>(apiUrl);
 
         protected static async Task<TDataObject> GetDataObjectFromAPI<TDataObject, TPayloadData>(string apiUrl, TPayloadData data = default(TPayloadData))
         {
@@ -57,7 +56,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                AppCenterHelpers.Log(e);
+                AppCenterHelpers.LogException(e);
                 return default(TDataObject);
             }
             finally
@@ -79,7 +78,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                AppCenterHelpers.Log(e);
+                AppCenterHelpers.LogException(e);
                 return null;
             }
             finally
@@ -109,7 +108,7 @@ namespace XamList
             }
             catch (Exception e)
             {
-                AppCenterHelpers.Log(e);
+                AppCenterHelpers.LogException(e);
                 return null;
             }
             finally
@@ -118,7 +117,7 @@ namespace XamList
             }
         }
 
-        protected static Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
+        protected static async Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Delete, new Uri(apiUrl));
 
@@ -126,11 +125,11 @@ namespace XamList
             {
                 UpdateActivityIndicatorStatus(true);
 
-                return Client.SendAsync(httpRequest);
+                return await Client.SendAsync(httpRequest);
             }
             catch (Exception e)
             {
-                AppCenterHelpers.Log(e);
+                AppCenterHelpers.LogException(e);
                 return null;
             }
             finally

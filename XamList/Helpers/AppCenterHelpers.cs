@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.Azure.Mobile;
-using Microsoft.Azure.Mobile.Crashes;
-using Microsoft.Azure.Mobile.Analytics;
-using Microsoft.Azure.Mobile.Distribute;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Distribute;
 
 namespace XamList
 {
@@ -38,45 +38,16 @@ namespace XamList
             TrackEvent(trackIdentifier, table);
         }
 
-        public static void Log(Exception exception, MobileCenterLogType type = MobileCenterLogType.Warn)
+        public static void LogException(Exception exception)
         {
             var exceptionType = exception.GetType().ToString();
             var message = exception.Message;
 
             System.Diagnostics.Debug.WriteLine(exceptionType);
             System.Diagnostics.Debug.WriteLine($"Error: {message}");
-
-            switch (type)
-            {
-                case MobileCenterLogType.Info:
-                    MobileCenterLog.Info(exceptionType, message, exception);
-                    break;
-                case MobileCenterLogType.Warn:
-                    MobileCenterLog.Warn(exceptionType, message, exception);
-                    break;
-                case MobileCenterLogType.Error:
-                    MobileCenterLog.Error(exceptionType, message, exception);
-                    break;
-                case MobileCenterLogType.Assert:
-                    MobileCenterLog.Assert(exceptionType, message, exception);
-                    break;
-                case MobileCenterLogType.Verbose:
-                    MobileCenterLog.Verbose(exceptionType, message, exception);
-                    break;
-                case MobileCenterLogType.Debug:
-                    MobileCenterLog.Debug(exceptionType, message, exception);
-                    break;
-                default:
-                    throw new Exception("MobileCenterLogType Does Not Exist");
-            }
         }
 
         static void Start(string appSecret) =>
-            MobileCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
-    }
-
-    public enum MobileCenterLogType
-    {
-        Assert, Debug, Error, Info, Verbose, Warn
+            AppCenter.Start(appSecret, typeof(Analytics), typeof(Crashes), typeof(Distribute));
     }
 }

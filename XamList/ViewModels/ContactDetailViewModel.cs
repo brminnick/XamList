@@ -83,13 +83,12 @@ namespace XamList
                     break;
             }
 
-            await Task.WhenAll(saveContactTaskList);
+            await Task.WhenAll(saveContactTaskList).ConfigureAwait(false);
 
             OnSaveContactCompleted();
         }
 
-        void OnSaveContactCompleted() =>
-            SaveContactCompleted?.Invoke(this, EventArgs.Empty);
+        void OnSaveContactCompleted() => SaveContactCompleted?.Invoke(this, EventArgs.Empty);
         #endregion
     }
 }
