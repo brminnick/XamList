@@ -56,14 +56,14 @@
 		<Reference Include="Xamarin.Forms.Xaml.UnitTests">
 		  <HintPath>..\packages\Xamarin.Forms.Mocks.2.5.0.2\lib\portable-net45+win8+wpa81+wp8\Xamarin.Forms.Xaml.UnitTests.dll</HintPath>
 		</Reference>
-		<Reference Include="System.Threading.Tasks.Extensions">
-		  <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
-		</Reference>
-		<Reference Include="System.ValueTuple">
-		  <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-		</Reference>
 		<Reference Include="Moq">
 		  <HintPath>..\packages\Moq.4.8.1\lib\net45\Moq.dll</HintPath>
+		</Reference>
+		<Reference Include="System.ValueTuple">
+		  <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+		</Reference>
+		<Reference Include="System.Threading.Tasks.Extensions">
+		  <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
