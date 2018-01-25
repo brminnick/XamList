@@ -22,7 +22,7 @@ Earlier versions of VS don't support Azure Functions.
 
 ### 1. Create Azure API App
 
-1. Open a browser, navigate to the [Azure Portal](https://aka.ms/K0ldxr) and log in.
+1. Open a browser, navigate to the [Azure Portal](https://aka.ms/k0ldxr) and log in.
 
 ![](https://user-images.githubusercontent.com/13558917/29183032-048619ee-7db6-11e7-86bd-d8aa56e8b579.png)
 
