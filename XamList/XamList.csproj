@@ -15,11 +15,12 @@
 		<PackageReference Include="Xam.Plugin.Connectivity" Version="3.0.3" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.9" />
 		<PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-		<PackageReference Include="Microsoft.AppCenter.Distribute" Version="1.1.0" />
-		<PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.1.0" />
-		<PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.1.0" />
 		<PackageReference Include="Xamarin.Forms" Version="2.5.0.122203" />
 		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="4.0.0-pre4" />
+		<PackageReference Include="Microsoft.AppCenter.Distribute" Version="1.2.0" />
+		<PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.2.0" />
+		<PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.2.0" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.4.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Data\" />
