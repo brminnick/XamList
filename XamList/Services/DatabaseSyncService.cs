@@ -50,7 +50,7 @@ namespace XamList
             var modelsInLocalDatabaseButNotStoredRemotely = modelListFromLocalDatabase?.Where(x => modelIdsInLocalDatabaseButNotStoredRemotely?.Contains(x?.Id) ?? false).ToList() ?? new List<T>();
 
             var modelsInBothDatabases = modelListFromLocalDatabase?.Where(x => modelIdsInBothDatabases?.Contains(x?.Id) ?? false)
-                                            .Concat(modelListFromRemoteDatabase?.Where(x => modelIdsInBothDatabases?.Contains(x?.Id) ?? false)).ToList() ?? new List<T>();
+                                            .ToList() ?? new List<T>();
 
             return (modelsInLocalDatabaseButNotStoredRemotely ?? new List<T>(),
                     modelsInRemoteDatabaseButNotStoredLocally ?? new List<T>(),
@@ -80,7 +80,7 @@ namespace XamList
 					modelsToPatchToRemoteDatabase ?? new List<T>());
 		}
 
-        static Task SaveContacts(List<ContactModel> contactsToPatchToRemoteDatabase,
+        static Task SaveContacts(List<ContactModel> contactsToPatchToRemoteDatabase, List<ContactModel> contactsToPatchToLocalDatabase,
                                         List<ContactModel> contactsToSaveToLocalDatabase,
                                         List<ContactModel> contactsToPostToRemoteDatabase)
         {
@@ -93,6 +93,9 @@ namespace XamList
 
             foreach (var contact in contactsToPatchToRemoteDatabase)
                 saveContactTaskList.Add(APIService.PatchContactModel(contact));
+
+            foreach (var contact in contactsToPatchToLocalDatabase)
+                saveContactTaskList.Add(ContactDatabase.PatchContactModel(contact));
 
             return Task.WhenAll(saveContactTaskList);
         }
