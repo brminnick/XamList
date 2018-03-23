@@ -15,6 +15,14 @@ namespace XamList
             await databaseConnection.InsertOrReplaceAsync(contact);
         }
 
+        public static async Task PatchContactModel(ContactModel contact)
+        {
+            var databaseConnection = await GetDatabaseConnectionAsync();
+
+            await databaseConnection.UpdateAsync(contact);
+        }
+
+
         public static async Task<int> GetContactCount()
         {
             var databaseConnection = await GetDatabaseConnectionAsync();
