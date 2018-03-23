@@ -1,6 +1,7 @@
 ﻿using Plugin.Connectivity;
 using Plugin.Connectivity.Abstractions;
-using XamList.Mobile.Common;
+
+using XamList.Shared;
 
 namespace XamList
 {
@@ -14,7 +15,8 @@ namespace XamList
 
 		static async void HandleConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
 		{
-            var isRemoteDatabaseReachable = CrossConnectivity.Current.IsConnected && await CrossConnectivity.Current.IsRemoteReachable(BackendConstants.AzureAPIUrl);
+            var isRemoteDatabaseReachable = e.IsConnected 
+                                             && await CrossConnectivity.Current.IsRemoteReachable(BackendConstants.AzureAPIUrl);
 
             if (isRemoteDatabaseReachable)
                 await DatabaseSyncService.SyncRemoteAndLocalDatabases();

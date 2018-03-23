@@ -10,23 +10,9 @@ namespace XamList
         {
             base.OnStart();
 
-            MobileCenterHelpers.Start();
+            AppCenterHelpers.Start();
 
             ConnectivityService.SubscribeEventHandlers();
-        }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-
-            ConnectivityService.SubscribeEventHandlers();
-        }
-
-        protected override void OnSleep()
-        {
-            base.OnSleep();
-
-            ConnectivityService.UnsubscribeEventHandlers();
         }
     }
 }

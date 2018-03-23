@@ -13,30 +13,31 @@ namespace XamList
     public class ContactsListViewModel : BaseViewModel
     {
         #region Fields
-        bool _isRefreshCommandExecuting;
+        bool _isRefreshing;
         ICommand _refreshCommand, _restoreDeletedContactsCommand;
         IList<ContactModel> _allContactsList;
-        #endregion
-
-        #region Events
-        public event EventHandler PullToRefreshCompleted;
-        public event EventHandler RestoreDeletedContactsCompleted;
         #endregion
 
         #region Properties
         public ICommand RefreshCommand => _refreshCommand ??
             (_refreshCommand = new Command(async () =>
             {
-                MobileCenterHelpers.TrackEvent(MobileCenterConstants.PullToRefreshTriggered);
+                AppCenterHelpers.TrackEvent(MobileCenterConstants.PullToRefreshTriggered);
                 await ExecuteRefreshCommand();
             }));
 
         public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
             (_restoreDeletedContactsCommand = new Command(async () =>
             {
-                MobileCenterHelpers.TrackEvent(MobileCenterConstants.RestoreDeletedContactsTapped);
+                AppCenterHelpers.TrackEvent(MobileCenterConstants.RestoreDeletedContactsTapped);
                 await ExecuteRestoreDeletedContactsCommand();
             }));
+
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            set => SetProperty(ref _isRefreshing, value);
+        }
 
         public IList<ContactModel> AllContactsList
         {
@@ -48,43 +49,45 @@ namespace XamList
         #region Methods
         async Task ExecuteRefreshCommand()
         {
-            if (_isRefreshCommandExecuting)
-                return;
+            IsRefreshing = true;
 
-            _isRefreshCommandExecuting = true;
             try
             {
-                var oneSecondTaskToShowSpinner = Task.Delay(1000);
+                var minimumSpinnerTime = Task.Delay(1000);
 
                 await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
 
                 var contactList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
                 AllContactsList = contactList.Where(x => !x.IsDeleted).OrderBy(x => x.FullName).ToList();
 
-                await oneSecondTaskToShowSpinner;
+                await minimumSpinnerTime;
             }
             catch (Exception e)
             {
-                MobileCenterHelpers.Log(e);
+                AppCenterHelpers.LogException(e);
             }
             finally
             {
-                OnPullToRefreshCompleted();
-                _isRefreshCommandExecuting = false;
+                IsRefreshing = false;
             }
         }
 
         async Task ExecuteRestoreDeletedContactsCommand()
         {
-            await APIService.RestoreDeletedContacts().ConfigureAwait(false);
-            OnRestoreDeletedContactsCompleted();
+            IsRefreshing = true;
+
+            var minimumSpinnerTime = Task.Delay(5000);
+
+            try
+            {
+                await APIService.RestoreDeletedContacts().ConfigureAwait(false);
+                await ExecuteRefreshCommand().ConfigureAwait(false);
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
         }
-
-        void OnPullToRefreshCompleted() =>
-            PullToRefreshCompleted?.Invoke(this, EventArgs.Empty);
-
-        void OnRestoreDeletedContactsCompleted() =>
-            RestoreDeletedContactsCompleted?.Invoke(this, EventArgs.Empty);
         #endregion
     }
 }

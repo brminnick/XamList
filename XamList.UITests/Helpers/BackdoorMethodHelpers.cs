@@ -18,6 +18,9 @@ namespace XamList.UITests
                 case AndroidApp app_Android:
 					app.Invoke("RemoveTestContactsFromLocalDatabase");
                     break;
+
+                default:
+                    throw new NotSupportedException($"IApp {typeof(IApp)} is not supported");
             }
 		}
     }

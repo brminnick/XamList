@@ -2,7 +2,6 @@
 
 using Xamarin.Forms;
 
-using XamList.Mobile.Common;
 using XamList.Shared;
 
 namespace XamList
@@ -34,6 +33,7 @@ namespace XamList
             };
             _contactsListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
             _contactsListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
+            _contactsListView.SetBinding(ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
 
             _restoreDeletedContactsButton = new Button
             {
@@ -46,7 +46,7 @@ namespace XamList
                                             0.25)
             };
 
-            Title = PageTitles.ContactsListPage;
+            Title = PageTitleConstants.ContactsListPage;
 
             var relativeLayout = new RelativeLayout();
 
@@ -71,7 +71,7 @@ namespace XamList
         {
             base.OnAppearing();
 
-            MobileCenterHelpers.TrackEvent(MobileCenterConstants.ContactsListPageAppeared);
+            AppCenterHelpers.TrackEvent(MobileCenterConstants.ContactsListPageAppeared);
 
             Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
         }
@@ -80,8 +80,6 @@ namespace XamList
         {
             _contactsListView.ItemSelected += HandleItemSelected;
             _addContactButton.Clicked += HandleAddContactButtonClicked;
-            ViewModel.PullToRefreshCompleted += HandlePullToRefreshCompleted;
-            ViewModel.RestoreDeletedContactsCompleted += HandleRestoreDeletedContactsCompleted;
             _restoreDeletedContactsButton.Clicked += HandleRestoreDeletedContactsButtonClicked;
         }
 
@@ -89,8 +87,6 @@ namespace XamList
         {
             _contactsListView.ItemSelected -= HandleItemSelected;
             _addContactButton.Clicked -= HandleAddContactButtonClicked;
-            ViewModel.PullToRefreshCompleted -= HandlePullToRefreshCompleted;
-            ViewModel.RestoreDeletedContactsCompleted -= HandleRestoreDeletedContactsCompleted;
 			_restoreDeletedContactsButton.Clicked -= HandleRestoreDeletedContactsButtonClicked;
         }
 
@@ -108,7 +104,7 @@ namespace XamList
 
         void HandleAddContactButtonClicked(object sender, EventArgs e)
         {
-            MobileCenterHelpers.TrackEvent(MobileCenterConstants.AddContactButtonTapped);
+            AppCenterHelpers.TrackEvent(MobileCenterConstants.AddContactButtonTapped);
 
             Device.BeginInvokeOnMainThread(async () =>
                await Navigation.PushModalAsync(new BaseNavigationPage(new ContactDetailPage(new ContactModel(), true))));
@@ -128,13 +124,6 @@ namespace XamList
                     break;
             }
         }
-
-
-        void HandleRestoreDeletedContactsCompleted(object sender, EventArgs e) =>
-            Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
-
-        public void HandlePullToRefreshCompleted(object sender, EventArgs e) =>
-            Device.BeginInvokeOnMainThread(_contactsListView.EndRefresh);
         #endregion
     }
 }

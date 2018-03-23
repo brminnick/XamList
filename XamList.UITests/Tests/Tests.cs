@@ -3,14 +3,15 @@
 using NUnit.Framework;
 
 using Xamarin.UITest;
-using XamList.Mobile.Common;
+
+using XamList.Shared;
 
 namespace XamList.UITests
 {
-    public class Tests : BaseTest
+    public class Tests : BaseUITest
     {
         #region Constructors
-        public Tests(Platform platform) : base(platform)
+        public Tests(Platform platform): base(platform)
         {
         }
         #endregion
@@ -55,8 +56,11 @@ namespace XamList.UITests
             switch(shouldConfirmAlertDialog)
             {
                 case true:
-					await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+                    ContactsListPage.WaitForPageToLoad();
+                    await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
 					await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+                    ContactsListPage.PullToRefresh();
+                    await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
                     break;
             }
 
@@ -80,12 +84,12 @@ namespace XamList.UITests
             //Act
             ContactsListPage.TapAddContactButton();
 
-            App.WaitForElement(ContactDetailsPage.Title);
+            ContactDetailsPage.WaitForPageToLoad();
 
             ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, false);
             ContactDetailsPage.TapCancelButton();
 
-			await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+            ContactsListPage.WaitForPageToLoad();
 			await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
 
             //Assert
@@ -99,17 +103,17 @@ namespace XamList.UITests
             App.Screenshot("App Launched");
         }
 
-        async Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
+        Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
         {
             ContactsListPage.TapAddContactButton();
 
-            App.WaitForElement(ContactDetailsPage.Title);
+            ContactDetailsPage.WaitForPageToLoad();
 
             ContactDetailsPage.PopulateAllTextFields(firstName, lastName, phoneNumber, shouldUseReturnKey);
             ContactDetailsPage.TapSaveButton();
 
-            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
-            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+            ContactsListPage.WaitForPageToLoad();
+            return ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
         }
         #endregion
     }

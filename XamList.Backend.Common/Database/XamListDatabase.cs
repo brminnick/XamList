@@ -19,19 +19,19 @@ namespace XamList.Backend.Common
         #endregion
 
         #region Methods
-        public static async Task<IList<ContactModel>> GetAllContactModels()
+        public static Task<IList<ContactModel>> GetAllContactModels()
         {
             Func<DataContext, IList<ContactModel>> getAllContactModelsFunction = dataContext => dataContext.GetTable<ContactModel>().ToList();
-            return await PerformDatabaseFunction(getAllContactModelsFunction);
+            return PerformDatabaseFunction(getAllContactModelsFunction);
         }
 
-        public static async Task<ContactModel> GetContactModel(string id)
+        public static Task<ContactModel> GetContactModel(string id)
         {
             Func<DataContext, ContactModel> getContactModelFunction = dataContext => dataContext.GetTable<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
-            return await PerformDatabaseFunction(getContactModelFunction);
+            return PerformDatabaseFunction(getContactModelFunction);
         }
 
-        public static async Task<ContactModel> InsertContactModel(ContactModel contact)
+        public static Task<ContactModel> InsertContactModel(ContactModel contact)
         {
             Func<DataContext, ContactModel> insertContactModelFunction = dataContext =>
             {
@@ -46,10 +46,10 @@ namespace XamList.Backend.Common
                 return contact;
             };
 
-            return await PerformDatabaseFunction(insertContactModelFunction);
+            return PerformDatabaseFunction(insertContactModelFunction);
         }
 
-        public static async Task<ContactModel> PatchContactModel(ContactModel contact)
+        public static Task<ContactModel> PatchContactModel(ContactModel contact)
         {
             var contactModelDelta = new Delta<ContactModel>();
 
@@ -58,10 +58,10 @@ namespace XamList.Backend.Common
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.LastName), contact.LastName);
             contactModelDelta.TrySetPropertyValue(nameof(ContactModel.PhoneNumber), contact.PhoneNumber);
 
-            return await PatchContactModel(contact.Id, contactModelDelta);
+            return PatchContactModel(contact.Id, contactModelDelta);
         }
 
-        public static async Task<ContactModel> PatchContactModel(string id, Delta<ContactModel> contact)
+        public static Task<ContactModel> PatchContactModel(string id, Delta<ContactModel> contact)
         {
             Func<DataContext, ContactModel> patchContactModelFunction = dataContext =>
             {
@@ -73,10 +73,10 @@ namespace XamList.Backend.Common
                 return contactFromDatabase;
             };
 
-            return await PerformDatabaseFunction(patchContactModelFunction);
+            return PerformDatabaseFunction(patchContactModelFunction);
         }
 
-        public static async Task<ContactModel> DeleteContactModel(string id)
+        public static Task<ContactModel> DeleteContactModel(string id)
         {
             Func<DataContext, ContactModel> deleteContactModelFunction = dataContext =>
             {
@@ -88,10 +88,10 @@ namespace XamList.Backend.Common
                 return contactFromDatabase;
             };
 
-            return await PerformDatabaseFunction(deleteContactModelFunction);
+            return PerformDatabaseFunction(deleteContactModelFunction);
         }
 
-        public static async Task<ContactModel> RemoveContactModel(string id)
+        public static Task<ContactModel> RemoveContactModel(string id)
         {
             Func<DataContext, ContactModel> removeContactDatabaseFunction = dataContext =>
             {
@@ -102,12 +102,12 @@ namespace XamList.Backend.Common
                 return contactFromDatabase;
             };
 
-            return await PerformDatabaseFunction(removeContactDatabaseFunction);
+            return PerformDatabaseFunction(removeContactDatabaseFunction);
         }
 
         static async Task<TResult> PerformDatabaseFunction<TResult>(Func<DataContext, TResult> databaseFunction) where TResult : class
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 

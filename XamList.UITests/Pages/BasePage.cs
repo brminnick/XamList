@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Linq;
 
 using Xamarin.UITest;
@@ -33,6 +33,8 @@ namespace XamList.UITests
         #endregion
 
         #region Methods
+        public void WaitForPageToLoad() => App.WaitForElement(_pageTitleText);
+
         string GetTitle(int timeoutInSeconds = 60)
         {
             App.WaitForElement(_pageTitleText, "Could Not Retrieve Page Title", TimeSpan.FromSeconds(timeoutInSeconds));

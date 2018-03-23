@@ -11,7 +11,7 @@ namespace XamList.Functions
 {
     public static class RemoveItemFromDatabase
     {
-        [FunctionName("RemoveItemFromDatabase")]
+        [FunctionName(nameof(RemoveItemFromDatabase))]
         public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "RemoveItemFromDatabase/{id}")]HttpRequestMessage req, string id, TraceWriter log)
         {
             log.Info("C# HTTP trigger function processed a request.");

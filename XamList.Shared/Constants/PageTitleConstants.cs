@@ -1,6 +1,6 @@
-﻿namespace XamList.Mobile.Common
+﻿namespace XamList.Shared
 {
-    public static class PageTitles
+    public static class PageTitleConstants
     {
         public const string ContactDetailsPage = "Contact Details";
         public const string ContactsListPage = "Contacts";
