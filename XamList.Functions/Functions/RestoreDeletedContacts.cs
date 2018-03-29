@@ -16,7 +16,7 @@ namespace XamList.Functions
         {
             log.Info("C# HTTP trigger function processed a request.");
 
-            var contactModelList = await XamListDatabase.GetAllContactModels();
+			var contactModelList = await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
             var deletedContactModelList = contactModelList.Where(x => x.IsDeleted);
 
             var undeletedContactModelList = deletedContactModelList.Select(x => { x.IsDeleted = false; return x; }).ToList();

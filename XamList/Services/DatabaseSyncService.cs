@@ -18,8 +18,9 @@ namespace XamList
             var (contactsToPatchToLocalDatabase, contactsToPatchToRemoteDatabase) = GetModelsThatNeedUpdating(contactListFromLocalDatabase, contactListFromRemoteDatabase, contactsInBothDatabases);
 
             await SaveContacts(contactsToPatchToRemoteDatabase,
-                                    contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase).ToList(),
-                                    contactsInLocalDatabaseButNotStoredRemotely).ConfigureAwait(false);
+			                    contactsToPatchToLocalDatabase,
+                                contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase).ToList(),
+                                contactsInLocalDatabaseButNotStoredRemotely).ConfigureAwait(false);
         }
 
 		static async Task<(List<ContactModel> contactListFromLocalDatabase,
@@ -70,9 +71,9 @@ namespace XamList
                 var modelFromLocalDatabase = modelListFromLocalDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
                 var modelFromRemoteDatabase = modelListFromRemoteDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
 
-				if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) > 0)
+				if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default) > 0)
 					modelsToPatchToRemoteDatabase.Add(contact);
-				else if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default(DateTimeOffset)) < 0)
+				else if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default) < 0)
 					modelsToPatchToLocalDatabase.Add(contact);
 			}
 
@@ -80,15 +81,16 @@ namespace XamList
 					modelsToPatchToRemoteDatabase ?? new List<T>());
 		}
 
-        static Task SaveContacts(List<ContactModel> contactsToPatchToRemoteDatabase, List<ContactModel> contactsToPatchToLocalDatabase,
-                                        List<ContactModel> contactsToSaveToLocalDatabase,
-                                        List<ContactModel> contactsToPostToRemoteDatabase)
+        static Task SaveContacts(List<ContactModel> contactsToPatchToRemoteDatabase, 
+		                            List<ContactModel> contactsToPatchToLocalDatabase,
+		                         List<ContactModel> contactsToAddToLocalDatabase,
+                                    List<ContactModel> contactsToPostToRemoteDatabase)
         {
             var saveContactTaskList = new List<Task>();
             foreach (var contact in contactsToPostToRemoteDatabase)
                 saveContactTaskList.Add(APIService.PostContactModel(contact));
 
-            foreach (var contact in contactsToSaveToLocalDatabase)
+            foreach (var contact in contactsToAddToLocalDatabase)
                 saveContactTaskList.Add(ContactDatabase.SaveContact(contact));
 
             foreach (var contact in contactsToPatchToRemoteDatabase)

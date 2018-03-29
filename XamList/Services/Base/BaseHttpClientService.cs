@@ -31,7 +31,7 @@ namespace XamList
         #region Methods
         protected static Task<T> GetDataObjectFromAPI<T>(string apiUrl) => GetDataObjectFromAPI<T, object>(apiUrl);
 
-        protected static async Task<TDataObject> GetDataObjectFromAPI<TDataObject, TPayloadData>(string apiUrl, TPayloadData data = default(TPayloadData))
+        protected static async Task<TDataObject> GetDataObjectFromAPI<TDataObject, TPayloadData>(string apiUrl, TPayloadData data = default)
         {
             var stringPayload = string.Empty;
 
@@ -49,7 +49,7 @@ namespace XamList
                 using (var json = new JsonTextReader(reader))
                 {
                     if (json == null)
-                        return default(TDataObject);
+                        return default;
 
                     return await Task.Run(() => Serializer.Deserialize<TDataObject>(json)).ConfigureAwait(false);
                 }
@@ -57,7 +57,7 @@ namespace XamList
             catch (Exception e)
             {
                 AppCenterHelpers.LogException(e);
-                return default(TDataObject);
+                return default;
             }
             finally
             {
@@ -125,7 +125,7 @@ namespace XamList
             {
                 UpdateActivityIndicatorStatus(true);
 
-                return await Client.SendAsync(httpRequest);
+                return await Client.SendAsync(httpRequest).ConfigureAwait(false);
             }
             catch (Exception e)
             {

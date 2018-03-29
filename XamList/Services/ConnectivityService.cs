@@ -16,10 +16,10 @@ namespace XamList
 		static async void HandleConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
 		{
             var isRemoteDatabaseReachable = e.IsConnected 
-                                             && await CrossConnectivity.Current.IsRemoteReachable(BackendConstants.AzureAPIUrl);
+                                             && await CrossConnectivity.Current.IsRemoteReachable(BackendConstants.AzureAPIUrl).ConfigureAwait(false);
 
             if (isRemoteDatabaseReachable)
-                await DatabaseSyncService.SyncRemoteAndLocalDatabases();
+                await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
 		}
     }
 }

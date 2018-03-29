@@ -86,7 +86,7 @@ namespace XamList.UITests
 
             App.Tap("Delete");
 
-            await Task.Delay(1000);
+            await Task.Delay(1000).ConfigureAwait(false);
         }
 
         public void TapAddContactButton()
@@ -139,7 +139,7 @@ namespace XamList.UITests
                     Assert.Fail("WaitForNoPullToRefreshActivityIndicatorAsync Failed");
 
                 loopCount++;
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
             }
         }
 
@@ -153,7 +153,7 @@ namespace XamList.UITests
                     Assert.Fail("WaitForPullToRefreshActivityIndicatorAsync Failed");
 
                 loopCount++;
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
             }
         }
 

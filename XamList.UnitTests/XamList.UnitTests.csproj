@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.280555\build\netstandard1.0\Xamarin.Forms.props" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.280555\build\netstandard1.0\Xamarin.Forms.props')" />
 	<Import Project="..\..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.props" Condition="Exists('..\..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.props')" />
 	<PropertyGroup>
@@ -41,12 +42,6 @@
 		<Reference Include="System.Threading.Tasks.Extensions">
 		  <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
 		</Reference>
-		<Reference Include="Newtonsoft.Json">
-		  <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-		</Reference>
-		<Reference Include="nunit.framework">
-		  <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
-		</Reference>
 		<Reference Include="Moq">
 		  <HintPath>..\packages\Moq.4.8.2\lib\net45\Moq.dll</HintPath>
 		</Reference>
@@ -64,6 +59,12 @@
 		</Reference>
 		<Reference Include="Xamarin.Forms.Xaml.UnitTests">
 		  <HintPath>..\packages\Xamarin.Forms.Mocks.2.5.0.4\lib\netstandard2.0\Xamarin.Forms.Xaml.UnitTests.dll</HintPath>
+		</Reference>
+		<Reference Include="Newtonsoft.Json">
+		  <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+		</Reference>
+		<Reference Include="nunit.framework">
+		  <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>

@@ -14,14 +14,14 @@ namespace XamList
         ContactModel _contact;
         Command<bool> _saveButtonTappedCommand;
         #endregion
-
+        
         #region Events
         public event EventHandler SaveContactCompleted;
         #endregion
 
         #region Properties
         public Command<bool> SaveButtonTappedCommand => _saveButtonTappedCommand ??
-            (_saveButtonTappedCommand = new Command<bool>(async (isNewContact) => await ExecuteSaveButtonTappedCommand(isNewContact)));
+            (_saveButtonTappedCommand = new Command<bool>(async (isNewContact) => await ExecuteSaveButtonTappedCommand(isNewContact).ConfigureAwait(false)));
 
         public string FirstNameText
         {

@@ -11,7 +11,7 @@ namespace XamList
     {
         public static async Task RemoveTestContactsFromLocalDatabase()
         {
-            var contactsList = await ContactDatabase.GetAllContacts();
+            var contactsList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
 
             var testContactsList = contactsList.Where(x =>
                                                     x.FirstName.Equals(TestConstants.TestFirstName) &&
@@ -22,7 +22,7 @@ namespace XamList
             foreach (var contact in testContactsList)
                 removedContactTaskList.Add(ContactDatabase.RemoveContact(contact));
 
-            await Task.WhenAll(removedContactTaskList);
+            await Task.WhenAll(removedContactTaskList).ConfigureAwait(false);
         }
     }
 }

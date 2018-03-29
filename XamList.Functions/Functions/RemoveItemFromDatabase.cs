@@ -16,7 +16,7 @@ namespace XamList.Functions
         {
             log.Info("C# HTTP trigger function processed a request.");
 
-            var contactDeleted = await XamListDatabase.RemoveContactModel(id);
+			var contactDeleted = await XamListDatabase.RemoveContactModel(id).ConfigureAwait(false);
 
             if(contactDeleted == null)
                 return req.CreateResponse(System.Net.HttpStatusCode.BadRequest, $"Contact Id not found: Id: {id}");

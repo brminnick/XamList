@@ -23,14 +23,14 @@ namespace XamList
             (_refreshCommand = new Command(async () =>
             {
                 AppCenterHelpers.TrackEvent(MobileCenterConstants.PullToRefreshTriggered);
-                await ExecuteRefreshCommand();
+                await ExecuteRefreshCommand().ConfigureAwait(false);
             }));
-
+        
         public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
             (_restoreDeletedContactsCommand = new Command(async () =>
             {
                 AppCenterHelpers.TrackEvent(MobileCenterConstants.RestoreDeletedContactsTapped);
-                await ExecuteRestoreDeletedContactsCommand();
+                await ExecuteRestoreDeletedContactsCommand().ConfigureAwait(false);
             }));
 
         public bool IsRefreshing
@@ -60,7 +60,7 @@ namespace XamList
                 var contactList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
                 AllContactsList = contactList.Where(x => !x.IsDeleted).OrderBy(x => x.FullName).ToList();
 
-                await minimumSpinnerTime;
+                await minimumSpinnerTime.ConfigureAwait(false);
             }
             catch (Exception e)
             {

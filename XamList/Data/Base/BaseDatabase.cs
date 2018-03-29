@@ -27,14 +27,14 @@ namespace XamList
         protected static async ValueTask<SQLiteAsyncConnection> GetDatabaseConnectionAsync()
         {
             if (!_isInitialized)
-                await Initialize();
+				await Initialize().ConfigureAwait(false);
 
             return DatabaseConnection;
         }
 
         static async Task Initialize()
         {
-            await DatabaseConnection.CreateTableAsync<ContactModel>();
+			await DatabaseConnection.CreateTableAsync<ContactModel>().ConfigureAwait(false);;
             _isInitialized = true;
         }
         #endregion

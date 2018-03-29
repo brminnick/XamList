@@ -12,7 +12,7 @@ using XamList.Shared;
 
 namespace XamList.Backend.Common
 {
-    public static class XamListDatabase
+	public static class XamListDatabase
     {
         #region Constant Fields
         readonly static string _connectionString = ConfigurationManager.ConnectionStrings["XamListDatabaseConnectionString"].ConnectionString;
@@ -20,7 +20,7 @@ namespace XamList.Backend.Common
 
         #region Methods
         public static Task<IList<ContactModel>> GetAllContactModels()
-        {
+		{
             Func<DataContext, IList<ContactModel>> getAllContactModelsFunction = dataContext => dataContext.GetTable<ContactModel>().ToList();
             return PerformDatabaseFunction(getAllContactModelsFunction);
         }
@@ -109,7 +109,7 @@ namespace XamList.Backend.Common
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
+				await connection.OpenAsync().ConfigureAwait(false);
 
                 var dbContext = new DataContext(connection);
 
@@ -118,7 +118,7 @@ namespace XamList.Backend.Common
 
                 try
                 {
-                    return databaseFunction?.Invoke(dbContext) ?? default(TResult);
+                    return databaseFunction?.Invoke(dbContext) ?? default;
                 }
                 catch (Exception e)
                 {
@@ -127,7 +127,7 @@ namespace XamList.Backend.Common
                     Debug.WriteLine(e.ToString());
                     Debug.WriteLine("");
 
-                    return default(TResult);
+                    return default;
                 }
                 finally
                 {
