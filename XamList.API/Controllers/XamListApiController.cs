@@ -17,7 +17,7 @@ namespace XamList.API.Controllers
 		public async Task<IList<ContactModel>> GetAllContacts() =>
 			 await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
 
-		[HttpGet, Route("api/GetContact")]
+		[HttpGet, Route("api/GetContact/{id}")]
 		public async Task<ContactModel> GetContact(string id) =>
 			 await XamListDatabase.GetContactModel(id).ConfigureAwait(false);
 

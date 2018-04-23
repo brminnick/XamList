@@ -10,10 +10,10 @@ namespace XamList
     {
         #region Methods
         public static Task<List<ContactModel>> GetAllContactModels() =>
-            GetDataObjectFromAPI<List<ContactModel>>($"{BackendConstants.AzureAPIUrl}GetAllContacts");
+            GetObjectFromAPI<List<ContactModel>>($"{BackendConstants.AzureAPIUrl}GetAllContacts");
 
-        public static Task<ContactModel> GetContactModel(ContactModel contact) =>
-            GetDataObjectFromAPI<ContactModel, string>($"{BackendConstants.AzureAPIUrl}GetContact", contact.Id);
+        public static Task<ContactModel> GetContactModel(string id) =>
+		    GetObjectFromAPI<ContactModel>($"{BackendConstants.AzureAPIUrl}GetContact/{id}");
 
         public static Task<HttpResponseMessage> PostContactModel(ContactModel contact) =>
             PostObjectToAPI($"{BackendConstants.AzureAPIUrl}PostContact", contact);

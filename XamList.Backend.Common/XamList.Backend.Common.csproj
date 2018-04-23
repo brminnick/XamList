@@ -66,6 +66,8 @@
     <ItemGroup>
         <Compile Include="Database\XamListDatabase.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="HasDataBeenCheckedModel.cs" />
+        <Compile Include="CrashDataModel.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="packages.config" />
