@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26724.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList", "XamList\XamList.csproj", "{6E272597-7247-4D80-AEFB-0B93F5D2A9B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList", "XamList\XamList.csproj", "{6E272597-7247-4D80-AEFB-0B93F5D2A9B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.UITests", "XamList.UITests\XamList.UITests.csproj", "{E289972F-B8E9-4DF5-B0AF-B62133735256}"
 EndProject
@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C84F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8AF8B5CD-DC10-4AE9-9076-0849C2305A60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Functions", "XamList.Functions\XamList.Functions.csproj", "{EC90A67A-AEC4-4B23-8C6C-8F63DBC773FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList.Functions", "XamList.Functions\XamList.Functions.csproj", "{EC90A67A-AEC4-4B23-8C6C-8F63DBC773FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Backend.Common", "XamList.Backend.Common\XamList.Backend.Common.csproj", "{E5BCE4C8-74F5-4A4A-93E4-FC4B79961DEA}"
 EndProject
@@ -31,6 +31,7 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		XamList.Shared\XamList.Shared.projitems*{41adaa6d-6b2d-45fa-8174-98deb032897b}*SharedItemsImports = 13
+		XamList.Shared\XamList.Shared.projitems*{e289972f-b8e9-4df5-b0af-b62133735256}*SharedItemsImports = 4
 		XamList.Shared\XamList.Shared.projitems*{e5bce4c8-74f5-4a4a-93e4-fc4b79961dea}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,10 +150,10 @@ Global
 		{41ADAA6D-6B2D-45FA-8174-98DEB032897B} = {8AF8B5CD-DC10-4AE9-9076-0849C2305A60}
 		{EC90A67A-AEC4-4B23-8C6C-8F63DBC773FD} = {C84F7686-AEC3-45AD-81BB-2E59144A63F1}
 		{E5BCE4C8-74F5-4A4A-93E4-FC4B79961DEA} = {C84F7686-AEC3-45AD-81BB-2E59144A63F1}
+		{7B3F8092-AB35-457F-A64C-569D3D5D352F} = {0F70E615-701B-4DDD-9DC3-B369C5DD4EE6}
 		{C90AF16F-79C7-4076-AE89-C11CE180518E} = {7B3F8092-AB35-457F-A64C-569D3D5D352F}
 		{C534602B-AE1C-4B79-A1A7-261513613A06} = {0F70E615-701B-4DDD-9DC3-B369C5DD4EE6}
 		{18194F14-65E5-422B-A6C6-F020434314C1} = {0F70E615-701B-4DDD-9DC3-B369C5DD4EE6}
-		{7B3F8092-AB35-457F-A64C-569D3D5D352F} = {0F70E615-701B-4DDD-9DC3-B369C5DD4EE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B14BEEF2-D2E4-4AFB-BD86-DECE61D8E42F}
