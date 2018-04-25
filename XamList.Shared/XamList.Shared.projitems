@@ -16,8 +16,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants\BackendConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\PageTitleConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\TestConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\BaseHttpClientService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Constants\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Services\" />
   </ItemGroup>
 </Project>
