@@ -38,7 +38,7 @@ Earlier versions of VS don't support Azure Functions.
 5. Create a new Resource Group
     - I named my resource group XamList
 6. Create a new App Service Plan
-    1. Click App Service Plam
+    1. Click App Service Plan
     2. Click Create New
     3. Name the App Service Plan
        - I named my App Service Plan XamListAppService
