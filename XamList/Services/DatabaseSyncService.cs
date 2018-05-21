@@ -19,7 +19,7 @@ namespace XamList
 
             await SaveContacts(contactsToPatchToRemoteDatabase,
 			                    contactsToPatchToLocalDatabase,
-                                contactsInRemoteDatabaseButNotStoredLocally.Concat(contactsToPatchToLocalDatabase).ToList(),
+                                contactsInRemoteDatabaseButNotStoredLocally,
                                 contactsInLocalDatabaseButNotStoredRemotely).ConfigureAwait(false);
         }
 
