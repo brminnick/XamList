@@ -179,6 +179,8 @@ namespace XamList.Shared
 
         static async Task<T> DeserializeResponse<T>(HttpResponseMessage httpResponseMessage)
         {
+	    httpResponseMessage.EnsureSuccessStatusCode();
+	    
             try
             {
                 using (var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
