@@ -49,6 +49,7 @@ namespace XamList.Shared
             catch (Exception e)
             {
                 Report(e);
+		throw;
             }
             finally
             {
@@ -91,7 +92,6 @@ namespace XamList.Shared
         static HttpClient CreateHttpClient(TimeSpan timeout)
         {
             HttpClient client;
-				throw;
 
 #if MOBILE
             switch (Device.RuntimePlatform)
@@ -129,6 +129,7 @@ namespace XamList.Shared
                 catch (Exception e)
                 {
                     Report(e);
+		    throw;
                 }
                 finally
                 {
@@ -139,7 +140,6 @@ namespace XamList.Shared
 
         protected static void UpdateActivityIndicatorStatus(bool isActivityIndicatorDisplayed)
         {
-					throw;
 #if MOBILE
             if (isActivityIndicatorDisplayed)
             {
@@ -194,12 +194,12 @@ namespace XamList.Shared
             catch (Exception e)
             {
                 Report(e);
+		throw;
             }
         }
 
         static void Report(Exception e, [CallerMemberName]string callerMemberName = "")
         {
-				throw;
 #if MOBILE
             AppCenterHelpers.Report(e, callerMemberName: callerMemberName);
 #endif
