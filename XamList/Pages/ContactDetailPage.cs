@@ -2,8 +2,6 @@
 
 using Xamarin.Forms;
 
-using EntryCustomReturn.Forms.Plugin.Abstractions;
-
 using XamList.Shared;
 
 namespace XamList
@@ -98,7 +96,7 @@ namespace XamList
         {
             base.OnAppearing();
 
-            AppCenterHelpers.TrackEvent(MobileCenterConstants.ContactDetailPageAppeared);
+            AppCenterHelpers.TrackEvent(AppCenterConstants.ContactDetailPageAppeared);
         }
 
         protected override void SubscribeEventHandlers()
@@ -133,7 +131,7 @@ namespace XamList
         #endregion
 
         #region Classes
-        class ContactDetailEntry : CustomReturnEntry
+        class ContactDetailEntry : Entry
         {
             public ContactDetailEntry() => TextColor = Color.FromHex("2B3E50");
         }

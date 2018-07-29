@@ -3,8 +3,6 @@
 using UIKit;
 using Foundation;
 
-using Microsoft.AppCenter.Distribute;
-
 namespace XamList.iOS
 {
     [Register(nameof(AppDelegate))]
@@ -15,20 +13,11 @@ namespace XamList.iOS
 #if DEBUG
             Xamarin.Calabash.Start();
 #endif
-
             global::Xamarin.Forms.Forms.Init();
-            EntryCustomReturn.Forms.Plugin.iOS.CustomReturnEntryRenderer.Init();
-            Distribute.DontCheckForUpdatesInDebug();
 
             LoadApplication(new App());
 
             return base.FinishedLaunching(uiApplication, launchOptions);
-        }
-
-        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
-        {
-            Distribute.OpenUrl(url);
-            return base.OpenUrl(app, url, options);
         }
 
 #if DEBUG

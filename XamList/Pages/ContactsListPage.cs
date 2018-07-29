@@ -71,7 +71,7 @@ namespace XamList
         {
             base.OnAppearing();
 
-            AppCenterHelpers.TrackEvent(MobileCenterConstants.ContactsListPageAppeared);
+            AppCenterHelpers.TrackEvent(AppCenterConstants.ContactsListPageAppeared);
 
             Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
         }
@@ -104,7 +104,7 @@ namespace XamList
 
         void HandleAddContactButtonClicked(object sender, EventArgs e)
         {
-            AppCenterHelpers.TrackEvent(MobileCenterConstants.AddContactButtonTapped);
+            AppCenterHelpers.TrackEvent(AppCenterConstants.AddContactButtonTapped);
 
             Device.BeginInvokeOnMainThread(async () =>
                await Navigation.PushModalAsync(new BaseNavigationPage(new ContactDetailPage(new ContactModel(), true))));

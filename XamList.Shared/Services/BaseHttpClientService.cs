@@ -49,7 +49,7 @@ namespace XamList.Shared
             catch (Exception e)
             {
                 Report(e);
-		throw;
+                throw;
             }
             finally
             {
@@ -129,7 +129,7 @@ namespace XamList.Shared
                 catch (Exception e)
                 {
                     Report(e);
-		    throw;
+                    throw;
                 }
                 finally
                 {
@@ -179,15 +179,15 @@ namespace XamList.Shared
 
         static async Task<T> DeserializeResponse<T>(HttpResponseMessage httpResponseMessage)
         {
-	    httpResponseMessage.EnsureSuccessStatusCode();
-	    
+            httpResponseMessage.EnsureSuccessStatusCode();
+
             try
             {
                 using (var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 using (var reader = new StreamReader(contentStream))
                 using (var json = new JsonTextReader(reader))
                 {
-                    if (json == null)
+                    if (json is null)
                         return default;
 
                     return await Task.Run(() => Serializer.Deserialize<T>(json)).ConfigureAwait(false);
@@ -196,7 +196,7 @@ namespace XamList.Shared
             catch (Exception e)
             {
                 Report(e);
-		throw;
+                throw;
             }
         }
 
@@ -206,6 +206,6 @@ namespace XamList.Shared
             AppCenterHelpers.Report(e, callerMemberName: callerMemberName);
 #endif
         }
-#endregion
+        #endregion
     }
 }

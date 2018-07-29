@@ -22,14 +22,14 @@ namespace XamList
         public ICommand RefreshCommand => _refreshCommand ??
             (_refreshCommand = new Command(async () =>
             {
-                AppCenterHelpers.TrackEvent(MobileCenterConstants.PullToRefreshTriggered);
+                AppCenterHelpers.TrackEvent(AppCenterConstants.PullToRefreshTriggered);
                 await ExecuteRefreshCommand().ConfigureAwait(false);
             }));
         
         public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
             (_restoreDeletedContactsCommand = new Command(async () =>
             {
-                AppCenterHelpers.TrackEvent(MobileCenterConstants.RestoreDeletedContactsTapped);
+                AppCenterHelpers.TrackEvent(AppCenterConstants.RestoreDeletedContactsTapped);
                 await ExecuteRestoreDeletedContactsCommand().ConfigureAwait(false);
             }));
 

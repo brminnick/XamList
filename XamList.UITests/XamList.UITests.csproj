@@ -32,17 +32,8 @@
         <Reference Include="SQLite-net">
             <HintPath>..\packages\sqlite-net-pcl.1.4.118\lib\netstandard1.1\SQLite-net.dll</HintPath>
         </Reference>
-        <Reference Include="nunit.framework">
-            <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-        </Reference>
         <Reference Include="Newtonsoft.Json">
             <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-        </Reference>
-        <Reference Include="Xamarin.UITest">
-            <HintPath>..\packages\Xamarin.UITest.2.2.4\lib\net45\Xamarin.UITest.dll</HintPath>
-        </Reference>
-        <Reference Include="System.Threading.Tasks.Extensions">
-          <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
         </Reference>
         <Reference Include="SQLitePCLRaw.core">
           <HintPath>..\packages\SQLitePCLRaw.core.1.1.11\lib\net45\SQLitePCLRaw.core.dll</HintPath>
@@ -55,6 +46,18 @@
         </Reference>
         <Reference Include="SQLitePCLRaw.batteries_v2">
           <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.11\lib\net45\SQLitePCLRaw.batteries_v2.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Runtime.CompilerServices.Unsafe">
+          <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Threading.Tasks.Extensions">
+          <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+        </Reference>
+        <Reference Include="Xamarin.UITest">
+          <HintPath>..\packages\Xamarin.UITest.2.2.4.1762-dev\lib\net45\Xamarin.UITest.dll</HintPath>
+        </Reference>
+        <Reference Include="nunit.framework">
+          <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>

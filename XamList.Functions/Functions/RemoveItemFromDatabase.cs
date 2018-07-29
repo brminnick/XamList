@@ -18,7 +18,7 @@ namespace XamList.Functions
 
 			var contactDeleted = await XamListDatabase.RemoveContactModel(id).ConfigureAwait(false);
 
-            if(contactDeleted == null)
+            if(contactDeleted is null)
                 return req.CreateResponse(System.Net.HttpStatusCode.BadRequest, $"Contact Id not found: Id: {id}");
 
             return req.CreateResponse(System.Net.HttpStatusCode.OK, contactDeleted);

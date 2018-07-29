@@ -12,16 +12,14 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
-		<PackageReference Include="System.ValueTuple" Version="4.4.0" />
-		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.4.0" />
-		<PackageReference Include="Xam.Plugin.Connectivity" Version="3.1.1" />
-		<PackageReference Include="Xam.Plugins.Forms.CustomReturnEntry" Version="4.1.0-pre1" />
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.11" />
-		<PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
-		<PackageReference Include="Microsoft.AppCenter.Distribute" Version="1.6.1" />
-		<PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.6.1" />
-		<PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.6.1" />
+		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
+		<PackageReference Include="Xam.Plugin.Connectivity" Version="3.2.0" />
+		<PackageReference Include="Xamarin.Forms" Version="3.1.0.637273" />
+		<PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.8.0" />
+		<PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.8.0" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Data\" />
