@@ -1,6 +1,9 @@
 # XamList
 
-[![Build status](https://build.mobile.azure.com/v0.1/apps/e53e8e26-f6c5-4bb0-823b-355acf4d6100/branches/master/badge)](https://mobile.azure.com)
+|CI Tool                    |Build Status|
+|---------------------------|---|
+| App Center, iOS | [![Build status](https://build.appcenter.ms/v0.1/apps/e53e8e26-f6c5-4bb0-823b-355acf4d6100/branches/master/badge)](https://appcenter.ms) |
+| App Center, Android | [![Build status](https://build.appcenter.ms/v0.1/apps/cc7fc163-f984-4f2f-ba33-a20deeb312fb/branches/master/badge)](https://appcenter.ms) |
 
 An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Database, Azure API and Mobile Center.
 
