@@ -20,7 +20,7 @@ namespace XamList.UITests
                     break;
 
                 default:
-                    throw new NotSupportedException($"IApp {typeof(IApp)} is not supported");
+                    throw new NotSupportedException($"{app.GetType()} is not supported");
             }
 		}
     }

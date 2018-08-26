@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 
 using Newtonsoft.Json;
 
@@ -49,7 +50,7 @@ namespace XamList.Shared
             catch (Exception e)
             {
                 Report(e);
-                throw;
+                ExceptionDispatchInfo.Capture(e).Throw();
             }
             finally
             {
@@ -88,6 +89,22 @@ namespace XamList.Shared
         }
 
         protected static Task<HttpResponseMessage> DeleteObjectFromAPI(string apiUrl) => SendAsync<object>(HttpMethod.Delete, apiUrl);
+
+        protected static void UpdateActivityIndicatorStatus(bool isActivityIndicatorDisplayed)
+        {
+#if MOBILE
+            if (isActivityIndicatorDisplayed)
+            {
+                Device.BeginInvokeOnMainThread(() => Application.Current.MainPage.IsBusy = true);
+                _networkIndicatorCount++;
+            }
+            else if (--_networkIndicatorCount <= 0)
+            {
+                Device.BeginInvokeOnMainThread(() => Application.Current.MainPage.IsBusy = false);
+                _networkIndicatorCount = 0;
+            }
+#endif
+        }
 
         static HttpClient CreateHttpClient(TimeSpan timeout)
         {
@@ -129,29 +146,13 @@ namespace XamList.Shared
                 catch (Exception e)
                 {
                     Report(e);
-                    throw;
+                    ExceptionDispatchInfo.Capture(e).Throw();
                 }
                 finally
                 {
                     UpdateActivityIndicatorStatus(false);
                 }
             }
-        }
-
-        protected static void UpdateActivityIndicatorStatus(bool isActivityIndicatorDisplayed)
-        {
-#if MOBILE
-            if (isActivityIndicatorDisplayed)
-            {
-                Device.BeginInvokeOnMainThread(() => Application.Current.MainPage.IsBusy = true);
-                _networkIndicatorCount++;
-            }
-            else if (--_networkIndicatorCount <= 0)
-            {
-                Device.BeginInvokeOnMainThread(() => Application.Current.MainPage.IsBusy = false);
-                _networkIndicatorCount = 0;
-            }
-#endif
         }
 
         static async ValueTask<HttpRequestMessage> GetHttpRequestMessage<T>(HttpMethod method, string apiUrl, T requestData = default)
@@ -196,7 +197,7 @@ namespace XamList.Shared
             catch (Exception e)
             {
                 Report(e);
-                throw;
+                ExceptionDispatchInfo.Capture(e).Throw();
             }
         }
 
