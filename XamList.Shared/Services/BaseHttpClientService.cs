@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
 
 using Newtonsoft.Json;
 
@@ -50,7 +49,7 @@ namespace XamList.Shared
             catch (Exception e)
             {
                 Report(e);
-                ExceptionDispatchInfo.Capture(e).Throw();
+                throw;
             }
             finally
             {
@@ -146,7 +145,7 @@ namespace XamList.Shared
                 catch (Exception e)
                 {
                     Report(e);
-                    ExceptionDispatchInfo.Capture(e).Throw();
+                    throw;
                 }
                 finally
                 {
@@ -197,7 +196,7 @@ namespace XamList.Shared
             catch (Exception e)
             {
                 Report(e);
-                ExceptionDispatchInfo.Capture(e).Throw();
+                throw;
             }
         }
 
