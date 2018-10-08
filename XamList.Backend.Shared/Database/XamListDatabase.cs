@@ -25,9 +25,13 @@ namespace XamList.Backend.Shared
 
         public static ContactModel GetContactModel(string id)
         {
-            return PerformDatabaseFunction(getContactModelFunction);
+            return PerformDatabaseFunction(getContactModelFunction).GetAwaiter().GetResult();
 
-            ContactModel getContactModelFunction(Database dataContext) => dataContext.Fetch<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+            Task<ContactModel> getContactModelFunction(Database dataContext)
+            {
+                var contact = dataContext.Fetch<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+                return Task.FromResult(contact);
+            }
         }
 
         public static Task<ContactModel> InsertContactModel(ContactModel contact)
@@ -105,26 +109,6 @@ namespace XamList.Backend.Shared
                 try
                 {
                     return await databaseFunction?.Invoke(connection) ?? default;
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("");
-                    Debug.WriteLine(e.Message);
-                    Debug.WriteLine(e.ToString());
-                    Debug.WriteLine("");
-
-                    throw;
-                }
-            }
-        }
-
-        static TResult PerformDatabaseFunction<TResult>(Func<Database, TResult> databaseFunction) where TResult : class
-        {
-            using (var connection = new Database(_connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance))
-            {
-                try
-                {
-                    return databaseFunction?.Invoke(connection) ?? default;
                 }
                 catch (Exception e)
                 {
