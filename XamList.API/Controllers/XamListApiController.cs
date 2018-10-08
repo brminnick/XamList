@@ -13,7 +13,6 @@ namespace XamList.API.Controllers
         public async Task<IActionResult> GetAllContacts()
         {
             var contactList = await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
-
             return new OkObjectResult(contactList);
         }
 
@@ -31,7 +30,7 @@ namespace XamList.API.Controllers
             return new CreatedResult("", contactFromDatabase);
         }
 
-        [HttpPatch, Route("api/PatchContact/{id}")]
+        [HttpPatch, Route("api/PatchContact")]
         public async Task<IActionResult> PatchContact(ContactModel contact)
         {
             var contactFromDatabase = await XamListDatabase.PatchContactModel(contact).ConfigureAwait(false);
