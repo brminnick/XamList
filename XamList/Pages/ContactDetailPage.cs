@@ -3,6 +3,7 @@
 using Xamarin.Forms;
 
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList
 {
@@ -113,16 +114,10 @@ namespace XamList
 
         void PopPage()
         {
-            switch (_isNewContact)
-            {
-                case true:
-                    Device.BeginInvokeOnMainThread(async () => await Navigation.PopModalAsync());
-                    break;
-
-                default:
-                    Device.BeginInvokeOnMainThread(async () => await Navigation.PopAsync());
-                    break;
-            }
+            if (_isNewContact)
+                Device.BeginInvokeOnMainThread(async () => await Navigation.PopModalAsync());
+            else
+                Device.BeginInvokeOnMainThread(async () => await Navigation.PopAsync());
         }
 
         void HandleSaveContactCompleted(object sender, EventArgs e) => PopPage();

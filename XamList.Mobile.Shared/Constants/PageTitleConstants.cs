@@ -1,4 +1,4 @@
-﻿namespace XamList.Shared
+﻿namespace XamList.Mobile.Shared
 {
     public static class PageTitleConstants
     {

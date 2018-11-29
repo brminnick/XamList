@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList.UnitTests
 {

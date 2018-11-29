@@ -203,16 +203,6 @@ Earlier versions of VS don't support Azure Functions.
     - In the Properties window, enter "ContactModels" for the Name
     - Click SaveAll
 
-### 8. Install Visual Studio Azure Functions Extension
-
-1. Open [XamList.sln](https://github.com/brminnick/XamList/blob/master/XamList.sln) using Visual Studio for PC (Version 15.3 or later)
-
-![](https://user-images.githubusercontent.com/13558917/29254393-8a1b69e8-8049-11e7-8426-5e1d3ccb3193.png)
-
-2. Ensure the following Extensions are installed
-    - Visual Studio 2017 Tools for Azure Functions
-    - Azure Functions and Web Jobs Tools
-
 
 ### 8. Publish API App to Azure
 

@@ -13,25 +13,25 @@ using Newtonsoft.Json;
 using Xamarin.Forms;
 #endif
 
-namespace XamList.Shared
+namespace XamList.Mobile.Shared
 {
     public abstract class BaseHttpClientService
     {
-        #region Constant Fields
+#region Constant Fields
         static readonly Lazy<JsonSerializer> _serializerHolder = new Lazy<JsonSerializer>();
-        static readonly Lazy<HttpClient> _clientHolder = new Lazy<HttpClient>(() => CreateHttpClient(TimeSpan.FromSeconds(5)));
-        #endregion
+        static readonly Lazy<HttpClient> _clientHolder = new Lazy<HttpClient>(() => CreateHttpClient(TimeSpan.FromSeconds(30)));
+#endregion
 
-        #region Fields
+#region Fields
         static int _networkIndicatorCount = 0;
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
         static HttpClient Client => _clientHolder.Value;
         static JsonSerializer Serializer => _serializerHolder.Value;
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
         protected static async Task<T> GetObjectFromAPI<T>(string apiUrl)
         {
             using (var responseMessage = await GetObjectFromAPI(apiUrl).ConfigureAwait(false))
@@ -120,7 +120,7 @@ namespace XamList.Shared
                     client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
                     break;
             }
-#else   
+#else
             client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
 #endif
 
@@ -206,6 +206,6 @@ namespace XamList.Shared
             AppCenterHelpers.Report(e, callerMemberName: callerMemberName);
 #endif
         }
-        #endregion
+#endregion
     }
 }

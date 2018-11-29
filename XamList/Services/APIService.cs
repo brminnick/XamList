@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList
 {
@@ -19,7 +20,7 @@ namespace XamList
 			PostObjectToAPI($"{BackendConstants.AzureAPIUrl}PostContact", contact);
 
 		public static Task<HttpResponseMessage> PatchContactModel(ContactModel contact) =>
-			PatchObjectToAPI($"{BackendConstants.AzureAPIUrl}PatchContact/{contact.Id}", contact);
+			PatchObjectToAPI($"{BackendConstants.AzureAPIUrl}PatchContact/", contact);
 
 		public static Task<HttpResponseMessage> DeleteContactModel(string id) =>
 			DeleteObjectFromAPI($"{BackendConstants.AzureAPIUrl}DeleteContact/{id}");
