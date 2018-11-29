@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using Xamarin.Forms;
+using AsyncAwaitBestPractices.MVVM;
 
 using XamList.Shared;
 
@@ -20,18 +20,18 @@ namespace XamList
 
         #region Properties
         public ICommand RefreshCommand => _refreshCommand ??
-            (_refreshCommand = new Command(async () =>
+            (_refreshCommand = new AsyncCommand(() =>
             {
                 AppCenterHelpers.TrackEvent(AppCenterConstants.PullToRefreshTriggered);
-                await ExecuteRefreshCommand().ConfigureAwait(false);
-            }));
+                return ExecuteRefreshCommand();
+            }, continueOnCapturedContext: false));
         
         public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
-            (_restoreDeletedContactsCommand = new Command(async () =>
+            (_restoreDeletedContactsCommand = new AsyncCommand(async () =>
             {
                 AppCenterHelpers.TrackEvent(AppCenterConstants.RestoreDeletedContactsTapped);
                 await ExecuteRestoreDeletedContactsCommand().ConfigureAwait(false);
-            }));
+            }, continueOnCapturedContext: false));
 
         public bool IsRefreshing
         {

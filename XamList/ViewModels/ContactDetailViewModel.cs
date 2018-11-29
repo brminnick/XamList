@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using Xamarin.Forms;
+using AsyncAwaitBestPractices.MVVM;
 
 using XamList.Shared;
 
@@ -12,16 +13,16 @@ namespace XamList
     {
         #region Fields
         ContactModel _contact;
-        Command<bool> _saveButtonTappedCommand;
+        ICommand _saveButtonTappedCommand;
         #endregion
-        
+
         #region Events
         public event EventHandler SaveContactCompleted;
         #endregion
 
         #region Properties
-        public Command<bool> SaveButtonTappedCommand => _saveButtonTappedCommand ??
-            (_saveButtonTappedCommand = new Command<bool>(async (isNewContact) => await ExecuteSaveButtonTappedCommand(isNewContact).ConfigureAwait(false)));
+        public ICommand SaveButtonTappedCommand => _saveButtonTappedCommand ??
+            (_saveButtonTappedCommand = new AsyncCommand<bool>(ExecuteSaveButtonTappedCommand, continueOnCapturedContext: false));
 
         public string FirstNameText
         {
@@ -72,16 +73,10 @@ namespace XamList
         {
             var saveContactTaskList = new List<Task> { ContactDatabase.SaveContact(Contact) };
 
-            switch (isNewContact)
-            {
-                case true:
-                    saveContactTaskList.Add(APIService.PostContactModel(Contact));
-                    break;
-
-                default:
-                    saveContactTaskList.Add(APIService.PatchContactModel(Contact));
-                    break;
-            }
+            if (isNewContact)
+                saveContactTaskList.Add(APIService.PostContactModel(Contact));
+            else
+                saveContactTaskList.Add(APIService.PatchContactModel(Contact));
 
             await Task.WhenAll(saveContactTaskList).ConfigureAwait(false);
 
