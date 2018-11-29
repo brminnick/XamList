@@ -40,7 +40,7 @@ namespace XamList
             {
                 Text = "  Restore Deleted Contacts  ",
                 TextColor = ColorConstants.TextColor,
-				AutomationId = AutomationIdConstants.RestoreDeletedContactsButton,
+                AutomationId = AutomationIdConstants.RestoreDeletedContactsButton,
                 BackgroundColor = new Color(ColorConstants.NavigationBarBackgroundColor.R,
                                             ColorConstants.NavigationBarBackgroundColor.G,
                                             ColorConstants.NavigationBarBackgroundColor.B,
@@ -88,7 +88,7 @@ namespace XamList
         {
             _contactsListView.ItemSelected -= HandleItemSelected;
             _addContactButton.Clicked -= HandleAddContactButtonClicked;
-			_restoreDeletedContactsButton.Clicked -= HandleRestoreDeletedContactsButtonClicked;
+            _restoreDeletedContactsButton.Clicked -= HandleRestoreDeletedContactsButtonClicked;
         }
 
         void HandleItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -113,17 +113,13 @@ namespace XamList
 
         async void HandleRestoreDeletedContactsButtonClicked(object sender, EventArgs e)
         {
-            var isDisplayAlertDialogConfirmed = await DisplayAlert("Restore Deleted Contacts", 
-                                                        "Would you like to restore deleted contacts?", 
-                                                        AlertDialogConstants.Yes, 
+            var isDisplayAlertDialogConfirmed = await DisplayAlert("Restore Deleted Contacts",
+                                                        "Would you like to restore deleted contacts?",
+                                                        AlertDialogConstants.Yes,
                                                         AlertDialogConstants.Cancel);
 
-            switch(isDisplayAlertDialogConfirmed)
-            {
-                case true:
-                    ViewModel.RestoreDeletedContactsCommand?.Execute(null);
-                    break;
-            }
+            if (isDisplayAlertDialogConfirmed)
+                ViewModel.RestoreDeletedContactsCommand?.Execute(null);
         }
         #endregion
     }

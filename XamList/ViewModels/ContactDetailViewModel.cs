@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 using AsyncAwaitBestPractices.MVVM;
 
@@ -12,6 +11,7 @@ namespace XamList
     public class ContactDetailViewModel : BaseViewModel
     {
         #region Fields
+        bool _isSaving;
         ContactModel _contact;
         ICommand _saveButtonTappedCommand;
         #endregion
@@ -23,6 +23,12 @@ namespace XamList
         #region Properties
         public ICommand SaveButtonTappedCommand => _saveButtonTappedCommand ??
             (_saveButtonTappedCommand = new AsyncCommand<bool>(ExecuteSaveButtonTappedCommand, continueOnCapturedContext: false));
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public string FirstNameText
         {
@@ -71,16 +77,31 @@ namespace XamList
 
         async Task ExecuteSaveButtonTappedCommand(bool isNewContact)
         {
-            var saveContactTaskList = new List<Task> { ContactDatabase.SaveContact(Contact) };
+            if (!IsSaving)
+            {
+                IsSaving = true;
 
-            if (isNewContact)
-                saveContactTaskList.Add(APIService.PostContactModel(Contact));
-            else
-                saveContactTaskList.Add(APIService.PatchContactModel(Contact));
+                try
+                {
 
-            await Task.WhenAll(saveContactTaskList).ConfigureAwait(false);
+                    Task<ContactModel> saveToRemoteDatabaseTask;
 
-            OnSaveContactCompleted();
+                    var saveToLocalDatabaseTask = ContactDatabase.SaveContact(Contact);
+
+                    if (isNewContact)
+                        saveToRemoteDatabaseTask = APIService.PostContactModel(Contact);
+                    else
+                        saveToRemoteDatabaseTask = APIService.PatchContactModel(Contact);
+
+                    await Task.WhenAll(saveToRemoteDatabaseTask, saveToLocalDatabaseTask).ConfigureAwait(false);
+
+                    OnSaveContactCompleted();
+                }
+                finally
+                {
+                    IsSaving = false;
+                }
+            }
         }
 
         void OnSaveContactCompleted() => SaveContactCompleted?.Invoke(this, EventArgs.Empty);

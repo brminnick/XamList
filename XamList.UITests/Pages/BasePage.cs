@@ -3,6 +3,8 @@ using System.Linq;
 
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
+using Xamarin.UITest.iOS;
+using Xamarin.UITest.Android;
 
 namespace XamList.UITests
 {
@@ -40,15 +42,18 @@ namespace XamList.UITests
             App.WaitForElement(_pageTitleText, "Could Not Retrieve Page Title", TimeSpan.FromSeconds(timeoutInSeconds));
 
             AppResult[] titleQuery;
-            switch (OniOS)
+            switch (App)
             {
-                case true:
-                    titleQuery = App.Query(x => x.Class("UILabel").Marked(_pageTitleText));
+                case iOSApp iosApp:
+                    titleQuery = iosApp.Query(x => x.Class("UILabel").Marked(_pageTitleText));
+                    break;
+
+                case AndroidApp androidApp:
+                    titleQuery = androidApp.Query(x => x.Class("AppCompatTextView").Marked(_pageTitleText));
                     break;
 
                 default:
-                    titleQuery = App.Query(x => x.Class("AppCompatTextView").Marked(_pageTitleText));
-                    break;
+                    throw new NotSupportedException();
             }
 
             return titleQuery?.FirstOrDefault()?.Text;

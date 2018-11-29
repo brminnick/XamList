@@ -1,4 +1,8 @@
-﻿using Xamarin.UITest;
+﻿using System;
+
+using Xamarin.UITest;
+using Xamarin.UITest.iOS;
+using Xamarin.UITest.Android;
 
 using XamList.Mobile.Shared;
 
@@ -43,31 +47,37 @@ namespace XamList.UITests
 
         public void TapSaveButton()
         {
-			switch (OniOS)
-			{
-				case true:
-					App.Tap(_saveButton);
-					break;
+            switch (App)
+            {
+                case iOSApp iOSApp:
+                    iOSApp.Tap(_saveButton);
+                    break;
 
-				default:
-					App.Tap("Save");
-					break;
-			}
+                case AndroidApp androidApp:
+                    androidApp.Tap("Save");
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
 
             App.Screenshot("Save Button Tapped");
         }
 
         public void TapCancelButton()
         {
-            switch (OniOS)
+            switch (App)
             {
-                case true:
-                    App.Tap(_cancelButton);
+                case iOSApp iOSApp:
+                    iOSApp.Tap(_cancelButton);
                     break;
-                
+
+                case AndroidApp androidApp:
+                    androidApp.Tap("Cancel");
+                    break;
+
                 default:
-                    App.Tap("Cancel");
-                    break;
+                    throw new NotSupportedException();
             }
 
             App.Screenshot("Cancel Button Tapped");
@@ -75,15 +85,10 @@ namespace XamList.UITests
 
         void EnterText(Query query, string text, bool shouldUseReturnKey)
         {
-            switch (shouldUseReturnKey)
-            {
-                case true:
-                    EnterTextThenTapEnter(query, text);
-                    break;
-                default:
-                    EnterTextThenDismissKeyboard(query, text);
-                    break;
-            }
+            if (shouldUseReturnKey)
+                EnterTextThenTapEnter(query, text);
+            else
+                EnterTextThenDismissKeyboard(query, text);
         }
 
         void EnterTextThenDismissKeyboard(Query query, string text)

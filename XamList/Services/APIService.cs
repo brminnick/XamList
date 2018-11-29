@@ -16,11 +16,11 @@ namespace XamList
 		public static Task<ContactModel> GetContactModel(string id) =>
 			GetObjectFromAPI<ContactModel>($"{BackendConstants.AzureAPIUrl}GetContact/{id}");
 
-		public static Task<HttpResponseMessage> PostContactModel(ContactModel contact) =>
-			PostObjectToAPI($"{BackendConstants.AzureAPIUrl}PostContact", contact);
+		public static Task<ContactModel> PostContactModel(ContactModel contact) =>
+			PostObjectToAPI<ContactModel,ContactModel>($"{BackendConstants.AzureAPIUrl}PostContact", contact);
 
-		public static Task<HttpResponseMessage> PatchContactModel(ContactModel contact) =>
-			PatchObjectToAPI($"{BackendConstants.AzureAPIUrl}PatchContact/", contact);
+		public static Task<ContactModel> PatchContactModel(ContactModel contact) =>
+            PatchObjectToAPI<ContactModel,ContactModel>($"{BackendConstants.AzureAPIUrl}PatchContact/", contact);
 
 		public static Task<HttpResponseMessage> DeleteContactModel(string id) =>
 			DeleteObjectFromAPI($"{BackendConstants.AzureAPIUrl}DeleteContact/{id}");

@@ -48,6 +48,10 @@ namespace XamList
             var lastNameTextLabel = new ContactDetailLabel { Text = "Last Name" };
             var firstNameTextLabel = new ContactDetailLabel { Text = "First Name" };
 
+            var isSavingIndicator = new ActivityIndicator();
+            isSavingIndicator.SetBinding(IsVisibleProperty, nameof(ViewModel.IsSaving));
+            isSavingIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(ViewModel.IsSaving));
+
             _saveToobarItem = new ToolbarItem
             {
                 Text = "Save",
@@ -66,12 +70,9 @@ namespace XamList
 
             ToolbarItems.Add(_saveToobarItem);
 
-            switch (isNewContact)
-            {
-                case true:
-                    ToolbarItems.Add(_cancelToolbarItem);
-                    break;
-            }
+            if (isNewContact)
+                ToolbarItems.Add(_cancelToolbarItem);
+
 
             Title = PageTitleConstants.ContactDetailsPage;
 
@@ -86,7 +87,8 @@ namespace XamList
                     lastNameTextLabel,
                     lastNameDataEntry,
                     phoneNumberTextLabel,
-                    phoneNumberDataEntry
+                    phoneNumberDataEntry,
+                    isSavingIndicator
                 }
             };
         }

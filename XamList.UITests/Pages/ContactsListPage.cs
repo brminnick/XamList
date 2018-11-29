@@ -42,15 +42,10 @@ namespace XamList.UITests
         {
             App.Tap(_restoreContactsButton);
 
-            switch (shouldConfirmAlertDialog)
-            {
-                case true:
-                    App.Tap(AlertDialogConstants.Yes);
-                    break;
-                case false:
-                    App.Tap(AlertDialogConstants.Cancel);
-                    break;
-            }
+            if (shouldConfirmAlertDialog)
+                App.Tap(AlertDialogConstants.Yes);
+            else
+                App.Tap(AlertDialogConstants.Cancel);
         }
 
         public void ScrollToTopOfList()
@@ -92,14 +87,17 @@ namespace XamList.UITests
 
         public void TapAddContactButton()
         {
-            switch (OniOS)
+            switch (App)
             {
-                case true:
-                    App.Tap(_addContactButon);
+                case iOSApp iOSApp:
+                    iOSApp.Tap(_addContactButon);
                     break;
+                case AndroidApp androidApp:
+                    androidApp.Tap(x => x.Class("ActionMenuItemView"));
+                    break;
+
                 default:
-                    App.Tap(x => x.Class("ActionMenuItemView"));
-                    break;
+                    throw new NotSupportedException();
             }
 
             App.Screenshot("Tapped Add Contact Button");
@@ -173,13 +171,16 @@ namespace XamList.UITests
 
         bool GetIsRefreshActivityIndicatorDisplayed()
         {
-            switch (OniOS)
+            switch (App)
             {
-                case true:
-                    return App.Query(x => x.Class("UIRefreshControl")).Any();
+                case iOSApp iOSApp:
+                    return iOSApp.Query(x => x.Class("UIRefreshControl")).Any();
+
+                case AndroidApp androidApp:
+                    return (bool)androidApp.Query(x => x.Class("SwipeRefreshLayout").Invoke("isRefreshing")).FirstOrDefault();
 
                 default:
-                    return (bool)App.Query(x => x.Class("SwipeRefreshLayout").Invoke("isRefreshing")).FirstOrDefault();
+                    throw new NotSupportedException();
             }
         }
         #endregion
