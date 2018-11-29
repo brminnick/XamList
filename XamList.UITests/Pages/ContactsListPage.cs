@@ -9,6 +9,7 @@ using Xamarin.UITest.iOS;
 using Xamarin.UITest.Android;
 
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 using Query = System.Func<Xamarin.UITest.Queries.AppQuery, Xamarin.UITest.Queries.AppQuery>;
 

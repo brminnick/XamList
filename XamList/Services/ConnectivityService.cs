@@ -1,7 +1,7 @@
 ﻿using Plugin.Connectivity;
 using Plugin.Connectivity.Abstractions;
 
-using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList
 {

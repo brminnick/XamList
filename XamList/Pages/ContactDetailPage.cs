@@ -3,6 +3,7 @@
 using Xamarin.Forms;
 
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList
 {

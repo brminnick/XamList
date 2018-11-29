@@ -1,4 +1,4 @@
-﻿namespace XamList.Shared
+﻿namespace XamList.Mobile.Shared
 {
 #warning: To utilize your own Azure API and Azure Function, replace the values of these strings
     public static class BackendConstants

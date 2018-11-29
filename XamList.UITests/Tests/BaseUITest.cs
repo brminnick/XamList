@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using NUnit.Framework;
 
 using Xamarin.UITest;
+
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList.UITests
 {
