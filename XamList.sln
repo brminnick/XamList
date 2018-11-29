@@ -24,16 +24,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList.API", "XamList.API\
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "XamList.Backend.Shared", "XamList.Backend.Shared\XamList.Backend.Shared.shproj", "{C345D820-AB9C-4853-A638-0C19A1C77903}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Functions", "XamList.Functions\XamList.Functions.csproj", "{FE9A8201-B867-4ECC-A10C-2BB7FE6E82E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList.Functions", "XamList.Functions\XamList.Functions.csproj", "{FE9A8201-B867-4ECC-A10C-2BB7FE6E82E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.UnitTests", "XamList.UnitTests\XamList.UnitTests.csproj", "{3D04340C-686E-42AE-8A74-CAA723E7B0C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList.UnitTests", "XamList.UnitTests\XamList.UnitTests.csproj", "{3D04340C-686E-42AE-8A74-CAA723E7B0C2}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "XamList.Mobile.Shared", "XamList.Mobile.Shared\XamList.Mobile.Shared.shproj", "{2DC30BEE-8B2A-4DE9-A52F-DB8DC9C23220}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		XamList.Mobile.Shared\XamList.Mobile.Shared.projitems*{2dc30bee-8b2a-4de9-a52f-db8dc9c23220}*SharedItemsImports = 13
 		XamList.Shared\XamList.Shared.projitems*{41adaa6d-6b2d-45fa-8174-98deb032897b}*SharedItemsImports = 13
 		XamList.Backend.Shared\XamList.Backend.Shared.projitems*{c345d820-ab9c-4853-a638-0c19a1c77903}*SharedItemsImports = 13
+		XamList.Mobile.Shared\XamList.Mobile.Shared.projitems*{e289972f-b8e9-4df5-b0af-b62133735256}*SharedItemsImports = 4
 		XamList.Shared\XamList.Shared.projitems*{e289972f-b8e9-4df5-b0af-b62133735256}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

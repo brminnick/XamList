@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp2.1</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <UserSecretsId>c3338369-84a2-475b-8ef8-1b634b061055</UserSecretsId>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
       <DefineConstants>TRACE;DEBUG;NETCOREAPP;NETCOREAPP2_1;BACKEND</DefineConstants>
@@ -12,7 +13,10 @@
       <DefineConstants>TRACE;RELEASE;NETCOREAPP;NETCOREAPP2_1;BACKEND</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
-        <Folder Include="wwwroot\" />
+      <Compile Remove="wwwroot\**" />
+      <Content Remove="wwwroot\**" />
+      <EmbeddedResource Remove="wwwroot\**" />
+      <None Remove="wwwroot\**" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.App" />

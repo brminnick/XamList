@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
 
 using XamList.Backend.Shared;
 
@@ -13,11 +13,11 @@ namespace XamList.Functions
     public static class RestoreDeletedContacts
     {
         [FunctionName(nameof(RestoreDeletedContacts))]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "RestoreDeletedContacts/")]HttpRequestMessage req, TraceWriter log)
+        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "RestoreDeletedContacts/")]HttpRequestMessage req, ILogger log)
         {
-            log.Info("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP trigger function processed a request.");
 
-			var contactModelList = await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
+            var contactModelList = await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
             var deletedContactModelList = contactModelList.Where(x => x.IsDeleted);
 
             var undeletedContactModelList = deletedContactModelList.Select(x => { x.IsDeleted = false; return x; }).ToList();
