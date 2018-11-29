@@ -24,14 +24,14 @@ namespace XamList.API.Controllers
         }
 
         [HttpPost, Route("api/PostContact")]
-        public async Task<IActionResult> PostContact(ContactModel contact)
+        public async Task<IActionResult> PostContact([FromBody]ContactModel contact)
         {
             var contactFromDatabase = await XamListDatabase.InsertContactModel(contact).ConfigureAwait(false);
             return new CreatedResult("", contactFromDatabase);
         }
 
         [HttpPatch, Route("api/PatchContact")]
-        public async Task<IActionResult> PatchContact(ContactModel contact)
+        public async Task<IActionResult> PatchContact([FromBody]ContactModel contact)
         {
             var contactFromDatabase = await XamListDatabase.PatchContactModel(contact).ConfigureAwait(false);
             return new OkObjectResult(contactFromDatabase);
