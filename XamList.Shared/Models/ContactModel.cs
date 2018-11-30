@@ -10,6 +10,7 @@ namespace XamList.Shared
 {
 #if BACKEND
     [TableName("ContactModels")]
+    [PrimaryKey(nameof(Id), AutoIncrement = false)]
 #endif
     public class ContactModel : IBaseModel
     {
