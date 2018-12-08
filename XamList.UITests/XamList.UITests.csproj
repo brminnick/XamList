@@ -45,12 +45,32 @@
         <PackageReference Include="NUnit" Version="2.6.4" />
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.1" />
         <PackageReference Include="Xamarin.UITest" Version="2.2.7.2001-dev" />
+        <PackageReference Include="Refit">
+          <Version>4.6.58</Version>
+        </PackageReference>
+        <PackageReference Include="Polly">
+          <Version>6.1.2</Version>
+        </PackageReference>
     </ItemGroup>
     <ItemGroup>
         <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Helpers\" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\XamList.Droid\XamList.Droid.csproj">
+        <Project>{C534602B-AE1C-4B79-A1A7-261513613A06}</Project>
+        <Name>XamList.Droid</Name>
+        <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+        <Private>False</Private>
+      </ProjectReference>
+      <ProjectReference Include="..\XamList.iOS\XamList.iOS.csproj">
+        <Project>{18194F14-65E5-422B-A6C6-F020434314C1}</Project>
+        <Name>XamList.iOS</Name>
+        <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+        <Private>False</Private>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="..\XamList.Mobile.Shared\XamList.Mobile.Shared.projitems" Label="Shared" Condition="Exists('..\XamList.Mobile.Shared\XamList.Mobile.Shared.projitems')" />
     <Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" Condition="Exists('..\XamList.Shared\XamList.Shared.projitems')" />

@@ -14,7 +14,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants\BackendConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\PageTitleConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\TestConstants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\BaseHttpClientService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListFunction.cs"/>
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\APIService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Constants\" />

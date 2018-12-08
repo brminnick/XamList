@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using AsyncAwaitBestPractices.MVVM;
 
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList
 {

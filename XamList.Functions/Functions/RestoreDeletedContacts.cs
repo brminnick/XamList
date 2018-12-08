@@ -13,19 +13,27 @@ namespace XamList.Functions
     public static class RestoreDeletedContacts
     {
         [FunctionName(nameof(RestoreDeletedContacts))]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "RestoreDeletedContacts/")]HttpRequestMessage req, ILogger log)
+        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "RestoreDeletedContacts/")]HttpRequestMessage req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var contactModelList = await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
-            var deletedContactModelList = contactModelList.Where(x => x.IsDeleted);
+            try
+            {
+                var contactModelList = await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
+                var deletedContactModelList = contactModelList.Where(x => x.IsDeleted);
 
-            var undeletedContactModelList = deletedContactModelList.Select(x => { x.IsDeleted = false; return x; }).ToList();
+                var undeletedContactModelList = deletedContactModelList.Select(x => { x.IsDeleted = false; return x; }).ToList();
 
-            foreach (var contact in undeletedContactModelList)
-                await XamListDatabase.PatchContactModel(contact).ConfigureAwait(false);
+                foreach (var contact in undeletedContactModelList)
+                    await XamListDatabase.PatchContactModel(contact).ConfigureAwait(false);
 
-            return req.CreateResponse(System.Net.HttpStatusCode.OK, $"Number of Deleted Contacts Restored: {undeletedContactModelList.Count}");
+                return req.CreateResponse(System.Net.HttpStatusCode.OK, $"Number of Deleted Contacts Restored: {undeletedContactModelList.Count}");
+            }
+            catch(System.Exception e)
+            {
+                log.LogError(e, e.Message);
+                throw;
+            }
         }
     }
 }

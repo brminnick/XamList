@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
-
+using XamList.Mobile.Shared;
 using XamList.Shared;
 
 namespace XamList

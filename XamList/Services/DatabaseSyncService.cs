@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList
 {
@@ -72,9 +72,9 @@ namespace XamList
                 var modelFromRemoteDatabase = modelListFromRemoteDatabase.Where(x => x.Id.Equals(contact.Id)).FirstOrDefault();
 
 				if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default) > 0)
-					modelsToPatchToRemoteDatabase.Add(contact);
+					modelsToPatchToRemoteDatabase.Add(modelFromLocalDatabase);
 				else if (modelFromLocalDatabase?.UpdatedAt.CompareTo(modelFromRemoteDatabase?.UpdatedAt ?? default) < 0)
-					modelsToPatchToLocalDatabase.Add(contact);
+					modelsToPatchToLocalDatabase.Add(modelFromRemoteDatabase);
 			}
 
 			return (modelsToPatchToLocalDatabase ?? new List<T>(),

@@ -48,7 +48,10 @@ namespace XamList.UITests
             //Act
             await AddContact(firstName, lastName, phoneNumber, false).ConfigureAwait(false);
 
-            await ContactsListPage.DeleteContact(firstName, lastName, phoneNumber).ConfigureAwait(false);
+            ContactsListPage.DeleteContact(firstName, lastName, phoneNumber);
+            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+
             Assert.IsFalse(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
 
             ContactsListPage.TapRestoreDeletedContactsButton(shouldConfirmAlertDialog);
@@ -96,7 +99,7 @@ namespace XamList.UITests
             App.Screenshot("App Launched");
         }
 
-        Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
+        async Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
         {
             ContactsListPage.TapAddContactButton();
 
@@ -106,7 +109,9 @@ namespace XamList.UITests
             ContactDetailsPage.TapSaveButton();
 
             ContactsListPage.WaitForPageToLoad();
-            return ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+
+            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
         }
         #endregion
     }

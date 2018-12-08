@@ -55,7 +55,7 @@ namespace XamList.UITests
             App.TapCoordinates(query.Rect.CenterX, query.Rect.Y);
         }
 
-        public async Task DeleteContact(string firstName, string lastName, string phoneNumber)
+        public void DeleteContact(string firstName, string lastName, string phoneNumber)
         {
             var contact = new ContactModel
             {
@@ -81,8 +81,6 @@ namespace XamList.UITests
             }
 
             App.Tap("Delete");
-
-            await Task.Delay(1000).ConfigureAwait(false);
         }
 
         public void TapAddContactButton()

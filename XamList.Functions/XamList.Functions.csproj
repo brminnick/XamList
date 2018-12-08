@@ -4,9 +4,21 @@
     <AzureFunctionsVersion>v2</AzureFunctionsVersion>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
     <PackageReference Include="NPoco" Version="3.9.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\extensions.json" />
+    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\XamList.Functions.dll" />
+    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\XamList.Functions.pdb" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
