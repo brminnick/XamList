@@ -13,16 +13,24 @@ namespace XamList.Functions
     public static class RemoveItemFromDatabase
     {
         [FunctionName(nameof(RemoveItemFromDatabase))]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "RemoveItemFromDatabase/{id}")]HttpRequest req, string id, ILogger log)
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "RemoveItemFromDatabase/{id}")]HttpRequest req, string id, ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            try
+            {
+                log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var contactDeleted = await XamListDatabase.RemoveContactModel(id).ConfigureAwait(false);
+                var contactDeleted = await XamListDatabase.RemoveContactModel(id).ConfigureAwait(false);
 
-            if (contactDeleted is null)
-                return new BadRequestResult();
+                if (contactDeleted is null)
+                    return new BadRequestResult();
 
-            return new OkObjectResult(contactDeleted);
+                return new OkObjectResult(contactDeleted);
+            }
+            catch(System.Exception e)
+            {
+                log.LogError(e, e.Message);
+                throw;
+            }
         }
     }
 }

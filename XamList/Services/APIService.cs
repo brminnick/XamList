@@ -4,12 +4,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using XamList.Shared;
-using XamList.Mobile.Shared;
-using XamList.Services;
-
 using Polly;
 using Refit;
+
+using XamList.Shared;
+using XamList.Mobile.Shared;
+
 
 namespace XamList
 {
@@ -26,14 +26,14 @@ namespace XamList
         #endregion
 
         #region Methods
-        public static Task<List<ContactModel>> GetAllContactModels() => ExecutePollyFunction(() => XamListApiClient.GetAllContactModels());
-        public static Task<ContactModel> GetContactModel(string id) => ExecutePollyFunction(() => XamListApiClient.GetContactModel(id));
-        public static Task<ContactModel> PostContactModel(ContactModel contact) => ExecutePollyFunction(() => XamListApiClient.PostContactModel(contact));
-        public static Task<ContactModel> PatchContactModel(ContactModel contact) => ExecutePollyFunction(() => XamListApiClient.PatchContactModel(contact));
-        public static Task<HttpResponseMessage> DeleteContactModel(string id) => ExecutePollyFunction(() => XamListApiClient.DeleteContactModel(id));
-        public static Task<HttpResponseMessage> RestoreDeletedContacts() => ExecutePollyFunction(() => XamListFunctionsClient.RestoreDeletedContacts());
+        public static Task<List<ContactModel>> GetAllContactModels() => ExecutePollyHttpFunction(() => XamListApiClient.GetAllContactModels());
+        public static Task<ContactModel> GetContactModel(string id) => ExecutePollyHttpFunction(() => XamListApiClient.GetContactModel(id));
+        public static Task<ContactModel> PostContactModel(ContactModel contact) => ExecutePollyHttpFunction(() => XamListApiClient.PostContactModel(contact));
+        public static Task<ContactModel> PatchContactModel(ContactModel contact) => ExecutePollyHttpFunction(() => XamListApiClient.PatchContactModel(contact));
+        public static Task<HttpResponseMessage> DeleteContactModel(string id) => ExecutePollyHttpFunction(() => XamListApiClient.DeleteContactModel(id));
+        public static Task<HttpResponseMessage> RestoreDeletedContacts() => ExecutePollyHttpFunction(() => XamListFunctionsClient.RestoreDeletedContacts());
 
-        static Task<T> ExecutePollyFunction<T>(Func<Task<T>> action, int numRetries = 5)
+        static Task<T> ExecutePollyHttpFunction<T>(Func<Task<T>> action, int numRetries = 5)
         {
             return Policy
                     .Handle<WebException>()

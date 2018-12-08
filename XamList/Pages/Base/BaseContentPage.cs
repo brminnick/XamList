@@ -4,10 +4,6 @@ namespace XamList
 {
     public abstract class BaseContentPage<TViewModel> : ContentPage where TViewModel : BaseViewModel, new()
     {
-        #region Fields
-        TViewModel _viewModel;
-        #endregion
-
         #region Constructors
         protected BaseContentPage()
         {
@@ -17,7 +13,7 @@ namespace XamList
         #endregion
 
         #region Properties
-        protected TViewModel ViewModel => _viewModel ?? (_viewModel = new TViewModel());
+        protected TViewModel ViewModel { get; } = new TViewModel();
         #endregion
 
         #region Methods

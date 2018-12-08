@@ -80,7 +80,7 @@ namespace XamList.UITests
 
 		Task<HttpResponseMessage> RemoveContactFromRemoteDatabase(ContactModel contact)
 		{
-			var apiUrl = $"{BackendConstants.AzureFunctionUrl}RemoveItemFromDatabase/{contact.Id}?code={BackendConstants.AzureFunctionKey_RemoveItemFromDatabase}";
+			var apiUrl = $"{BackendConstants.AzureFunctionUrl}RemoveItemFromDatabase/{contact.Id}";
 
 			return PostObjectToAPI(apiUrl, contact);
 		}

@@ -4,13 +4,15 @@ using Xamarin.Forms;
 
 using XamList.Shared;
 using XamList.Mobile.Shared;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace XamList
 {
     public class ContactsListPage : BaseContentPage<ContactsListViewModel>
     {
         #region Constant Fields
-        readonly ListView _contactsListView;
+        readonly Xamarin.Forms.ListView _contactsListView;
         readonly ToolbarItem _addContactButton;
         readonly Button _restoreDeletedContactsButton;
         #endregion
@@ -25,16 +27,16 @@ namespace XamList
             };
             ToolbarItems.Add(_addContactButton);
 
-            _contactsListView = new ListView(ListViewCachingStrategy.RecycleElement)
+            _contactsListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RecycleElement)
             {
                 ItemTemplate = new DataTemplate(typeof(ContactsListTextCell)),
                 IsPullToRefreshEnabled = true,
                 BackgroundColor = Color.Transparent,
                 AutomationId = AutomationIdConstants.ContactsListView
             };
-            _contactsListView.SetBinding(ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
-            _contactsListView.SetBinding(ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
-            _contactsListView.SetBinding(ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
+            _contactsListView.SetBinding(Xamarin.Forms.ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
+            _contactsListView.SetBinding(Xamarin.Forms.ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
+            _contactsListView.SetBinding(Xamarin.Forms.ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
 
             _restoreDeletedContactsButton = new Button
             {
@@ -64,6 +66,8 @@ namespace XamList
                                         Constraint.RelativeToParent(parent => parent.Height - getRestoreDeletedContactsButtonHeight(parent) - 10));
 
             Content = relativeLayout;
+
+            On<iOS>().SetUseSafeArea(true);
         }
         #endregion
 
@@ -93,7 +97,7 @@ namespace XamList
 
         void HandleItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var listView = sender as ListView;
+            var listView = sender as Xamarin.Forms.ListView;
             var selectedContactModel = e?.SelectedItem as ContactModel;
 
             Device.BeginInvokeOnMainThread(async () =>

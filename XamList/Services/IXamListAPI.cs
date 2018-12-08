@@ -6,7 +6,7 @@ using Refit;
 
 using XamList.Shared;
 
-namespace XamList.Services
+namespace XamList
 {
     [Headers("Accept-Encoding", "gzip", "Accept", "application/json")]
     public interface IXamListAPI

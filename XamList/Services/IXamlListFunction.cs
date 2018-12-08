@@ -3,14 +3,12 @@ using System.Threading.Tasks;
 
 using Refit;
 
-using XamList.Mobile.Shared;
-
-namespace XamList.Services
+namespace XamList
 {
     [Headers("Accept-Encoding", "gzip", "Accept", "application/json")]
     public interface IXamlListFunction
     {
-        [Post(@"RestoreDeletedContacts/?code=" + BackendConstants.AzureFunctionKey_RestoreDeletedContacts)]
+        [Post(@"/RestoreDeletedContacts")]
         Task<HttpResponseMessage> RestoreDeletedContacts();
     }
 }
