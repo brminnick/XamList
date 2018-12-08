@@ -1,32 +1,52 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using XamList.Shared;
 using XamList.Mobile.Shared;
+using XamList.Services;
+
+using Polly;
+using Refit;
 
 namespace XamList
 {
-	abstract class APIService : BaseHttpClientService
-	{
-		#region Methods
-		public static Task<List<ContactModel>> GetAllContactModels() =>
-			GetObjectFromAPI<List<ContactModel>>($"{BackendConstants.AzureAPIUrl}GetAllContacts");
+    static class APIService
+    {
+        #region Constant Fields
+        readonly static Lazy<IXamListAPI> _xamListApiClientHolder = new Lazy<IXamListAPI>(() => RestService.For<IXamListAPI>(BackendConstants.AzureAPIUrl));
+        readonly static Lazy<IXamlListFunction> _xamListFunctionsClientHolder = new Lazy<IXamlListFunction>(() => RestService.For<IXamlListFunction>(BackendConstants.AzureFunctionUrl));
+        #endregion
 
-		public static Task<ContactModel> GetContactModel(string id) =>
-			GetObjectFromAPI<ContactModel>($"{BackendConstants.AzureAPIUrl}GetContact/{id}");
+        #region Properties
+        static IXamListAPI XamListApiClient => _xamListApiClientHolder.Value;
+        static IXamlListFunction XamListFunctionsClient => _xamListFunctionsClientHolder.Value;
+        #endregion
 
-		public static Task<ContactModel> PostContactModel(ContactModel contact) =>
-			PostObjectToAPI<ContactModel,ContactModel>($"{BackendConstants.AzureAPIUrl}PostContact", contact);
+        #region Methods
+        public static Task<List<ContactModel>> GetAllContactModels() => ExecutePollyFunction(() => XamListApiClient.GetAllContactModels());
+        public static Task<ContactModel> GetContactModel(string id) => ExecutePollyFunction(() => XamListApiClient.GetContactModel(id));
+        public static Task<ContactModel> PostContactModel(ContactModel contact) => ExecutePollyFunction(() => XamListApiClient.PostContactModel(contact));
+        public static Task<ContactModel> PatchContactModel(ContactModel contact) => ExecutePollyFunction(() => XamListApiClient.PatchContactModel(contact));
+        public static Task<HttpResponseMessage> DeleteContactModel(string id) => ExecutePollyFunction(() => XamListApiClient.DeleteContactModel(id));
+        public static Task<HttpResponseMessage> RestoreDeletedContacts() => ExecutePollyFunction(() => XamListFunctionsClient.RestoreDeletedContacts());
 
-		public static Task<ContactModel> PatchContactModel(ContactModel contact) =>
-            PatchObjectToAPI<ContactModel,ContactModel>($"{BackendConstants.AzureAPIUrl}PatchContact/", contact);
+        static Task<T> ExecutePollyFunction<T>(Func<Task<T>> action, int numRetries = 5)
+        {
+            return Policy
+                    .Handle<WebException>()
+                    .Or<HttpRequestException>()
+                    .Or<TimeoutException>()
+                    .WaitAndRetryAsync
+                    (
+                        numRetries,
+                        pollyRetryAttempt
+                    ).ExecuteAsync(action);
 
-		public static Task<HttpResponseMessage> DeleteContactModel(string id) =>
-			DeleteObjectFromAPI($"{BackendConstants.AzureAPIUrl}DeleteContact/{id}");
-
-		public static Task<HttpResponseMessage> RestoreDeletedContacts() =>
-			PostObjectToAPI($"{BackendConstants.AzureFunctionUrl}RestoreDeletedContacts/?code={BackendConstants.AzureFunctionKey_RestoreDeletedContacts}", new object());
-		#endregion
-	}
+            TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
+        }
+        #endregion
+    }
 }
