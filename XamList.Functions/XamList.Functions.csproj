@@ -16,6 +16,11 @@
     <PackageReference Include="NPoco" Version="3.9.4" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\extensions.json" />
+    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\XamList.Functions.dll" />
+    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\XamList.Functions.pdb" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

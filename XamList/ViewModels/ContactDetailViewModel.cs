@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
 
 using XamList.Shared;
+using XamList.Mobile.Shared;
 
 namespace XamList
 {

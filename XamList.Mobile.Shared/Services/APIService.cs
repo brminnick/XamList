@@ -8,21 +8,19 @@ using Polly;
 using Refit;
 
 using XamList.Shared;
-using XamList.Mobile.Shared;
 
-
-namespace XamList
+namespace XamList.Mobile.Shared
 {
     static class APIService
     {
         #region Constant Fields
         readonly static Lazy<IXamListAPI> _xamListApiClientHolder = new Lazy<IXamListAPI>(() => RestService.For<IXamListAPI>(BackendConstants.AzureAPIUrl));
-        readonly static Lazy<IXamlListFunction> _xamListFunctionsClientHolder = new Lazy<IXamlListFunction>(() => RestService.For<IXamlListFunction>(BackendConstants.AzureFunctionUrl));
+        readonly static Lazy<IXamListFunction> _xamListFunctionsClientHolder = new Lazy<IXamListFunction>(() => RestService.For<IXamListFunction>(BackendConstants.AzureFunctionUrl));
         #endregion
 
         #region Properties
         static IXamListAPI XamListApiClient => _xamListApiClientHolder.Value;
-        static IXamlListFunction XamListFunctionsClient => _xamListFunctionsClientHolder.Value;
+        static IXamListFunction XamListFunctionsClient => _xamListFunctionsClientHolder.Value;
         #endregion
 
         #region Methods
@@ -32,6 +30,7 @@ namespace XamList
         public static Task<ContactModel> PatchContactModel(ContactModel contact) => ExecutePollyHttpFunction(() => XamListApiClient.PatchContactModel(contact));
         public static Task<HttpResponseMessage> DeleteContactModel(string id) => ExecutePollyHttpFunction(() => XamListApiClient.DeleteContactModel(id));
         public static Task<HttpResponseMessage> RestoreDeletedContacts() => ExecutePollyHttpFunction(() => XamListFunctionsClient.RestoreDeletedContacts());
+        public static Task<HttpResponseMessage> RemoveContactFromRemoteDatabase(string id) => ExecutePollyHttpFunction(() => XamListFunctionsClient.RemoveContactFromRemoteDatabase(id));
 
         static Task<T> ExecutePollyHttpFunction<T>(Func<Task<T>> action, int numRetries = 5)
         {

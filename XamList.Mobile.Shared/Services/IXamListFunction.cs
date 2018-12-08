@@ -3,12 +3,15 @@ using System.Threading.Tasks;
 
 using Refit;
 
-namespace XamList
+namespace XamList.Mobile.Shared
 {
     [Headers("Accept-Encoding", "gzip", "Accept", "application/json")]
-    public interface IXamlListFunction
+    public interface IXamListFunction
     {
         [Post(@"/RestoreDeletedContacts")]
         Task<HttpResponseMessage> RestoreDeletedContacts();
+
+        [Post(@"/RemoveItemFromDatabase/{id}")]
+        Task<HttpResponseMessage> RemoveContactFromRemoteDatabase(string id);
     }
 }
