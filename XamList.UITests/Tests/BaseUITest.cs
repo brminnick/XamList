@@ -64,13 +64,13 @@ namespace XamList.UITests
                                                     x.LastName.Equals(TestConstants.TestLastName) &&
                                                     x.PhoneNumber.Equals(TestConstants.TestPhoneNumber)).ToList();
 
-            var removedContactTaskList = new List<Task<HttpResponseMessage>>();
+            var removedContactTaskList = new List<Task<ContactModel>>();
             foreach (var contact in testContactList)
                 removedContactTaskList.Add(APIService.RemoveContactFromRemoteDatabase(contact.Id));
 
             await Task.WhenAll(removedContactTaskList).ConfigureAwait(false);
 
-            var successfullyRemovedContactCount = removedContactTaskList.Count(x => x.Result.IsSuccessStatusCode);
+            var successfullyRemovedContactCount = removedContactTaskList.Count(x => x != null);
             Assert.IsTrue(testContactList.Count == successfullyRemovedContactCount,
                 $"Error Removing Test Data from Remote Database\n Found {testContactList.Count} Test Contacts and Removed {successfullyRemovedContactCount} Test Contacts");
         }

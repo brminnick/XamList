@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 using Refit;
 
+using XamList.Shared;
+
 namespace XamList.Mobile.Shared
 {
     [Headers("Accept-Encoding", "gzip", "Accept", "application/json")]
@@ -12,6 +14,6 @@ namespace XamList.Mobile.Shared
         Task<HttpResponseMessage> RestoreDeletedContacts();
 
         [Post(@"/RemoveItemFromDatabase/{id}")]
-        Task<HttpResponseMessage> RemoveContactFromRemoteDatabase(string id);
+        Task<ContactModel> RemoveContactFromRemoteDatabase(string id);
     }
 }
