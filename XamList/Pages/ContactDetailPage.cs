@@ -11,12 +11,13 @@ namespace XamList
     {
         #region Constant Fields
         readonly bool _isNewContact;
-        ToolbarItem _saveToobarItem, _cancelToolbarItem;
         #endregion
 
         #region Constructors
         public ContactDetailPage(ContactModel selectedContact, bool isNewContact)
         {
+            ViewModel.SaveContactCompleted += HandleSaveContactCompleted;
+
             _isNewContact = isNewContact;
             ViewModel.Contact = selectedContact;
 
@@ -52,26 +53,27 @@ namespace XamList
             isSavingIndicator.SetBinding(IsVisibleProperty, nameof(ViewModel.IsSaving));
             isSavingIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(ViewModel.IsSaving));
 
-            _saveToobarItem = new ToolbarItem
+            var saveToobarItem = new ToolbarItem
             {
                 Text = "Save",
                 Priority = 0,
                 AutomationId = AutomationIdConstants.SaveContactButton,
                 CommandParameter = _isNewContact
             };
-            _saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ViewModel.SaveButtonTappedCommand));
+            saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ViewModel.SaveButtonTappedCommand));
 
-            _cancelToolbarItem = new ToolbarItem
+            var cancelToolbarItem = new ToolbarItem
             {
                 Text = "Cancel",
                 Priority = 1,
                 AutomationId = AutomationIdConstants.CancelContactButton
             };
+            cancelToolbarItem.Clicked += HandleCancelToolBarItemClicked;
 
-            ToolbarItems.Add(_saveToobarItem);
+            ToolbarItems.Add(saveToobarItem);
 
             if (isNewContact)
-                ToolbarItems.Add(_cancelToolbarItem);
+                ToolbarItems.Add(cancelToolbarItem);
 
 
             Title = PageTitleConstants.ContactDetailsPage;
@@ -100,18 +102,6 @@ namespace XamList
             base.OnAppearing();
 
             AppCenterHelpers.TrackEvent(AppCenterConstants.ContactDetailPageAppeared);
-        }
-
-        protected override void SubscribeEventHandlers()
-        {
-            _cancelToolbarItem.Clicked += HandleCancelToolBarItemClicked;
-            ViewModel.SaveContactCompleted += HandleSaveContactCompleted;
-        }
-
-        protected override void UnsubscribeEventHandlers()
-        {
-            _cancelToolbarItem.Clicked -= HandleCancelToolBarItemClicked;
-            ViewModel.SaveContactCompleted -= HandleSaveContactCompleted;
         }
 
         void PopPage()

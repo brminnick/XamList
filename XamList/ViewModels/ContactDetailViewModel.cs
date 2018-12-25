@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Threading.Tasks;
 
+using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
 
 using XamList.Shared;
@@ -11,6 +12,10 @@ namespace XamList
 {
     public class ContactDetailViewModel : BaseViewModel
     {
+        #region Constant Fields
+        readonly WeakEventManager _saveContactCompletedEventManager = new WeakEventManager();
+        #endregion
+
         #region Fields
         bool _isSaving;
         ContactModel _contact;
@@ -18,7 +23,11 @@ namespace XamList
         #endregion
 
         #region Events
-        public event EventHandler SaveContactCompleted;
+        public event EventHandler SaveContactCompleted
+        {
+            add => _saveContactCompletedEventManager.AddEventHandler(value);
+            remove => _saveContactCompletedEventManager.RemoveEventHandler(value);
+        }
         #endregion
 
         #region Properties
@@ -105,7 +114,7 @@ namespace XamList
             }
         }
 
-        void OnSaveContactCompleted() => SaveContactCompleted?.Invoke(this, EventArgs.Empty);
+        void OnSaveContactCompleted() => _saveContactCompletedEventManager?.HandleEvent(this, EventArgs.Empty, nameof(SaveContactCompleted));
         #endregion
     }
 }
