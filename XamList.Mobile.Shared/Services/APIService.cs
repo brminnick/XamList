@@ -29,6 +29,7 @@ namespace XamList.Mobile.Shared
         public static Task<ContactModel> PostContactModel(ContactModel contact) => ExecutePollyHttpFunction(() => XamListApiClient.PostContactModel(contact));
         public static Task<ContactModel> PatchContactModel(ContactModel contact) => ExecutePollyHttpFunction(() => XamListApiClient.PatchContactModel(contact));
         public static Task<HttpResponseMessage> DeleteContactModel(string id) => ExecutePollyHttpFunction(() => XamListApiClient.DeleteContactModel(id));
+        public static Task<HttpResponseMessage> GetHttpResponseMessage() => ExecutePollyHttpFunction(() => XamListApiClient.GetHttpResponse());
         public static Task<HttpResponseMessage> RestoreDeletedContacts() => ExecutePollyHttpFunction(() => XamListFunctionsClient.RestoreDeletedContacts());
         public static Task<ContactModel> RemoveContactFromRemoteDatabase(string id) => ExecutePollyHttpFunction(() => XamListFunctionsClient.RemoveContactFromRemoteDatabase(id));
 

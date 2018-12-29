@@ -11,8 +11,6 @@ namespace XamList
             base.OnStart();
 
             AppCenterHelpers.Start();
-
-            ConnectivityService.SubscribeEventHandlers();
         }
     }
 }

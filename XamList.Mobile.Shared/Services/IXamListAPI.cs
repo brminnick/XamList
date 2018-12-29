@@ -11,6 +11,9 @@ namespace XamList.Mobile.Shared
     [Headers("Accept-Encoding", "gzip", "Accept", "application/json")]
     public interface IXamListAPI
     {
+        [Get("/")]
+        Task<HttpResponseMessage> GetHttpResponse();
+
         [Get(@"/GetAllContacts")]
         Task<List<ContactModel>> GetAllContactModels();
 

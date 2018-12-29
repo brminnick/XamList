@@ -1,25 +1,22 @@
-﻿using Plugin.Connectivity;
-using Plugin.Connectivity.Abstractions;
-
+﻿using Xamarin.Essentials;
 using XamList.Mobile.Shared;
 
 namespace XamList
 {
     public static class ConnectivityService
     {
-        public static void SubscribeEventHandlers() =>
-            CrossConnectivity.Current.ConnectivityChanged += HandleConnectivityChanged;
+        static ConnectivityService() =>
+            Connectivity.ConnectivityChanged += HandleConnectivityChanged;
 
-        public static void UnsubscribeEventHandlers() =>
-            CrossConnectivity.Current.ConnectivityChanged -= HandleConnectivityChanged;
+        private static async void HandleConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            if (e.NetworkAccess is NetworkAccess.Internet)
+            {
+                var apiResponse = await APIService.GetHttpResponseMessage().ConfigureAwait(false);
 
-		static async void HandleConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
-		{
-            var isRemoteDatabaseReachable = e.IsConnected 
-                                             && await CrossConnectivity.Current.IsRemoteReachable(BackendConstants.AzureAPIUrl).ConfigureAwait(false);
-
-            if (isRemoteDatabaseReachable)
-                await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
-		}
+                if (apiResponse.IsSuccessStatusCode)
+                    await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
+            }
+        }
     }
 }

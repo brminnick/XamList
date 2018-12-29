@@ -103,12 +103,6 @@
     <Reference Include="SQLitePCLRaw.batteries_v2">
       <HintPath>..\packages\SQLitePCLRaw.bundle_green.1.1.12\lib\Xamarin.iOS10\SQLitePCLRaw.batteries_v2.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Connectivity.Abstractions">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\Xamarin.iOS10\Plugin.Connectivity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Connectivity">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\Xamarin.iOS10\Plugin.Connectivity.dll</HintPath>
-    </Reference>
     <Reference Include="SQLite-net">
       <HintPath>..\packages\sqlite-net-pcl.1.5.231\lib\netstandard1.1\SQLite-net.dll</HintPath>
     </Reference>
@@ -155,16 +149,19 @@
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="AsyncAwaitBestPractices">
-      <HintPath>..\packages\AsyncAwaitBestPractices.2.0.0\lib\netstandard\AsyncAwaitBestPractices.dll</HintPath>
+      <HintPath>..\packages\AsyncAwaitBestPractices.2.1.0-pre1\lib\netstandard\AsyncAwaitBestPractices.dll</HintPath>
     </Reference>
     <Reference Include="AsyncAwaitBestPractices.MVVM">
-      <HintPath>..\packages\AsyncAwaitBestPractices.MVVM.2.0.0\lib\netstandard\AsyncAwaitBestPractices.MVVM.dll</HintPath>
+      <HintPath>..\packages\AsyncAwaitBestPractices.MVVM.2.1.0-pre1\lib\netstandard\AsyncAwaitBestPractices.MVVM.dll</HintPath>
     </Reference>
     <Reference Include="Polly">
       <HintPath>..\packages\Polly.6.1.2\lib\netstandard2.0\Polly.dll</HintPath>
     </Reference>
     <Reference Include="Refit">
       <HintPath>..\packages\Refit.4.6.58\lib\netstandard2.0\Refit.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Essentials">
+      <HintPath>..\packages\Xamarin.Essentials.1.0.0\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
