@@ -7,7 +7,8 @@ using XamList.Shared;
 
 namespace XamList.Mobile.Shared
 {
-    [Headers("Accept-Encoding", "gzip", "Accept", "application/json")]
+    [Headers("Accept-Encoding: gzip", 
+                "Accept: application/json")]
     public interface IXamListFunction
     {
         [Post(@"/RestoreDeletedContacts")]
