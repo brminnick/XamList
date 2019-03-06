@@ -14,8 +14,8 @@ namespace XamList.Mobile.Shared
     static class APIService
     {
         #region Constant Fields
-        readonly static Lazy<IXamListAPI> _xamListApiClientHolder = new Lazy<IXamListAPI>(() => RestService.For<IXamListAPI>(BackendConstants.AzureAPIUrl));
-        readonly static Lazy<IXamListFunction> _xamListFunctionsClientHolder = new Lazy<IXamListFunction>(() => RestService.For<IXamListFunction>(BackendConstants.AzureFunctionUrl));
+        readonly static Lazy<IXamListAPI> _xamListApiClientHolder = new Lazy<IXamListAPI>(() => RestService.For<IXamListAPI>(CreateHttpClient(BackendConstants.AzureAPIUrl)));
+        readonly static Lazy<IXamListFunction> _xamListFunctionsClientHolder = new Lazy<IXamListFunction>(() => RestService.For<IXamListFunction>(CreateHttpClient(BackendConstants.AzureFunctionUrl)));
         #endregion
 
         #region Properties
@@ -47,6 +47,8 @@ namespace XamList.Mobile.Shared
 
             TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
         }
-        #endregion
+
+        static HttpClient CreateHttpClient(string baseAddress) => new HttpClient { BaseAddress = new Uri(baseAddress) };
     }
+    #endregion
 }
