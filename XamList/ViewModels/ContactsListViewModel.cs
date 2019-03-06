@@ -28,10 +28,10 @@ namespace XamList
             }, continueOnCapturedContext: false));
         
         public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
-            (_restoreDeletedContactsCommand = new AsyncCommand(async () =>
+            (_restoreDeletedContactsCommand = new AsyncCommand(() =>
             {
                 AppCenterHelpers.TrackEvent(AppCenterConstants.RestoreDeletedContactsTapped);
-                await ExecuteRestoreDeletedContactsCommand().ConfigureAwait(false);
+                return ExecuteRestoreDeletedContactsCommand();
             }, continueOnCapturedContext: false));
 
         public bool IsRefreshing
@@ -50,8 +50,6 @@ namespace XamList
         #region Methods
         async Task ExecuteRefreshCommand()
         {
-            IsRefreshing = true;
-
             try
             {
                 var minimumSpinnerTime = Task.Delay(1000);
