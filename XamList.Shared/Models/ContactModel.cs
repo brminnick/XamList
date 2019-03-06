@@ -15,13 +15,7 @@ namespace XamList.Shared
     public class ContactModel : IBaseModel
     {
         #region Constructors
-        public ContactModel() : this(Guid.NewGuid().ToString())
-        {
-
-        }
-
-        [JsonConstructor]
-        public ContactModel(string id) => Id = id;
+        public ContactModel() => Id = Guid.NewGuid().ToString();
         #endregion
 
         #region Properties
@@ -33,7 +27,7 @@ namespace XamList.Shared
 #if MOBILE
         [PrimaryKey, Unique]
 #endif
-        public string Id { get; }
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }

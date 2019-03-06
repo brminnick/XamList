@@ -40,6 +40,9 @@ namespace XamList.Backend.Shared
 
             async Task<ContactModel> insertContactModelFunction(Database dataContext)
             {
+                if (string.IsNullOrWhiteSpace(contact.Id))
+                    contact.Id = Guid.NewGuid().ToString();
+
                 contact.CreatedAt = DateTimeOffset.UtcNow;
                 contact.UpdatedAt = DateTimeOffset.UtcNow;
 
