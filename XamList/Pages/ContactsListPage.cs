@@ -34,7 +34,7 @@ namespace XamList
                 AutomationId = AutomationIdConstants.ContactsListView
             };
             _contactsListView.ItemSelected += HandleItemSelected;
-            _contactsListView.SetBinding(ItemsView<Cell>.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
+            _contactsListView.SetBinding(Xamarin.Forms.ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
             _contactsListView.SetBinding(Xamarin.Forms.ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
             _contactsListView.SetBinding(Xamarin.Forms.ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
 
@@ -54,10 +54,7 @@ namespace XamList
 
             var relativeLayout = new RelativeLayout();
 
-            Func<RelativeLayout, double> getRestoreDeletedContactsButtonHeight = parent => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Height;
-            Func<RelativeLayout, double> getRestoreDeletedContactsButtonWidth = parent => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Width;
-
-            relativeLayout.Children.Add(_contactsListView,
+           relativeLayout.Children.Add(_contactsListView,
                                        Constraint.Constant(0),
                                        Constraint.Constant(0),
                                        Constraint.RelativeToParent(parent => parent.Width),
@@ -69,6 +66,9 @@ namespace XamList
             Content = relativeLayout;
 
             On<iOS>().SetUseSafeArea(true);
+
+            double getRestoreDeletedContactsButtonHeight(RelativeLayout parent) => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Height;
+            double getRestoreDeletedContactsButtonWidth(RelativeLayout parent) => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Width;
         }
         #endregion
 

@@ -36,14 +36,14 @@ namespace XamList.UITests
             ContactsListPage = new ContactsListPage(App, Platform);
             ContactDetailsPage = new ContactDetailsPage(App, Platform);
 
-            RevoveTestContactsFromDatabases(App).GetAwaiter().GetResult();
+            RevoveTestContactsFromDatabases(App).GetAwaiter();
 
             ContactsListPage.WaitForPageToLoad();
-            ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().GetAwaiter().GetResult();
+            ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().GetAwaiter();
         }
 
         [TearDown]
-        protected virtual void AfterEachTest() => RevoveTestContactsFromDatabases(App).GetAwaiter().GetResult();
+        protected virtual void AfterEachTest() => RevoveTestContactsFromDatabases(App).GetAwaiter();
 
         Task RevoveTestContactsFromDatabases(IApp app)
         {
