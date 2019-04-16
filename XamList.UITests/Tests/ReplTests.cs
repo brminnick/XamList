@@ -1,24 +1,27 @@
 ﻿using NUnit.Framework;
 
 using Xamarin.UITest;
-
 namespace XamList.UITests
 {
-    public class ReplTests : BaseUITest
+    [TestFixture(Platform.iOS)]
+    [TestFixture(Platform.Android)]
+    public class ReplTests
     {
         #region Fields
+        readonly Platform _platform;
         IApp _app;
         #endregion
 
         #region Constructors
-        public ReplTests(Platform platform) : base(platform) { }
+        public ReplTests(Platform platform) => _platform = platform;
         #endregion
 
         #region Methods
-        [Ignore, Test]
+        [Test, Ignore("REPL only used for manually exploring the app")]
         public void Repl() => _app.Repl();
 
-        protected override void BeforeEachTest() => _app = AppInitializer.StartApp(Platform);
+        [SetUp]
+        public void BeforeEachTest() => _app = AppInitializer.StartApp(_platform);
         #endregion
     }
 }

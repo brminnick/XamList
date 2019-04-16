@@ -24,7 +24,7 @@ namespace XamList.UITests
         #endregion
 
         #region Constructors
-        public ContactsListPage(IApp app, Platform platform) : base(app, platform, PageTitleConstants.ContactsListPage)
+        public ContactsListPage(IApp app) : base(app, PageTitleConstants.ContactsListPage)
         {
             _addContactButon = x => x.Marked(AutomationIdConstants.AddContactButon);
             _restoreContactsButton = x => x.Marked(AutomationIdConstants.RestoreDeletedContactsButton);
@@ -133,10 +133,10 @@ namespace XamList.UITests
             while (IsRefreshActivityIndicatorDisplayed)
             {
                 if (loopCount / 10 > timeoutInSeconds)
-                    Assert.Fail("WaitForNoPullToRefreshActivityIndicatorAsync Failed");
+                    throw new Exception($"{nameof(WaitForNoPullToRefreshActivityIndicatorAsync)} Failed");
 
                 loopCount++;
-                await Task.Delay(100).ConfigureAwait(false);
+                await Task.Delay(1000).ConfigureAwait(false);
             }
         }
 
@@ -147,10 +147,10 @@ namespace XamList.UITests
             while (!IsRefreshActivityIndicatorDisplayed)
             {
                 if (loopCount / 10 > timeoutInSeconds)
-                    Assert.Fail("WaitForPullToRefreshActivityIndicatorAsync Failed");
+                    throw new Exception($"{nameof(WaitForPullToRefreshActivityIndicatorAsync)} Failed");
 
                 loopCount++;
-                await Task.Delay(100).ConfigureAwait(false);
+                await Task.Delay(1000).ConfigureAwait(false);
             }
         }
 

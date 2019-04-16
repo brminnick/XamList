@@ -16,13 +16,15 @@ namespace XamList.UITests
     [TestFixture(Platform.Android)]
     public abstract class BaseUITest
     {
+        #region Constant Fields
+        readonly Platform _platform;
+        #endregion
+
         #region Constructors
-        protected BaseUITest(Platform platform) => Platform = platform;
+        protected BaseUITest(Platform platform) => _platform = platform;
         #endregion
 
         #region Properties
-        protected Platform Platform { get; }
-
         protected ContactsListPage ContactsListPage { get; private set; }
         protected ContactDetailsPage ContactDetailsPage { get; private set; }
         protected IApp App { get; private set; }
@@ -30,43 +32,44 @@ namespace XamList.UITests
 
         #region Methods
         [SetUp]
-        protected virtual void BeforeEachTest()
+        protected virtual async Task BeforeEachTest()
         {
-            App = AppInitializer.StartApp(Platform);
-            ContactsListPage = new ContactsListPage(App, Platform);
-            ContactDetailsPage = new ContactDetailsPage(App, Platform);
-
-            RevoveTestContactsFromDatabases(App).GetAwaiter();
+            App = AppInitializer.StartApp(_platform);
+            ContactsListPage = new ContactsListPage(App);
+            ContactDetailsPage = new ContactDetailsPage(App);
 
             ContactsListPage.WaitForPageToLoad();
-            ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().GetAwaiter();
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+
+            await RemoveTestContactsFromDatabases().ConfigureAwait(false);
+
+            ContactsListPage.PullToRefresh();
+
+            App.Screenshot("App Started");
         }
 
         [TearDown]
-        protected virtual void AfterEachTest() => RevoveTestContactsFromDatabases(App).GetAwaiter();
+        protected virtual Task AfterEachTest() => RemoveTestContactsFromDatabases();
 
-        Task RevoveTestContactsFromDatabases(IApp app)
+        Task RemoveTestContactsFromDatabases()
         {
-            var removeTestContactsFromRemoteDatabaseTask = RemoveTestContactsFromRemoteDatabase();
-            var removeTestContactsFromLocalDatabaseTask = Task.Run(() => BackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase(app));
-
-            return Task.WhenAll(removeTestContactsFromLocalDatabaseTask, removeTestContactsFromRemoteDatabaseTask);
+            BackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase(App);
+            return RemoveTestContactsFromRemoteDatabase();
         }
 
         async Task RemoveTestContactsFromRemoteDatabase()
         {
-            var contactList = await APIService.GetAllContactModels().ConfigureAwait(false);
+            var contactList = await ApiService.Instance.GetAllContactModels().ConfigureAwait(false);
 
             Assert.IsNotNull(contactList, "Error Retrieving Contact List From Remote Database");
 
-            var testContactList = contactList.Where(x =>
-                                                    x.FirstName.Equals(TestConstants.TestFirstName) &&
-                                                    x.LastName.Equals(TestConstants.TestLastName) &&
-                                                    x.PhoneNumber.Equals(TestConstants.TestPhoneNumber)).ToList();
+            var testContactList = contactList.Where(x => x.FirstName.Equals(TestConstants.TestFirstName)
+                                                            && x.LastName.Equals(TestConstants.TestLastName)
+                                                            && x.PhoneNumber.Equals(TestConstants.TestPhoneNumber)).ToList();
 
             var removedContactTaskList = new List<Task<ContactModel>>();
             foreach (var contact in testContactList)
-                removedContactTaskList.Add(APIService.RemoveContactFromRemoteDatabase(contact.Id));
+                removedContactTaskList.Add(ApiService.Instance.RemoveContactFromRemoteDatabase(contact.Id));
 
             await Task.WhenAll(removedContactTaskList).ConfigureAwait(false);
 

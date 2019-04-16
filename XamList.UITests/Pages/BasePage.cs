@@ -15,23 +15,16 @@ namespace XamList.UITests
         #endregion
 
         #region Constructors
-        protected BasePage(IApp app, Platform platform, string pageTitle)
+        protected BasePage(IApp app, string pageTitle)
         {
             App = app;
-
-            OnAndroid = platform == Platform.Android;
-            OniOS = platform == Platform.iOS;
-
             _pageTitleText = pageTitle;
         }
         #endregion
 
         #region Properties
         public string Title => GetTitle();
-
         protected IApp App { get; }
-        protected bool OnAndroid { get; }
-        protected bool OniOS { get; }
         #endregion
 
         #region Methods

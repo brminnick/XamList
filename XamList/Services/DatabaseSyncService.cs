@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using XamList.Shared;
-using XamList.Mobile.Shared;
 
 namespace XamList
 {
@@ -27,7 +26,7 @@ namespace XamList
 	        List<ContactModel> contactListFromRemoteDatabase)> GetAllSavedContacts()
 		{
 			var contactListFromLocalDatabaseTask = ContactDatabase.GetAllContacts();
-			var contactListFromRemoteDatabaseTask = APIService.GetAllContactModels();
+			var contactListFromRemoteDatabaseTask = ApiService.Instance.GetAllContactModels();
 
 			await Task.WhenAll(contactListFromLocalDatabaseTask, contactListFromRemoteDatabaseTask).ConfigureAwait(false);
 
@@ -88,13 +87,13 @@ namespace XamList
         {
             var saveContactTaskList = new List<Task>();
             foreach (var contact in contactsToPostToRemoteDatabase)
-                saveContactTaskList.Add(APIService.PostContactModel(contact));
+                saveContactTaskList.Add(ApiService.Instance.PostContactModel(contact));
 
             foreach (var contact in contactsToAddToLocalDatabase)
                 saveContactTaskList.Add(ContactDatabase.SaveContact(contact));
 
             foreach (var contact in contactsToPatchToRemoteDatabase)
-                saveContactTaskList.Add(APIService.PatchContactModel(contact));
+                saveContactTaskList.Add(ApiService.Instance.PatchContactModel(contact));
 
             foreach (var contact in contactsToPatchToLocalDatabase)
                 saveContactTaskList.Add(ContactDatabase.PatchContactModel(contact));

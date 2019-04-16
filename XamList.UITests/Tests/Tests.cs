@@ -49,7 +49,15 @@ namespace XamList.UITests
             await AddContact(firstName, lastName, phoneNumber, false).ConfigureAwait(false);
 
             ContactsListPage.DeleteContact(firstName, lastName, phoneNumber);
-            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+
+            try
+            {
+                await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync(3).ConfigureAwait(false);
+            }
+            catch
+            {
+
+            }
             await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
 
             Assert.IsFalse(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
@@ -59,7 +67,16 @@ namespace XamList.UITests
             if (shouldConfirmAlertDialog)
             {
                 ContactsListPage.WaitForPageToLoad();
-                await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+
+                try
+                {
+                    await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync(3).ConfigureAwait(false);
+                }
+                catch
+                {
+
+                }
+
                 await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
                 ContactsListPage.PullToRefresh();
                 await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
@@ -92,13 +109,6 @@ namespace XamList.UITests
             Assert.IsFalse(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
         }
 
-        protected override void BeforeEachTest()
-        {
-            base.BeforeEachTest();
-
-            App.Screenshot("App Launched");
-        }
-
         async Task AddContact(string firstName, string lastName, string phoneNumber, bool shouldUseReturnKey)
         {
             ContactsListPage.TapAddContactButton();
@@ -110,8 +120,16 @@ namespace XamList.UITests
 
             ContactsListPage.WaitForPageToLoad();
 
-            await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync();
-            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync();
+            try
+            {
+                await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync(3).ConfigureAwait(false);
+            }
+            catch
+            {
+
+            }
+
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
         }
         #endregion
     }

@@ -23,7 +23,7 @@ namespace XamList.Droid
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
-            base.OnCreate(savedInstanceState); 
+            base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
@@ -32,9 +32,9 @@ namespace XamList.Droid
         }
 
 #if DEBUG
-        [Export("RemoveTestContactsFromLocalDatabase")]
-        public void RemoveTestContactsFromLocalDatabase() =>
-            Task.Run(async () => await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase()).GetAwaiter().GetResult();
+        [Export(nameof(RemoveTestContactsFromLocalDatabase))]
+        public async void RemoveTestContactsFromLocalDatabase() =>
+             await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase();
 #endif
     }
 }
