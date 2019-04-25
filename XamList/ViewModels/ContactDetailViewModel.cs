@@ -99,9 +99,9 @@ namespace XamList
                     var saveToLocalDatabaseTask = ContactDatabase.SaveContact(Contact);
 
                     if (isNewContact)
-                        saveToRemoteDatabaseTask = ApiService.Instance.PostContactModel(Contact);
+                        saveToRemoteDatabaseTask = ApiService.PostContactModel(Contact);
                     else
-                        saveToRemoteDatabaseTask = ApiService.Instance.PatchContactModel(Contact);
+                        saveToRemoteDatabaseTask = ApiService.PatchContactModel(Contact);
 
                     await Task.WhenAll(saveToRemoteDatabaseTask, saveToLocalDatabaseTask).ConfigureAwait(false);
 

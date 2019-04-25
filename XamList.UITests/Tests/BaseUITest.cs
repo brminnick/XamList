@@ -59,7 +59,7 @@ namespace XamList.UITests
 
         async Task RemoveTestContactsFromRemoteDatabase()
         {
-            var contactList = await ApiService.Instance.GetAllContactModels().ConfigureAwait(false);
+            var contactList = await ApiService.GetAllContactModels().ConfigureAwait(false);
 
             Assert.IsNotNull(contactList, "Error Retrieving Contact List From Remote Database");
 
@@ -69,7 +69,7 @@ namespace XamList.UITests
 
             var removedContactTaskList = new List<Task<ContactModel>>();
             foreach (var contact in testContactList)
-                removedContactTaskList.Add(ApiService.Instance.RemoveContactFromRemoteDatabase(contact.Id));
+                removedContactTaskList.Add(ApiService.RemoveContactFromRemoteDatabase(contact.Id));
 
             await Task.WhenAll(removedContactTaskList).ConfigureAwait(false);
 

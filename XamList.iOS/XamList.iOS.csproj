@@ -88,17 +88,17 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
         <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.13" />
-        <PackageReference Include="Xamarin.Forms" Version="3.6.0.293080" />
+        <PackageReference Include="Xamarin.Forms" Version="3.6.0.344457" />
         <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.14.0" />
         <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.14.0" />
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.0" />
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="2.1.0" />
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="2.1.1" />
         <PackageReference Include="Polly" Version="7.1.0" />
         <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
         <PackageReference Include="Xamarin.TestCloud.Agent">
-          <Version>0.21.7</Version>
+          <Version>0.21.8</Version>
         </PackageReference>
         <PackageReference Include="Refit">
           <Version>4.6.107</Version>

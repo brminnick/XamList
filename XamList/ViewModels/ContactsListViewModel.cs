@@ -79,7 +79,7 @@ namespace XamList
 
             try
             {
-                await ApiService.Instance.RestoreDeletedContacts().ConfigureAwait(false);
+                await ApiService.RestoreDeletedContacts().ConfigureAwait(false);
 
                 await ExecuteRefreshCommand().ConfigureAwait(false);
 

@@ -16,7 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants\TestConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListAPI.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\BaseAPIService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ApiService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Constants\" />

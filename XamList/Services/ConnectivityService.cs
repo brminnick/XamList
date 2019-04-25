@@ -12,7 +12,7 @@ namespace XamList
         {
             if (e.NetworkAccess is NetworkAccess.Internet)
             {
-                var apiResponse = await ApiService.Instance.GetHttpResponseMessage().ConfigureAwait(false);
+                var apiResponse = await ApiService.GetHttpResponseMessage().ConfigureAwait(false);
 
                 if (apiResponse.IsSuccessStatusCode)
                     await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
