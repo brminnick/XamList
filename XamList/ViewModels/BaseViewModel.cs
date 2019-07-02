@@ -34,7 +34,7 @@ namespace XamList
         }
 
         protected void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
-            _propertyChangedEventManager?.HandleEvent(this, new PropertyChangedEventArgs(propertyName), nameof(INotifyPropertyChanged.PropertyChanged));
+            _propertyChangedEventManager.HandleEvent(this, new PropertyChangedEventArgs(propertyName), nameof(INotifyPropertyChanged.PropertyChanged));
         #endregion
     }
 }

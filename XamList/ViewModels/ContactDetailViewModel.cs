@@ -114,7 +114,7 @@ namespace XamList
             }
         }
 
-        void OnSaveContactCompleted() => _saveContactCompletedEventManager?.HandleEvent(this, EventArgs.Empty, nameof(SaveContactCompleted));
+        void OnSaveContactCompleted() => _saveContactCompletedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SaveContactCompleted));
         #endregion
     }
 }

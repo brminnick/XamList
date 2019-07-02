@@ -42,10 +42,10 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-        <PackageReference Include="NUnit" Version="3.11.0" />
-        <PackageReference Include="Xamarin.UITest" Version="3.0.0-dev13" />
+        <PackageReference Include="NUnit" Version="3.12.0" />
+        <PackageReference Include="Xamarin.UITest" Version="3.0.0" />
         <PackageReference Include="Refit">
-          <Version>4.6.107</Version>
+          <Version>4.7.9</Version>
         </PackageReference>
         <PackageReference Include="Polly">
           <Version>7.1.0</Version>
