@@ -25,14 +25,14 @@ namespace XamList
             {
                 AppCenterHelpers.TrackEvent(AppCenterConstants.PullToRefreshTriggered);
                 return ExecuteRefreshCommand();
-            }, continueOnCapturedContext: false));
+            }));
         
         public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
             (_restoreDeletedContactsCommand = new AsyncCommand(() =>
             {
                 AppCenterHelpers.TrackEvent(AppCenterConstants.RestoreDeletedContactsTapped);
                 return ExecuteRestoreDeletedContactsCommand();
-            }, continueOnCapturedContext: false));
+            }));
 
         public bool IsRefreshing
         {

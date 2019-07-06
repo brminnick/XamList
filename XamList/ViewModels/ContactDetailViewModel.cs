@@ -32,7 +32,7 @@ namespace XamList
 
         #region Properties
         public ICommand SaveButtonTappedCommand => _saveButtonTappedCommand ??
-            (_saveButtonTappedCommand = new AsyncCommand<bool>(ExecuteSaveButtonTappedCommand, continueOnCapturedContext: false));
+            (_saveButtonTappedCommand = new AsyncCommand<bool>(ExecuteSaveButtonTappedCommand));
 
         public bool IsSaving
         {

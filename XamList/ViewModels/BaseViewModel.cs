@@ -21,7 +21,7 @@ namespace XamList
         #endregion
 
         #region Methods
-        protected void SetProperty<T>(ref T backingStore, T value, Action onChanged = null, [CallerMemberName] string propertyname = "")
+        protected void SetProperty<T>(ref T backingStore, in T value, in Action onChanged = null, [CallerMemberName] in string propertyname = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return;
@@ -33,7 +33,7 @@ namespace XamList
             OnPropertyChanged(propertyname);
         }
 
-        protected void OnPropertyChanged([CallerMemberName]string propertyName = "") =>
+        protected void OnPropertyChanged([CallerMemberName] in string propertyName = "") =>
             _propertyChangedEventManager.HandleEvent(this, new PropertyChangedEventArgs(propertyName), nameof(INotifyPropertyChanged.PropertyChanged));
         #endregion
     }

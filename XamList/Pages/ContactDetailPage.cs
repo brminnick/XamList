@@ -16,10 +16,10 @@ namespace XamList
         #region Constructors
         public ContactDetailPage(ContactModel selectedContact, bool isNewContact)
         {
+            ViewModel.Contact = selectedContact;
             ViewModel.SaveContactCompleted += HandleSaveContactCompleted;
 
             _isNewContact = isNewContact;
-            ViewModel.Contact = selectedContact;
 
             var phoneNumberDataEntry = new ContactDetailEntry
             {

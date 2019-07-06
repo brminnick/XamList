@@ -94,7 +94,7 @@
         <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.1.1" />
         <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.1.1" />
         <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.0" />
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="2.1.1" />
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="3.0.0-pre2" />
         <PackageReference Include="Polly" Version="7.1.0" />
         <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
         <PackageReference Include="Xamarin.TestCloud.Agent">
@@ -125,7 +125,6 @@
     <ItemGroup>
         <Compile Include="Main.cs" />
         <Compile Include="AppDelegate.cs" />
-        <Compile Include="Services\SQLite_iOS.cs" />
         <Compile Include="CustomRenderers\ContactDetailsPageCustomRenderer.cs" />
         <Compile Include="CustomRenderers\ContactsListTextCellCustomRenderer.cs" />
     </ItemGroup>

@@ -33,7 +33,7 @@ namespace XamList
                 BackgroundColor = Color.Transparent,
                 AutomationId = AutomationIdConstants.ContactsListView
             };
-            _contactsListView.ItemSelected += HandleItemSelected;
+            _contactsListView.ItemTapped += HandleItemTapped;
             _contactsListView.SetBinding(Xamarin.Forms.ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
             _contactsListView.SetBinding(Xamarin.Forms.ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
             _contactsListView.SetBinding(Xamarin.Forms.ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
@@ -54,11 +54,11 @@ namespace XamList
 
             var relativeLayout = new RelativeLayout();
 
-           relativeLayout.Children.Add(_contactsListView,
-                                       Constraint.Constant(0),
-                                       Constraint.Constant(0),
-                                       Constraint.RelativeToParent(parent => parent.Width),
-                                       Constraint.RelativeToParent(parent => parent.Height));
+            relativeLayout.Children.Add(_contactsListView,
+                                        Constraint.Constant(0),
+                                        Constraint.Constant(0),
+                                        Constraint.RelativeToParent(parent => parent.Width),
+                                        Constraint.RelativeToParent(parent => parent.Height));
             relativeLayout.Children.Add(restoreDeletedContactsButton,
                                         Constraint.RelativeToParent(parent => parent.Width / 2 - getRestoreDeletedContactsButtonWidth(parent) / 2),
                                         Constraint.RelativeToParent(parent => parent.Height - getRestoreDeletedContactsButtonHeight(parent) - 10));
@@ -82,16 +82,17 @@ namespace XamList
             Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
         }
 
-        void HandleItemSelected(object sender, SelectedItemChangedEventArgs e)
+        void HandleItemTapped(object sender, ItemTappedEventArgs e)
         {
-            var listView = sender as Xamarin.Forms.ListView;
-            var selectedContactModel = e?.SelectedItem as ContactModel;
-
-            Device.BeginInvokeOnMainThread(async () =>
+            if (sender is Xamarin.Forms.ListView listView &&
+                    e.Item is ContactModel selectedContactModel)
             {
-                await Navigation.PushAsync(new ContactDetailPage(selectedContactModel, false));
-                listView.SelectedItem = null;
-            });
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PushAsync(new ContactDetailPage(selectedContactModel, false));
+                    listView.SelectedItem = null;
+                });
+            }
         }
 
         void HandleAddContactButtonClicked(object sender, EventArgs e)
