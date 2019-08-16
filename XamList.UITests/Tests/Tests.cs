@@ -10,13 +10,10 @@ namespace XamList.UITests
 {
     public class Tests : BaseUITest
     {
-        #region Constructors
         public Tests(Platform platform) : base(platform)
         {
         }
-        #endregion
 
-        #region Methods
         [Test]
         public void AppLaunches()
         {
@@ -131,6 +128,5 @@ namespace XamList.UITests
 
             await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
         }
-        #endregion
     }
 }

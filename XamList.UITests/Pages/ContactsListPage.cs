@@ -17,27 +17,18 @@ namespace XamList.UITests
 {
     public class ContactsListPage : BasePage
     {
-        #region Constant Fields
-        readonly Query _addContactButon;
-        readonly Query _restoreContactsButton;
-        readonly Query _contactsListView;
-        #endregion
+        readonly Query _addContactButon, _restoreContactsButton, _contactsListView;
 
-        #region Constructors
         public ContactsListPage(IApp app) : base(app, PageTitleConstants.ContactsListPage)
         {
             _addContactButon = x => x.Marked(AutomationIdConstants.AddContactButon);
             _restoreContactsButton = x => x.Marked(AutomationIdConstants.RestoreDeletedContactsButton);
             _contactsListView = x => x.Marked(AutomationIdConstants.ContactsListView);
         }
-        #endregion
 
-        #region Properties
-        public bool IsRefreshActivityIndicatorDisplayed =>
-            GetIsRefreshActivityIndicatorDisplayed();
-        #endregion
 
-        #region Methods
+        public bool IsRefreshActivityIndicatorDisplayed =>GetIsRefreshActivityIndicatorDisplayed();
+
         public void TapRestoreDeletedContactsButton(bool shouldConfirmAlertDialog)
         {
             App.Tap(_restoreContactsButton);
@@ -175,12 +166,11 @@ namespace XamList.UITests
                     return iOSApp.Query(x => x.Class("UIRefreshControl")).Any();
 
                 case AndroidApp androidApp:
-                    return (bool)androidApp.Query(x => x.Class("SwipeRefreshLayout").Invoke("isRefreshing")).FirstOrDefault();
+                    return (bool)(androidApp.Query(x => x.Class("SwipeRefreshLayout")?.Invoke("isRefreshing"))?.FirstOrDefault() ?? false);
 
                 default:
                     throw new NotSupportedException();
             }
         }
-        #endregion
     }
 }

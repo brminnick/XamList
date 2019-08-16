@@ -12,11 +12,11 @@ namespace XamList.UITests
 		{
             switch(app)
             {
-                case iOSApp app_iOS:
-                   app_iOS.Invoke("removeTestContactsFromLocalDatabase:", "");
+                case iOSApp iosApp:
+                   iosApp.Invoke("removeTestContactsFromLocalDatabase:", "");
                     break;
-                case AndroidApp app_Android:
-					app.Invoke("RemoveTestContactsFromLocalDatabase");
+                case AndroidApp androidApp:
+                    androidApp.Invoke("RemoveTestContactsFromLocalDatabase");
                     break;
 
                 default:

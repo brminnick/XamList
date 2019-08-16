@@ -12,12 +12,9 @@ namespace XamList.UITests
 {
     public class ContactDetailsPage : BasePage
     {
-        #region Constant Fields
         readonly Query _firstNameEntry, _lastNameEntry, _phoneNumberEntry,
             _saveButton, _cancelButton;
-        #endregion
 
-        #region Constructors
         public ContactDetailsPage(IApp app) : base(app, PageTitleConstants.ContactDetailsPage)
         {
             _firstNameEntry = x => x.Marked(AutomationIdConstants.FirstNameEntry);
@@ -26,9 +23,7 @@ namespace XamList.UITests
             _saveButton = x => x.Marked(AutomationIdConstants.SaveContactButton);
             _cancelButton = x => x.Marked(AutomationIdConstants.CancelContactButton);
         }
-        #endregion
 
-        #region Methods
         public void EnterFirstNameText(string text, bool shouldUseReturnKey) =>
             EnterText(_firstNameEntry, text, shouldUseReturnKey);
 
@@ -109,6 +104,5 @@ namespace XamList.UITests
 
             App.PressEnter();
         }
-        #endregion
     }
 }

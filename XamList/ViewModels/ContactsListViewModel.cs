@@ -13,13 +13,10 @@ namespace XamList
 {
     public class ContactsListViewModel : BaseViewModel
     {
-        #region Fields
         bool _isRefreshing;
         ICommand _refreshCommand, _restoreDeletedContactsCommand;
         IList<ContactModel> _allContactsList;
-        #endregion
 
-        #region Properties
         public ICommand RefreshCommand => _refreshCommand ??
             (_refreshCommand = new AsyncCommand(() =>
             {
@@ -45,9 +42,7 @@ namespace XamList
             get => _allContactsList;
             set => SetProperty(ref _allContactsList, value);
         }
-        #endregion
 
-        #region Methods
         async Task ExecuteRefreshCommand()
         {
             try
@@ -90,6 +85,5 @@ namespace XamList
                 IsRefreshing = false;
             }
         }
-        #endregion
     }
 }

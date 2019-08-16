@@ -10,24 +10,17 @@ namespace XamList.UITests
 {
     public abstract class BasePage
     {
-        #region Constant Fields
         readonly string _pageTitleText;
-        #endregion
 
-        #region Constructors
         protected BasePage(IApp app, string pageTitle)
         {
             App = app;
             _pageTitleText = pageTitle;
         }
-        #endregion
 
-        #region Properties
         public string Title => GetTitle();
         protected IApp App { get; }
-        #endregion
 
-        #region Methods
         public void WaitForPageToLoad() => App.WaitForElement(_pageTitleText);
 
         string GetTitle(int timeoutInSeconds = 60)
@@ -51,7 +44,6 @@ namespace XamList.UITests
 
             return titleQuery?.FirstOrDefault()?.Text;
         }
-        #endregion
     }
 }
 

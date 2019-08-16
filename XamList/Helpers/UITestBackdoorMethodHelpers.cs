@@ -16,7 +16,7 @@ namespace XamList
             var testContactsList = contactsList.Where(x =>
                                                     x.FirstName.Equals(TestConstants.TestFirstName) &&
                                                     x.LastName.Equals(TestConstants.TestLastName) &&
-                                                    x.PhoneNumber.Equals(TestConstants.TestPhoneNumber)).ToList();
+                                                    x.PhoneNumber.Equals(TestConstants.TestPhoneNumber));
 
             var removedContactTaskList = new List<Task>();
             foreach (var contact in testContactsList)

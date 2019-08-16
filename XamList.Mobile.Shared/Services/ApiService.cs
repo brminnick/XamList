@@ -14,17 +14,12 @@ namespace XamList.Mobile.Shared
 {
     static class ApiService
     {
-        #region Constant Fields
         readonly static Lazy<IXamListAPI> _xamListApiClientHolder = new Lazy<IXamListAPI>(() => RestService.For<IXamListAPI>(CreateHttpClient(BackendConstants.AzureAPIUrl)));
         readonly static Lazy<IXamListFunction> _xamListFunctionsClientHolder = new Lazy<IXamListFunction>(() => RestService.For<IXamListFunction>(CreateHttpClient(BackendConstants.AzureFunctionUrl)));
-        #endregion
 
-        #region Properties
         static IXamListAPI XamListApiClient => _xamListApiClientHolder.Value;
         static IXamListFunction XamListFunctionsClient => _xamListFunctionsClientHolder.Value;
-        #endregion
 
-        #region Methods
         public static Task<List<ContactModel>> GetAllContactModels() => ExecutePollyHttpFunction(() => XamListApiClient.GetAllContactModels());
         public static Task<ContactModel> GetContactModel(string id) => ExecutePollyHttpFunction(() => XamListApiClient.GetContactModel(id));
         public static Task<ContactModel> PostContactModel(ContactModel contact) => ExecutePollyHttpFunction(() => XamListApiClient.PostContactModel(contact));
@@ -34,7 +29,7 @@ namespace XamList.Mobile.Shared
         public static Task<HttpResponseMessage> RestoreDeletedContacts() => ExecutePollyHttpFunction(() => XamListFunctionsClient.RestoreDeletedContacts());
         public static Task<ContactModel> RemoveContactFromRemoteDatabase(string id) => ExecutePollyHttpFunction(() => XamListFunctionsClient.RemoveContactFromRemoteDatabase(id));
 
-        static Task<T> ExecutePollyHttpFunction<T>(Func<Task<T>> action, int numRetries = 5)
+        static Task<T> ExecutePollyHttpFunction<T>(Func<Task<T>> action, int numRetries = 2)
         {
             return Policy
                     .Handle<WebException>()
@@ -63,5 +58,4 @@ namespace XamList.Mobile.Shared
             return client;
         }
     }
-    #endregion
 }

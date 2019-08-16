@@ -4,7 +4,6 @@ namespace XamList
 {
     public static class AppCenterConstants
     {
-        #region Constant Fields
         public const string ContactDetailPageAppeared = "Contact Detail Page Appeared";
         public const string PullToRefreshTriggered = "Pull To Refresh Triggered";
 
@@ -14,13 +13,9 @@ namespace XamList
 
         const string AppCenterAPIKey_iOS = "44a3c601-0552-4fd8-91cd-092eaff8cab8";
         const string AppCenterAPIKey_Droid = "62c4425c-d8b4-482a-a7f8-f8ec88c6500f";
-        #endregion
 
-        #region Properties
         public static string ApiKey => GetAppCenterApiKey();
-        #endregion
 
-        #region Methods
         static string GetAppCenterApiKey()
         {
             switch (Xamarin.Forms.Device.RuntimePlatform)
@@ -33,6 +28,5 @@ namespace XamList
                     throw new PlatformNotSupportedException();
             }
         }
-        #endregion
     }
 }

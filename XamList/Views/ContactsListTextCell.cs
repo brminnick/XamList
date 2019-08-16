@@ -10,11 +10,8 @@ namespace XamList
 {
 	public class ContactsListTextCell : TextCell
 	{
-		#region Constant Fields
 		readonly MenuItem _deleteAction;
-		#endregion
 
-		#region Constructors
 		public ContactsListTextCell()
 		{
 			TextColor = ColorConstants.TextColor;
@@ -29,17 +26,13 @@ namespace XamList
 
 			ContextActions.Add(_deleteAction);
 		}
-		#endregion
 
-		#region Finalizers
 		~ContactsListTextCell()
 		{
 			ContextActions.Remove(_deleteAction);
 			_deleteAction.Clicked -= HandleDeleteClicked;
 		}
-		#endregion
 
-		#region Properties
 		ContactsListViewModel ContactsListViewModel => ContactsListPage.BindingContext as ContactsListViewModel;
 
 		ContactsListPage ContactsListPage
@@ -50,9 +43,7 @@ namespace XamList
 				return navigationPage.Navigation.NavigationStack.FirstOrDefault() as ContactsListPage;
 			}
 		}
-		#endregion
 
-		#region Methods
 		protected override void OnBindingContextChanged()
 		{
 			base.OnBindingContextChanged();
@@ -75,6 +66,5 @@ namespace XamList
 
 			ContactsListViewModel.RefreshCommand?.Execute(null);
 		}
-		#endregion
 	}
 }

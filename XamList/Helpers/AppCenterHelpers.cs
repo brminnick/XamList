@@ -11,7 +11,6 @@ namespace XamList
 {
     public static class AppCenterHelpers
     {
-        #region Methods
         public static void Start() => Start(AppCenterConstants.ApiKey);
 
         public static void TrackEvent(string trackIdentifier, IDictionary<string, string> table = null) =>
@@ -51,6 +50,5 @@ namespace XamList
         }
 
         static void Start(string appSecret) => AppCenter.Start(appSecret, typeof(Analytics), typeof(Crashes));
-        #endregion
     }
 }

@@ -9,11 +9,8 @@ namespace XamList
 {
     public class ContactDetailPage : BaseContentPage<ContactDetailViewModel>
     {
-        #region Constant Fields
         readonly bool _isNewContact;
-        #endregion
 
-        #region Constructors
         public ContactDetailPage(ContactModel selectedContact, bool isNewContact)
         {
             ViewModel.Contact = selectedContact;
@@ -21,37 +18,35 @@ namespace XamList
 
             _isNewContact = isNewContact;
 
-            var phoneNumberDataEntry = new ContactDetailEntry
-            {
-                ReturnType = ReturnType.Go,
-                AutomationId = AutomationIdConstants.PhoneNumberEntry,
-                ReturnCommand = new Command(Unfocus)
-            };
-            phoneNumberDataEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.PhoneNumberText));
-
-            var lastNameDataEntry = new ContactDetailEntry
-            {
-                ReturnType = ReturnType.Next,
-                ReturnCommand = new Command(() => phoneNumberDataEntry.Focus()),
-                AutomationId = AutomationIdConstants.LastNameEntry
-            };
-            lastNameDataEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.LastNameText));
+            var firstNameTextLabel = new ContactDetailLabel { Text = "First Name" };
 
             var firstNameDataEntry = new ContactDetailEntry
             {
                 ReturnType = ReturnType.Next,
-                ReturnCommand = new Command(() => lastNameDataEntry.Focus()),
                 AutomationId = AutomationIdConstants.FirstNameEntry
             };
-            firstNameDataEntry.SetBinding(Entry.TextProperty, nameof(ViewModel.FirstNameText));
+            firstNameDataEntry.SetBinding(Entry.TextProperty, nameof(ContactDetailViewModel.FirstNameText));
+
+            var lastNameTextLabel = new ContactDetailLabel { Text = "Last Name" };
+
+            var lastNameDataEntry = new ContactDetailEntry
+            {
+                ReturnType = ReturnType.Next,
+                AutomationId = AutomationIdConstants.LastNameEntry
+            };
+            lastNameDataEntry.SetBinding(Entry.TextProperty, nameof(ContactDetailViewModel.LastNameText));
 
             var phoneNumberTextLabel = new ContactDetailLabel { Text = "Phone Number" };
-            var lastNameTextLabel = new ContactDetailLabel { Text = "Last Name" };
-            var firstNameTextLabel = new ContactDetailLabel { Text = "First Name" };
+
+            var phoneNumberDataEntry = new ContactDetailEntry
+            {
+                AutomationId = AutomationIdConstants.PhoneNumberEntry
+            };
+            phoneNumberDataEntry.SetBinding(Entry.TextProperty, nameof(ContactDetailViewModel.PhoneNumberText));
 
             var isSavingIndicator = new ActivityIndicator();
-            isSavingIndicator.SetBinding(IsVisibleProperty, nameof(ViewModel.IsSaving));
-            isSavingIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(ViewModel.IsSaving));
+            isSavingIndicator.SetBinding(IsVisibleProperty, nameof(ContactDetailViewModel.IsSaving));
+            isSavingIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(ContactDetailViewModel.IsSaving));
 
             var saveToobarItem = new ToolbarItem
             {
@@ -60,7 +55,7 @@ namespace XamList
                 AutomationId = AutomationIdConstants.SaveContactButton,
                 CommandParameter = _isNewContact
             };
-            saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ViewModel.SaveButtonTappedCommand));
+            saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ContactDetailViewModel.SaveButtonTappedCommand));
 
             var cancelToolbarItem = new ToolbarItem
             {
@@ -94,9 +89,7 @@ namespace XamList
                 }
             };
         }
-        #endregion
 
-        #region Methods
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -115,9 +108,7 @@ namespace XamList
         void HandleSaveContactCompleted(object sender, EventArgs e) => PopPage();
 
         void HandleCancelToolBarItemClicked(object sender, EventArgs e) => PopPage();
-        #endregion
 
-        #region Classes
         class ContactDetailEntry : Entry
         {
             public ContactDetailEntry() => TextColor = Color.FromHex("2B3E50");
@@ -127,6 +118,5 @@ namespace XamList
         {
             public ContactDetailLabel() => TextColor = Color.FromHex("1B2A38");
         }
-        #endregion
     }
 }

@@ -14,11 +14,8 @@ namespace XamList.Shared
 #endif
     public class ContactModel : IBaseModel
     {
-        #region Constructors
         public ContactModel() => Id = Guid.NewGuid().ToString();
-        #endregion
 
-        #region Properties
 #if BACKEND
 #else
         public string FullName => $"{FirstName} {LastName}";
@@ -38,6 +35,5 @@ namespace XamList.Shared
         [Column("deleted")]
 #endif
         public bool IsDeleted { get; set; }
-        #endregion
     }
 }

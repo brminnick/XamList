@@ -11,11 +11,8 @@ namespace XamList.Backend.Shared
 {
     public static class XamListDatabase
     {
-        #region Constant Fields
         readonly static string _connectionString = Environment.GetEnvironmentVariable("XamListDatabaseConnectionString");
-        #endregion
 
-        #region Methods
         public static Task<List<ContactModel>> GetAllContactModels()
         {
             return PerformDatabaseFunction(getContactModelsFunction);
@@ -29,7 +26,7 @@ namespace XamList.Backend.Shared
 
             Task<ContactModel> getContactModelFunction(Database dataContext)
             {
-                var contact = dataContext.Fetch<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+                var contact = dataContext.Fetch<ContactModel>().FirstOrDefault(x => x.Id.Equals(id));
                 return Task.FromResult(contact);
             }
         }
@@ -58,7 +55,7 @@ namespace XamList.Backend.Shared
 
             async Task<ContactModel> patchContactModelFunction(Database dataContext)
             {
-                var contactFromDatabase = dataContext.Fetch<ContactModel>().Where(y => y.Id.Equals(contactModel.Id)).FirstOrDefault();
+                var contactFromDatabase = dataContext.Fetch<ContactModel>().FirstOrDefault(y => y.Id.Equals(contactModel.Id));
 
                 contactFromDatabase.FirstName = contactModel.FirstName;
                 contactFromDatabase.LastName = contactModel.LastName;
@@ -78,7 +75,7 @@ namespace XamList.Backend.Shared
 
             Task<ContactModel> deleteContactModelFunction(Database dataContext)
             {
-                var contactFromDatabase = dataContext.Fetch<ContactModel>().Where(y => y.Id.Equals(id)).FirstOrDefault();
+                var contactFromDatabase = dataContext.Fetch<ContactModel>().FirstOrDefault(y => y.Id.Equals(id));
 
                 contactFromDatabase.IsDeleted = true;
 
@@ -92,7 +89,7 @@ namespace XamList.Backend.Shared
 
             async Task<ContactModel> removeContactDatabaseFunction(Database dataContext)
             {
-                var answerModelFromDatabase = dataContext.Fetch<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefault();
+                var answerModelFromDatabase = dataContext.Fetch<ContactModel>().FirstOrDefault(x => x.Id.Equals(id));
                 if (answerModelFromDatabase is null)
                     return null;
 
@@ -121,6 +118,5 @@ namespace XamList.Backend.Shared
                 }
             }
         }
-        #endregion
     }
 }

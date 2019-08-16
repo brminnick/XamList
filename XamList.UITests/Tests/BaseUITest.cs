@@ -16,21 +16,14 @@ namespace XamList.UITests
     [TestFixture(Platform.Android)]
     public abstract class BaseUITest
     {
-        #region Constant Fields
         readonly Platform _platform;
-        #endregion
 
-        #region Constructors
         protected BaseUITest(Platform platform) => _platform = platform;
-        #endregion
 
-        #region Properties
         protected ContactsListPage ContactsListPage { get; private set; }
         protected ContactDetailsPage ContactDetailsPage { get; private set; }
         protected IApp App { get; private set; }
-        #endregion
 
-        #region Methods
         [SetUp]
         protected virtual async Task BeforeEachTest()
         {
@@ -77,7 +70,6 @@ namespace XamList.UITests
             Assert.IsTrue(testContactList.Count == successfullyRemovedContactCount,
                 $"Error Removing Test Data from Remote Database\n Found {testContactList.Count} Test Contacts and Removed {successfullyRemovedContactCount} Test Contacts");
         }
-        #endregion
     }
 }
 

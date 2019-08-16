@@ -11,11 +11,8 @@ namespace XamList
 {
     public class ContactsListPage : BaseContentPage<ContactsListViewModel>
     {
-        #region Constant Fields
-        Xamarin.Forms.ListView _contactsListView;
-        #endregion
+        readonly Xamarin.Forms.ListView _contactsListView;
 
-        #region Constructors
         public ContactsListPage()
         {
             var addContactButton = new ToolbarItem
@@ -34,9 +31,9 @@ namespace XamList
                 AutomationId = AutomationIdConstants.ContactsListView
             };
             _contactsListView.ItemTapped += HandleItemTapped;
-            _contactsListView.SetBinding(Xamarin.Forms.ListView.ItemsSourceProperty, nameof(ViewModel.AllContactsList));
-            _contactsListView.SetBinding(Xamarin.Forms.ListView.RefreshCommandProperty, nameof(ViewModel.RefreshCommand));
-            _contactsListView.SetBinding(Xamarin.Forms.ListView.IsRefreshingProperty, nameof(ViewModel.IsRefreshing));
+            _contactsListView.SetBinding(Xamarin.Forms.ListView.ItemsSourceProperty, nameof(ContactsListViewModel.AllContactsList));
+            _contactsListView.SetBinding(Xamarin.Forms.ListView.RefreshCommandProperty, nameof(ContactsListViewModel.RefreshCommand));
+            _contactsListView.SetBinding(Xamarin.Forms.ListView.IsRefreshingProperty, nameof(ContactsListViewModel.IsRefreshing));
 
             var restoreDeletedContactsButton = new Button
             {
@@ -70,9 +67,7 @@ namespace XamList
             double getRestoreDeletedContactsButtonHeight(RelativeLayout parent) => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Height;
             double getRestoreDeletedContactsButtonWidth(RelativeLayout parent) => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Width;
         }
-        #endregion
 
-        #region Methods
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -116,6 +111,5 @@ namespace XamList
                     ViewModel.RestoreDeletedContactsCommand?.Execute(null);
             });
         }
-        #endregion
     }
 }

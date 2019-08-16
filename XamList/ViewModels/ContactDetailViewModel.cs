@@ -12,25 +12,18 @@ namespace XamList
 {
     public class ContactDetailViewModel : BaseViewModel
     {
-        #region Constant Fields
         readonly WeakEventManager _saveContactCompletedEventManager = new WeakEventManager();
-        #endregion
 
-        #region Fields
         bool _isSaving;
         ContactModel _contact;
         ICommand _saveButtonTappedCommand;
-        #endregion
 
-        #region Events
         public event EventHandler SaveContactCompleted
         {
             add => _saveContactCompletedEventManager.AddEventHandler(value);
             remove => _saveContactCompletedEventManager.RemoveEventHandler(value);
         }
-        #endregion
 
-        #region Properties
         public ICommand SaveButtonTappedCommand => _saveButtonTappedCommand ??
             (_saveButtonTappedCommand = new AsyncCommand<bool>(ExecuteSaveButtonTappedCommand));
 
@@ -75,9 +68,7 @@ namespace XamList
             get => _contact;
             set => SetProperty(ref _contact, value, NotifyContactProperties);
         }
-        #endregion
 
-        #region Methods
         void NotifyContactProperties()
         {
             OnPropertyChanged(nameof(FirstNameText));
@@ -115,6 +106,5 @@ namespace XamList
         }
 
         void OnSaveContactCompleted() => _saveContactCompletedEventManager.HandleEvent(this, EventArgs.Empty, nameof(SaveContactCompleted));
-        #endregion
     }
 }
