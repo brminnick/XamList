@@ -1,14 +1,13 @@
 ﻿using System;
-
 using Xamarin.UITest;
 using Xamarin.UITest.iOS;
 using Xamarin.UITest.Android;
 
 namespace XamList.UITests
 {
-    public static class BackdoorMethodHelpers
+    static class BackdoorMethodHelpers
     {
-		internal static void RemoveTestContactsFromLocalDatabase(IApp app)
+		public static void RemoveTestContactsFromLocalDatabase(IApp app)
 		{
             switch(app)
             {
@@ -23,5 +22,21 @@ namespace XamList.UITests
                     throw new NotSupportedException($"{app.GetType()} is not supported");
             }
 		}
+
+        public static void TriggerPullToRefresh(IApp app)
+        {
+            switch (app)
+            {
+                case iOSApp iosApp:
+                    iosApp.Invoke("triggerPullToRefresh:", "");
+                    break;
+                case AndroidApp androidApp:
+                    androidApp.Invoke("TriggerPullToRefresh");
+                    break;
+
+                default:
+                    throw new NotSupportedException($"{app.GetType()} is not supported");
+            }
+        }
     }
 }

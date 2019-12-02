@@ -1,34 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AzureFunctionsVersion>v2</AzureFunctionsVersion>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
-    <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
-    <PackageReference Include="NPoco" Version="4.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\extensions.json" />
-    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\XamList.Functions.dll" />
-    <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\XamList.Functions.pdb" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="host.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="local.settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-  <Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" />
-  <Import Project="..\XamList.Backend.Shared\XamList.Backend.Shared.projitems" Label="Shared" />
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <AzureFunctionsVersion>v3-preview</AzureFunctionsVersion>
+        <Nullable>enable</Nullable>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>
+        </DebugType>
+        <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;BACKEND</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.0-preview2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.1" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\extensions.json" />
+        <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\XamList.Functions.dll" />
+        <None Remove="obj\Release\netstandard2.0\PubTmp\Out\bin\XamList.Functions.pdb" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="host.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="local.settings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+    <Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" />
+    <Import Project="..\XamList.Backend.Shared\XamList.Backend.Shared.projitems" Label="Shared" />
 </Project>

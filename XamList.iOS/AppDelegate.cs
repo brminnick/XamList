@@ -1,12 +1,10 @@
-﻿using System.Threading.Tasks;
-
+﻿using Foundation;
 using UIKit;
-using Foundation;
 
 namespace XamList.iOS
 {
     [Register(nameof(AppDelegate))]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
@@ -24,6 +22,9 @@ namespace XamList.iOS
         [Export("removeTestContactsFromLocalDatabase:")]
         public async void RemoveTestContactsFromLocalDatabase(NSString unusedString) =>
             await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase().ConfigureAwait(false);
+
+        [Export("triggerPullToRefresh:")]
+        public void TriggerPullToRefresh(NSString unusedString) => UITestBackdoorMethodHelpers.TriggerPullToRegresh();
 #endif
     }
 }

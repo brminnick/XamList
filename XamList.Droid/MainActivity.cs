@@ -1,10 +1,7 @@
-﻿using System.Threading.Tasks;
-
-using Android.OS;
-using Android.App;
-using Android.Runtime;
+﻿using Android.App;
 using Android.Content.PM;
-
+using Android.OS;
+using Android.Runtime;
 using Java.Interop;
 
 namespace XamList.Droid
@@ -34,7 +31,10 @@ namespace XamList.Droid
 #if DEBUG
         [Export(nameof(RemoveTestContactsFromLocalDatabase))]
         public async void RemoveTestContactsFromLocalDatabase() =>
-             await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase();
+             await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase().ConfigureAwait(false);
+
+        [Export(nameof(TriggerPullToRefresh))]
+        public void TriggerPullToRefresh() => UITestBackdoorMethodHelpers.TriggerPullToRegresh();
 #endif
     }
 }

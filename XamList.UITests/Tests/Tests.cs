@@ -1,9 +1,6 @@
 ﻿using System.Threading.Tasks;
-
 using NUnit.Framework;
-
 using Xamarin.UITest;
-
 using XamList.Mobile.Shared;
 
 namespace XamList.UITests
@@ -49,13 +46,13 @@ namespace XamList.UITests
 
             try
             {
-                await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync(3).ConfigureAwait(false);
+                await ContactsListPage.WaitForPullToRefreshActivityIndicator(3).ConfigureAwait(false);
             }
             catch
             {
 
             }
-            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicator().ConfigureAwait(false);
 
             Assert.IsFalse(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
 
@@ -67,16 +64,16 @@ namespace XamList.UITests
 
                 try
                 {
-                    await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync(3).ConfigureAwait(false);
+                    await ContactsListPage.WaitForPullToRefreshActivityIndicator(3).ConfigureAwait(false);
                 }
                 catch
                 {
 
                 }
 
-                await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+                await ContactsListPage.WaitForNoPullToRefreshActivityIndicator().ConfigureAwait(false);
                 ContactsListPage.PullToRefresh();
-                await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+                await ContactsListPage.WaitForNoPullToRefreshActivityIndicator().ConfigureAwait(false);
             }
 
             //Assert
@@ -100,7 +97,7 @@ namespace XamList.UITests
             ContactDetailsPage.TapCancelButton();
 
             ContactsListPage.WaitForPageToLoad();
-            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicator().ConfigureAwait(false);
 
             //Assert
             Assert.IsFalse(ContactsListPage.DoesContactExist(firstName, lastName, phoneNumber));
@@ -119,14 +116,14 @@ namespace XamList.UITests
 
             try
             {
-                await ContactsListPage.WaitForPullToRefreshActivityIndicatorAsync(3).ConfigureAwait(false);
+                await ContactsListPage.WaitForPullToRefreshActivityIndicator(3).ConfigureAwait(false);
             }
             catch
             {
 
             }
 
-            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicator().ConfigureAwait(false);
         }
     }
 }

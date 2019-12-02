@@ -1,70 +1,61 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using XamList.Mobile.Shared;
 using XamList.Shared;
 
 namespace XamList
 {
-	public class ContactsListTextCell : TextCell
-	{
-		readonly MenuItem _deleteAction;
+    public class ContactsListTextCell : TextCell
+    {
+        public ContactsListTextCell()
+        {
+            TextColor = ColorConstants.TextColor;
+            DetailColor = ColorConstants.DetailColor;
 
-		public ContactsListTextCell()
-		{
-			TextColor = ColorConstants.TextColor;
-			DetailColor = ColorConstants.DetailColor;
+            var deleteMenuItem = new MenuItem
+            {
+                Text = "Delete",
+                IsDestructive = true
+            };
+            deleteMenuItem.Clicked += HandleDeleteClicked;
 
-			_deleteAction = new MenuItem
-			{
-				Text = "Delete",
-				IsDestructive = true
-			};
-			_deleteAction.Clicked += HandleDeleteClicked;
+            ContextActions.Add(deleteMenuItem);
+        }
 
-			ContextActions.Add(_deleteAction);
-		}
+        ContactsListViewModel ContactsListViewModel => (ContactsListViewModel)ContactsListPage.BindingContext;
 
-		~ContactsListTextCell()
-		{
-			ContextActions.Remove(_deleteAction);
-			_deleteAction.Clicked -= HandleDeleteClicked;
-		}
+        ContactsListPage ContactsListPage
+        {
+            get
+            {
+                var navigationPage = (NavigationPage)Application.Current.MainPage;
+                return (ContactsListPage)navigationPage.Navigation.NavigationStack.First();
+            }
+        }
 
-		ContactsListViewModel ContactsListViewModel => ContactsListPage.BindingContext as ContactsListViewModel;
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
 
-		ContactsListPage ContactsListPage
-		{
-			get
-			{
-				var navigationPage = Application.Current.MainPage as NavigationPage;
-				return navigationPage.Navigation.NavigationStack.FirstOrDefault() as ContactsListPage;
-			}
-		}
+            Text = string.Empty;
+            Detail = string.Empty;
 
-		protected override void OnBindingContextChanged()
-		{
-			base.OnBindingContextChanged();
+            var item = (ContactModel)BindingContext;
 
-			Text = string.Empty;
-			Detail = string.Empty;
+            Text = item.FullName;
+            Detail = item.PhoneNumber;
+        }
 
-			var item = BindingContext as ContactModel;
+        async void HandleDeleteClicked(object sender, EventArgs e)
+        {
+            var contactSelected = (ContactModel)BindingContext;
 
-			Text = item.FullName;
-			Detail = item.PhoneNumber;
-		}
+            await Task.WhenAll(ApiService.DeleteContactModel(contactSelected.Id),
+                               ContactDatabase.DeleteContact(contactSelected)).ConfigureAwait(false);
 
-		async void HandleDeleteClicked(object sender, EventArgs e)
-		{
-			var contactSelected = BindingContext as ContactModel;
-
-			await Task.WhenAll(ApiService.DeleteContactModel(contactSelected?.Id),
-							   ContactDatabase.DeleteContact(contactSelected)).ConfigureAwait(false);
-
-			ContactsListViewModel.RefreshCommand?.Execute(null);
-		}
-	}
+            ContactsListViewModel.RefreshCommand.Execute(null);
+        }
+    }
 }

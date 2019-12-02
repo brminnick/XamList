@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
 using XamList.Mobile.Shared;
+using Xamarin.Forms;
 
 namespace XamList
 {
@@ -23,6 +23,17 @@ namespace XamList
                 removedContactTaskList.Add(ContactDatabase.RemoveContact(contact));
 
             await Task.WhenAll(removedContactTaskList).ConfigureAwait(false);
+        }
+
+        public static void TriggerPullToRegresh()
+        {
+            var navigationPage = (NavigationPage)Application.Current.MainPage;
+            var listPage = (ContactsListPage)navigationPage.Navigation.NavigationStack.First();
+
+            var listPageLayout = (Layout<View>)listPage.Content;
+            var listView = listPageLayout.Children.OfType<ListView>().First();
+
+            Device.BeginInvokeOnMainThread(listView.BeginRefresh);
         }
     }
 }

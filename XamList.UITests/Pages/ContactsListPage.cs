@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-
-using NUnit.Framework;
-
 using Xamarin.UITest;
-using Xamarin.UITest.iOS;
 using Xamarin.UITest.Android;
-
-using XamList.Shared;
+using Xamarin.UITest.iOS;
 using XamList.Mobile.Shared;
-
+using XamList.Shared;
 using Query = System.Func<Xamarin.UITest.Queries.AppQuery, Xamarin.UITest.Queries.AppQuery>;
 
 namespace XamList.UITests
@@ -27,7 +22,7 @@ namespace XamList.UITests
         }
 
 
-        public bool IsRefreshActivityIndicatorDisplayed =>GetIsRefreshActivityIndicatorDisplayed();
+        public bool IsRefreshActivityIndicatorDisplayed => GetIsRefreshActivityIndicatorDisplayed();
 
         public void TapRestoreDeletedContactsButton(bool shouldConfirmAlertDialog)
         {
@@ -37,13 +32,6 @@ namespace XamList.UITests
                 App.Tap(AlertDialogConstants.Yes);
             else
                 App.Tap(AlertDialogConstants.Cancel);
-        }
-
-        public void ScrollToTopOfList()
-        {
-            var query = App.Query().FirstOrDefault();
-
-            App.TapCoordinates(query.Rect.CenterX, query.Rect.Y);
         }
 
         public void DeleteContact(string firstName, string lastName, string phoneNumber)
@@ -106,71 +94,47 @@ namespace XamList.UITests
                 App.ScrollDownTo(contact.FullName, timeout: TimeSpan.FromSeconds(timeoutInSeconds));
                 return true;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
-            finally
-            {
-                ScrollToTopOfList();
-            }
-
         }
 
-        public async Task WaitForNoPullToRefreshActivityIndicatorAsync(int timeoutInSeconds = 10)
+        public async Task WaitForNoPullToRefreshActivityIndicator(int timeoutInSeconds = 10)
         {
             int loopCount = 0;
 
             while (IsRefreshActivityIndicatorDisplayed)
             {
                 if (loopCount / 10 > timeoutInSeconds)
-                    throw new Exception($"{nameof(WaitForNoPullToRefreshActivityIndicatorAsync)} Failed");
+                    throw new Exception($"{nameof(WaitForNoPullToRefreshActivityIndicator)} Failed");
 
                 loopCount++;
                 await Task.Delay(1000).ConfigureAwait(false);
             }
         }
 
-        public async Task WaitForPullToRefreshActivityIndicatorAsync(int timeoutInSeconds = 10)
+        public async Task WaitForPullToRefreshActivityIndicator(int timeoutInSeconds = 10)
         {
             int loopCount = 0;
 
             while (!IsRefreshActivityIndicatorDisplayed)
             {
                 if (loopCount / 10 > timeoutInSeconds)
-                    throw new Exception($"{nameof(WaitForPullToRefreshActivityIndicatorAsync)} Failed");
+                    throw new Exception($"{nameof(WaitForPullToRefreshActivityIndicator)} Failed");
 
                 loopCount++;
                 await Task.Delay(1000).ConfigureAwait(false);
             }
         }
 
-        public void PullToRefresh()
+        public void PullToRefresh() => BackdoorMethodHelpers.TriggerPullToRefresh(App);
+
+        bool GetIsRefreshActivityIndicatorDisplayed() => App switch
         {
-            var listViewQuery = App.Query(_contactsListView).FirstOrDefault();
-
-            var topYCoordinate = listViewQuery.Rect.Y;
-            var bottomYCoordinate = listViewQuery.Rect.Y + listViewQuery.Rect.Height;
-            var centerXCoordinate = listViewQuery.Rect.CenterX;
-
-            App.DragCoordinates(centerXCoordinate, topYCoordinate + 20, centerXCoordinate, bottomYCoordinate - 20);
-
-            App.Screenshot("Pull To Refresh Triggered");
-        }
-
-        bool GetIsRefreshActivityIndicatorDisplayed()
-        {
-            switch (App)
-            {
-                case iOSApp iOSApp:
-                    return iOSApp.Query(x => x.Class("UIRefreshControl")).Any();
-
-                case AndroidApp androidApp:
-                    return (bool)(androidApp.Query(x => x.Class("SwipeRefreshLayout")?.Invoke("isRefreshing"))?.FirstOrDefault() ?? false);
-
-                default:
-                    throw new NotSupportedException();
-            }
-        }
+            iOSApp iOSApp => iOSApp.Query(x => x.Class("UIRefreshControl")).Any(),
+            AndroidApp androidApp => (bool)androidApp.Query(x => x.Class("ListViewRenderer_SwipeRefreshLayoutWithFixedNestedScrolling").Invoke("isRefreshing")).First(),
+            _ => throw new NotSupportedException(),
+        };
     }
 }

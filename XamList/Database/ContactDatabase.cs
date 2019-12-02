@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
-
 using XamList.Shared;
 
 namespace XamList

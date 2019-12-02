@@ -1,41 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using NPoco;
+using Microsoft.EntityFrameworkCore;
 using XamList.Shared;
 
 namespace XamList.Backend.Shared
 {
     public static class XamListDatabase
     {
-        readonly static string _connectionString = Environment.GetEnvironmentVariable("XamListDatabaseConnectionString");
+        readonly static string _connectionString = Environment.GetEnvironmentVariable("XamListDatabaseConnectionString") ?? string.Empty;
 
         public static Task<List<ContactModel>> GetAllContactModels()
         {
             return PerformDatabaseFunction(getContactModelsFunction);
 
-            Task<List<ContactModel>> getContactModelsFunction(Database dataContext) => dataContext.FetchAsync<ContactModel>();
+            static Task<List<ContactModel>> getContactModelsFunction(XamListDatabaseContext dataContext) => dataContext.Contacts.ToListAsync();
         }
 
-        public static ContactModel GetContactModel(string id)
+        public static Task<ContactModel> GetContactModel(string id)
         {
-            return PerformDatabaseFunction(getContactModelFunction).GetAwaiter().GetResult();
+            return PerformDatabaseFunction(getContactModelFunction);
 
-            Task<ContactModel> getContactModelFunction(Database dataContext)
-            {
-                var contact = dataContext.Fetch<ContactModel>().FirstOrDefault(x => x.Id.Equals(id));
-                return Task.FromResult(contact);
-            }
+            Task<ContactModel> getContactModelFunction(XamListDatabaseContext dataContext) => dataContext.Contacts.SingleAsync(x => x.Id.Equals(id));
         }
 
         public static Task<ContactModel> InsertContactModel(ContactModel contact)
         {
             return PerformDatabaseFunction(insertContactModelFunction);
 
-            async Task<ContactModel> insertContactModelFunction(Database dataContext)
+            async Task<ContactModel> insertContactModelFunction(XamListDatabaseContext dataContext)
             {
                 if (string.IsNullOrWhiteSpace(contact.Id))
                     contact.Id = Guid.NewGuid().ToString();
@@ -43,7 +37,7 @@ namespace XamList.Backend.Shared
                 contact.CreatedAt = DateTimeOffset.UtcNow;
                 contact.UpdatedAt = DateTimeOffset.UtcNow;
 
-                await dataContext.InsertAsync(contact);
+                await dataContext.AddAsync(contact).ConfigureAwait(false);
 
                 return contact;
             }
@@ -53,9 +47,9 @@ namespace XamList.Backend.Shared
         {
             return PerformDatabaseFunction(patchContactModelFunction);
 
-            async Task<ContactModel> patchContactModelFunction(Database dataContext)
+            async Task<ContactModel> patchContactModelFunction(XamListDatabaseContext dataContext)
             {
-                var contactFromDatabase = dataContext.Fetch<ContactModel>().FirstOrDefault(y => y.Id.Equals(contactModel.Id));
+                var contactFromDatabase = await dataContext.Contacts.SingleAsync(y => y.Id.Equals(contactModel.Id)).ConfigureAwait(false);
 
                 contactFromDatabase.FirstName = contactModel.FirstName;
                 contactFromDatabase.LastName = contactModel.LastName;
@@ -63,7 +57,7 @@ namespace XamList.Backend.Shared
                 contactFromDatabase.IsDeleted = contactModel.IsDeleted;
                 contactFromDatabase.UpdatedAt = DateTimeOffset.UtcNow;
 
-                await dataContext.UpdateAsync(contactFromDatabase).ConfigureAwait(false);
+                dataContext.Update(contactFromDatabase);
 
                 return contactFromDatabase;
             }
@@ -73,13 +67,13 @@ namespace XamList.Backend.Shared
         {
             return PerformDatabaseFunction(deleteContactModelFunction);
 
-            Task<ContactModel> deleteContactModelFunction(Database dataContext)
+            async Task<ContactModel> deleteContactModelFunction(XamListDatabaseContext dataContext)
             {
-                var contactFromDatabase = dataContext.Fetch<ContactModel>().FirstOrDefault(y => y.Id.Equals(id));
+                var contactFromDatabase = await dataContext.Contacts.SingleAsync(y => y.Id.Equals(id)).ConfigureAwait(false);
 
                 contactFromDatabase.IsDeleted = true;
 
-                return PatchContactModel(contactFromDatabase);
+                return await PatchContactModel(contactFromDatabase).ConfigureAwait(false);
             }
         }
 
@@ -87,36 +81,40 @@ namespace XamList.Backend.Shared
         {
             return PerformDatabaseFunction(removeContactDatabaseFunction);
 
-            async Task<ContactModel> removeContactDatabaseFunction(Database dataContext)
+            async Task<ContactModel> removeContactDatabaseFunction(XamListDatabaseContext dataContext)
             {
-                var answerModelFromDatabase = dataContext.Fetch<ContactModel>().FirstOrDefault(x => x.Id.Equals(id));
-                if (answerModelFromDatabase is null)
-                    return null;
+                var answerModelFromDatabase = await dataContext.Contacts.SingleAsync(x => x.Id.Equals(id)).ConfigureAwait(false);
 
-                await dataContext.DeleteAsync(answerModelFromDatabase).ConfigureAwait(false);
+                dataContext.Remove(answerModelFromDatabase);
 
                 return answerModelFromDatabase;
             }
         }
 
-        static async Task<TResult> PerformDatabaseFunction<TResult>(Func<Database, Task<TResult>> databaseFunction) where TResult : class
+        static async Task<TResult> PerformDatabaseFunction<TResult>(Func<XamListDatabaseContext, Task<TResult>> databaseFunction) where TResult : class
         {
-            using (var connection = new Database(_connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance))
-            {
-                try
-                {
-                    return await databaseFunction?.Invoke(connection) ?? default;
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("");
-                    Debug.WriteLine(e.Message);
-                    Debug.WriteLine(e.ToString());
-                    Debug.WriteLine("");
+            using var connection = new XamListDatabaseContext();
 
-                    throw;
-                }
+            try
+            {
+                return await databaseFunction.Invoke(connection).ConfigureAwait(false);
             }
+            catch (Exception e)
+            {
+                Debug.WriteLine("");
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.ToString());
+                Debug.WriteLine("");
+
+                throw;
+            }
+        }
+
+        class XamListDatabaseContext : DbContext
+        {
+            public DbSet<ContactModel>? Contacts { get; set; }
+
+            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer(_connectionString);
         }
     }
 }

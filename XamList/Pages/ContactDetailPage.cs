@@ -1,9 +1,8 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
-
-using XamList.Shared;
 using XamList.Mobile.Shared;
+using XamList.Shared;
 
 namespace XamList
 {
@@ -70,7 +69,6 @@ namespace XamList
             if (isNewContact)
                 ToolbarItems.Add(cancelToolbarItem);
 
-
             Title = PageTitleConstants.ContactDetailsPage;
 
             Padding = new Thickness(20, 0, 20, 0);
@@ -97,21 +95,31 @@ namespace XamList
             AppCenterHelpers.TrackEvent(AppCenterConstants.ContactDetailPageAppeared);
         }
 
-        void PopPage()
+        Task PopPage()
         {
             if (_isNewContact)
-                Device.BeginInvokeOnMainThread(async () => await Navigation.PopModalAsync());
-            else
-                Device.BeginInvokeOnMainThread(async () => await Navigation.PopAsync());
+                return Device.InvokeOnMainThreadAsync(() => Navigation.PopModalAsync());
+
+            return Device.InvokeOnMainThreadAsync(() => Navigation.PopAsync());
         }
 
-        void HandleSaveContactCompleted(object sender, EventArgs e) => PopPage();
+        async void HandleSaveContactCompleted(object sender, bool isSaveSuccessful)
+        {
+            if (isSaveSuccessful)
+                await PopPage();
+            else
+                await DisplayAlert("Save Failed", "", "OK");
+        }
 
-        void HandleCancelToolBarItemClicked(object sender, EventArgs e) => PopPage();
+        async void HandleCancelToolBarItemClicked(object sender, EventArgs e) => await PopPage();
 
         class ContactDetailEntry : Entry
         {
-            public ContactDetailEntry() => TextColor = Color.FromHex("2B3E50");
+            public ContactDetailEntry()
+            {
+                TextColor = Color.FromHex("2B3E50");
+                BackgroundColor = Color.White;
+            }
         }
 
         class ContactDetailLabel : Label

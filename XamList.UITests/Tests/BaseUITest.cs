@@ -9,6 +9,7 @@ using Xamarin.UITest;
 
 using XamList.Shared;
 using XamList.Mobile.Shared;
+using System;
 
 namespace XamList.UITests
 {
@@ -18,25 +19,35 @@ namespace XamList.UITests
     {
         readonly Platform _platform;
 
+        ContactsListPage? _contactsListPage;
+        ContactDetailsPage? _contactDetailsPage;
+        IApp? _app;
+
         protected BaseUITest(Platform platform) => _platform = platform;
 
-        protected ContactsListPage ContactsListPage { get; private set; }
-        protected ContactDetailsPage ContactDetailsPage { get; private set; }
-        protected IApp App { get; private set; }
+        protected ContactsListPage ContactsListPage => _contactsListPage ?? throw new NullReferenceException();
+        protected ContactDetailsPage ContactDetailsPage => _contactDetailsPage ?? throw new NullReferenceException();
+        protected IApp App => _app ?? throw new NullReferenceException();
 
         [SetUp]
         protected virtual async Task BeforeEachTest()
         {
-            App = AppInitializer.StartApp(_platform);
-            ContactsListPage = new ContactsListPage(App);
-            ContactDetailsPage = new ContactDetailsPage(App);
+            _app = AppInitializer.StartApp(_platform);
+            _contactsListPage = new ContactsListPage(App);
+            _contactDetailsPage = new ContactDetailsPage(App);
 
-            ContactsListPage.WaitForPageToLoad();
-            await ContactsListPage.WaitForNoPullToRefreshActivityIndicatorAsync().ConfigureAwait(false);
+            try
+            {
+                ContactsListPage.WaitForPageToLoad();
+            }
+            catch
+            {
+                ContactsListPage.PullToRefresh();
+            }
+            await ContactsListPage.WaitForNoPullToRefreshActivityIndicator().ConfigureAwait(false);
 
             await RemoveTestContactsFromDatabases().ConfigureAwait(false);
 
-            ContactsListPage.PullToRefresh();
 
             App.Screenshot("App Started");
         }

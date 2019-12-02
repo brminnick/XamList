@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Analytics;
@@ -13,12 +12,12 @@ namespace XamList
     {
         public static void Start() => Start(AppCenterConstants.ApiKey);
 
-        public static void TrackEvent(string trackIdentifier, IDictionary<string, string> table = null) =>
+        public static void TrackEvent(string trackIdentifier, IDictionary<string, string>? table = null) =>
             Analytics.TrackEvent(trackIdentifier, table);
 
         public static void TrackEvent(string trackIdentifier, string key, string value)
         {
-            IDictionary<string, string> table = new Dictionary<string, string> { { key, value } };
+            IDictionary<string, string>? table = new Dictionary<string, string> { { key, value } };
 
             if (string.IsNullOrWhiteSpace(key) && string.IsNullOrWhiteSpace(value))
                 table = null;
@@ -27,7 +26,7 @@ namespace XamList
         }
 
         public static void Report(Exception exception,
-                                  IDictionary<string, string> properties = null,
+                                  IDictionary<string, string>? properties = null,
                                   [CallerMemberName] string callerMemberName = "",
                                   [CallerLineNumber] int lineNumber = 0,
                                   [CallerFilePath] string filePath = "")

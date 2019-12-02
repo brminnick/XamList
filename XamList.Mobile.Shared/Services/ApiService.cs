@@ -1,14 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-
 using Polly;
 using Refit;
-
-using XamList.Shared;
 using Xamarin.Essentials;
+using XamList.Shared;
 
 namespace XamList.Mobile.Shared
 {
@@ -20,28 +18,20 @@ namespace XamList.Mobile.Shared
         static IXamListAPI XamListApiClient => _xamListApiClientHolder.Value;
         static IXamListFunction XamListFunctionsClient => _xamListFunctionsClientHolder.Value;
 
-        public static Task<List<ContactModel>> GetAllContactModels() => ExecutePollyHttpFunction(() => XamListApiClient.GetAllContactModels());
-        public static Task<ContactModel> GetContactModel(string id) => ExecutePollyHttpFunction(() => XamListApiClient.GetContactModel(id));
-        public static Task<ContactModel> PostContactModel(ContactModel contact) => ExecutePollyHttpFunction(() => XamListApiClient.PostContactModel(contact));
-        public static Task<ContactModel> PatchContactModel(ContactModel contact) => ExecutePollyHttpFunction(() => XamListApiClient.PatchContactModel(contact));
-        public static Task<HttpResponseMessage> DeleteContactModel(string id) => ExecutePollyHttpFunction(() => XamListApiClient.DeleteContactModel(id));
-        public static Task<HttpResponseMessage> GetHttpResponseMessage() => ExecutePollyHttpFunction(() => XamListApiClient.GetHttpResponse());
-        public static Task<HttpResponseMessage> RestoreDeletedContacts() => ExecutePollyHttpFunction(() => XamListFunctionsClient.RestoreDeletedContacts());
-        public static Task<ContactModel> RemoveContactFromRemoteDatabase(string id) => ExecutePollyHttpFunction(() => XamListFunctionsClient.RemoveContactFromRemoteDatabase(id));
+        public static Task<List<ContactModel>> GetAllContactModels() => AttemptAndRetry(() => XamListApiClient.GetAllContactModels());
+        public static Task<ContactModel> GetContactModel(string id) => AttemptAndRetry(() => XamListApiClient.GetContactModel(id));
+        public static Task<ContactModel> PostContactModel(ContactModel contact) => AttemptAndRetry(() => XamListApiClient.PostContactModel(contact));
+        public static Task<ContactModel> PatchContactModel(ContactModel contact) => AttemptAndRetry(() => XamListApiClient.PatchContactModel(contact));
+        public static Task<HttpResponseMessage> DeleteContactModel(string id) => AttemptAndRetry(() => XamListApiClient.DeleteContactModel(id));
+        public static Task<HttpResponseMessage> GetHttpResponseMessage() => AttemptAndRetry(() => XamListApiClient.GetHttpResponse());
+        public static Task<HttpResponseMessage> RestoreDeletedContacts() => AttemptAndRetry(() => XamListFunctionsClient.RestoreDeletedContacts());
+        public static Task<ContactModel> RemoveContactFromRemoteDatabase(string id) => AttemptAndRetry(() => XamListFunctionsClient.RemoveContactFromRemoteDatabase(id));
 
-        static Task<T> ExecutePollyHttpFunction<T>(Func<Task<T>> action, int numRetries = 2)
+        static Task<T> AttemptAndRetry<T>(Func<Task<T>> action, int numRetries = 2)
         {
-            return Policy
-                    .Handle<WebException>()
-                    .Or<HttpRequestException>()
-                    .Or<TimeoutException>()
-                    .WaitAndRetryAsync
-                    (
-                        numRetries,
-                        pollyRetryAttempt
-                    ).ExecuteAsync(action);
+            return Policy.Handle<Exception>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
 
-            TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
+            static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
         }
 
         static HttpClient CreateHttpClient(string baseAddress)

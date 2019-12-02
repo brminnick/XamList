@@ -1,35 +1,30 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-
+using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-
-using XamList.Shared;
 using XamList.Mobile.Shared;
+using XamList.Shared;
 
 namespace XamList
 {
     public class ContactsListViewModel : BaseViewModel
     {
         bool _isRefreshing;
-        ICommand _refreshCommand, _restoreDeletedContactsCommand;
-        IList<ContactModel> _allContactsList;
+        ICommand? _refreshCommand, _restoreDeletedContactsCommand;
 
-        public ICommand RefreshCommand => _refreshCommand ??
-            (_refreshCommand = new AsyncCommand(() =>
-            {
-                AppCenterHelpers.TrackEvent(AppCenterConstants.PullToRefreshTriggered);
-                return ExecuteRefreshCommand();
-            }));
-        
-        public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??
-            (_restoreDeletedContactsCommand = new AsyncCommand(() =>
-            {
-                AppCenterHelpers.TrackEvent(AppCenterConstants.RestoreDeletedContactsTapped);
-                return ExecuteRestoreDeletedContactsCommand();
-            }));
+        public ICommand RefreshCommand => _refreshCommand ??= new AsyncCommand(() =>
+        {
+            AppCenterHelpers.TrackEvent(AppCenterConstants.PullToRefreshTriggered);
+            return ExecuteRefreshCommand();
+        });
+
+        public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??= new AsyncCommand(() =>
+        {
+            AppCenterHelpers.TrackEvent(AppCenterConstants.RestoreDeletedContactsTapped);
+            return ExecuteRestoreDeletedContactsCommand();
+        });
 
         public bool IsRefreshing
         {
@@ -37,14 +32,12 @@ namespace XamList
             set => SetProperty(ref _isRefreshing, value);
         }
 
-        public IList<ContactModel> AllContactsList
-        {
-            get => _allContactsList;
-            set => SetProperty(ref _allContactsList, value);
-        }
+        public ObservableCollection<ContactModel> AllContactsList { get; } = new ObservableCollection<ContactModel>();
 
         async Task ExecuteRefreshCommand()
         {
+            AllContactsList.Clear();
+
             try
             {
                 var minimumSpinnerTime = Task.Delay(1000);
@@ -52,7 +45,11 @@ namespace XamList
                 await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
 
                 var contactList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
-                AllContactsList = contactList.Where(x => !x.IsDeleted).OrderBy(x => x.FullName).ToList();
+
+                foreach (var contact in contactList.Where(x => !string.IsNullOrWhiteSpace(x?.FullName) && !x.IsDeleted).OrderBy(x => x.FullName))
+                {
+                    AllContactsList.Add(contact);
+                }
 
                 await minimumSpinnerTime.ConfigureAwait(false);
             }

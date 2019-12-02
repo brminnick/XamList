@@ -1,18 +1,16 @@
 ﻿using System;
-
+using System.Collections;
+using System.Linq;
 using Xamarin.Forms;
-
-using XamList.Shared;
-using XamList.Mobile.Shared;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
+using XamList.Mobile.Shared;
+using XamList.Shared;
 
 namespace XamList
 {
     public class ContactsListPage : BaseContentPage<ContactsListViewModel>
     {
-        readonly Xamarin.Forms.ListView _contactsListView;
-
         public ContactsListPage()
         {
             var addContactButton = new ToolbarItem
@@ -23,17 +21,18 @@ namespace XamList
             addContactButton.Clicked += HandleAddContactButtonClicked;
             ToolbarItems.Add(addContactButton);
 
-            _contactsListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RecycleElement)
+            var contactsListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RecycleElement)
             {
                 ItemTemplate = new DataTemplate(typeof(ContactsListTextCell)),
                 IsPullToRefreshEnabled = true,
                 BackgroundColor = Color.Transparent,
-                AutomationId = AutomationIdConstants.ContactsListView
+                AutomationId = AutomationIdConstants.ContactsListView,
+                RefreshControlColor = Color.Black
             };
-            _contactsListView.ItemTapped += HandleItemTapped;
-            _contactsListView.SetBinding(Xamarin.Forms.ListView.ItemsSourceProperty, nameof(ContactsListViewModel.AllContactsList));
-            _contactsListView.SetBinding(Xamarin.Forms.ListView.RefreshCommandProperty, nameof(ContactsListViewModel.RefreshCommand));
-            _contactsListView.SetBinding(Xamarin.Forms.ListView.IsRefreshingProperty, nameof(ContactsListViewModel.IsRefreshing));
+            contactsListView.ItemTapped += HandleItemTapped;
+            contactsListView.SetBinding(Xamarin.Forms.ListView.ItemsSourceProperty, nameof(ContactsListViewModel.AllContactsList));
+            contactsListView.SetBinding(Xamarin.Forms.ListView.RefreshCommandProperty, nameof(ContactsListViewModel.RefreshCommand));
+            contactsListView.SetBinding(Xamarin.Forms.ListView.IsRefreshingProperty, nameof(ContactsListViewModel.IsRefreshing));
 
             var restoreDeletedContactsButton = new Button
             {
@@ -51,21 +50,21 @@ namespace XamList
 
             var relativeLayout = new RelativeLayout();
 
-            relativeLayout.Children.Add(_contactsListView,
+            relativeLayout.Children.Add(contactsListView,
                                         Constraint.Constant(0),
                                         Constraint.Constant(0),
                                         Constraint.RelativeToParent(parent => parent.Width),
                                         Constraint.RelativeToParent(parent => parent.Height));
             relativeLayout.Children.Add(restoreDeletedContactsButton,
-                                        Constraint.RelativeToParent(parent => parent.Width / 2 - getRestoreDeletedContactsButtonWidth(parent) / 2),
-                                        Constraint.RelativeToParent(parent => parent.Height - getRestoreDeletedContactsButtonHeight(parent) - 10));
+                                        Constraint.RelativeToParent(parent => parent.Width / 2 - getWidth(parent, restoreDeletedContactsButton) / 2),
+                                        Constraint.RelativeToParent(parent => parent.Height - getHeight(parent, restoreDeletedContactsButton) - 10));
 
             Content = relativeLayout;
 
             On<iOS>().SetUseSafeArea(true);
 
-            double getRestoreDeletedContactsButtonHeight(RelativeLayout parent) => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Height;
-            double getRestoreDeletedContactsButtonWidth(RelativeLayout parent) => restoreDeletedContactsButton.Measure(parent.Width, parent.Height).Request.Width;
+            static double getHeight(RelativeLayout parent, View view) => view.Measure(parent.Width, parent.Height).Request.Height;
+            static double getWidth(RelativeLayout parent, View view) => view.Measure(parent.Width, parent.Height).Request.Width;
         }
 
         protected override void OnAppearing()
@@ -74,19 +73,20 @@ namespace XamList
 
             AppCenterHelpers.TrackEvent(AppCenterConstants.ContactsListPageAppeared);
 
-            Device.BeginInvokeOnMainThread(_contactsListView.BeginRefresh);
+            if (Content is Layout<View> layout
+                && layout.Children.OfType<Xamarin.Forms.ListView>().First() is Xamarin.Forms.ListView listView)
+            {
+                listView.BeginRefresh();
+            }
         }
 
-        void HandleItemTapped(object sender, ItemTappedEventArgs e)
+        async void HandleItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (sender is Xamarin.Forms.ListView listView &&
                     e.Item is ContactModel selectedContactModel)
             {
-                Device.BeginInvokeOnMainThread(async () =>
-                {
-                    await Navigation.PushAsync(new ContactDetailPage(selectedContactModel, false));
-                    listView.SelectedItem = null;
-                });
+                listView.SelectedItem = null;
+                await Navigation.PushAsync(new ContactDetailPage(selectedContactModel, false));
             }
         }
 
@@ -108,7 +108,7 @@ namespace XamList
                                                             AlertDialogConstants.Cancel);
 
                 if (isDisplayAlertDialogConfirmed)
-                    ViewModel.RestoreDeletedContactsCommand?.Execute(null);
+                    ViewModel.RestoreDeletedContactsCommand.Execute(null);
             });
         }
     }

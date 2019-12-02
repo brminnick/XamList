@@ -7,8 +7,10 @@
         <OutputType>Library</OutputType>
         <RootNamespace>XamList.UITests</RootNamespace>
         <AssemblyName>XamList.UITests</AssemblyName>
-        <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-        <LangVersion>latest</LangVersion>
+        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+        <LangVersion>8.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>true</DebugSymbols>
@@ -41,12 +43,11 @@
         <Compile Include="Helpers\BackdoorMethodHelpers.cs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
         <PackageReference Include="NUnit" Version="3.12.0" />
-        <PackageReference Include="Xamarin.UITest" Version="3.0.3" />
-        <PackageReference Include="Refit" Version="4.7.9" />
-        <PackageReference Include="Polly" Version="7.1.0" />
-        <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
+        <PackageReference Include="Xamarin.UITest" Version="3.0.4" />
+        <PackageReference Include="Refit" Version="5.0.23" />
+        <PackageReference Include="Polly" Version="7.2.0" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
     </ItemGroup>
     <ItemGroup>
         <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

@@ -4,9 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Polly;
 using SQLite;
-
 using Xamarin.Essentials;
-using XamList.Shared;
 
 namespace XamList
 {
@@ -34,7 +32,7 @@ namespace XamList
         {
             return Policy.Handle<SQLiteException>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
 
-            TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
+            static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
         }
     }
 }

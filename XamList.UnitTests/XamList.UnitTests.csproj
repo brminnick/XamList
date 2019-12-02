@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
-        <LangVersion>latest</LangVersion>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Tests\" />
@@ -12,6 +13,6 @@
         <PackageReference Include="NUnit3TestAdapter" Version="3.14.0" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\XamList\XamList.csproj" />
+        <ProjectReference Include="..\XamList\XamList.csproj" />
     </ItemGroup>
 </Project>
