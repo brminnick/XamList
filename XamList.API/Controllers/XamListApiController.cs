@@ -5,38 +5,38 @@ using XamList.Shared;
 
 namespace XamList.API.Controllers
 {
-    [ApiController, Route("api/[controller]")]
+    [ApiController, Route("api")]
     public class XamListApiController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet, Route(nameof(GetAllContacts))]
         public async Task<IActionResult> GetAllContacts()
         {
             var contactList = await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
             return new OkObjectResult(contactList);
         }
 
-        [HttpGet]
+        [HttpGet, Route(nameof(GetContact))]
         public IActionResult GetContact(string id)
         {
             var contactModel = XamListDatabase.GetContactModel(id);
             return new OkObjectResult(contactModel);
         }
 
-        [HttpPost]
+        [HttpPost, Route(nameof(PostContact))]
         public async Task<IActionResult> PostContact([FromBody]ContactModel contact)
         {
             var contactFromDatabase = await XamListDatabase.InsertContactModel(contact).ConfigureAwait(false);
             return new CreatedResult("", contactFromDatabase);
         }
 
-        [HttpPatch]
+        [HttpPatch, Route(nameof(PatchContact))]
         public async Task<IActionResult> PatchContact([FromBody]ContactModel contact)
         {
             var contactFromDatabase = await XamListDatabase.PatchContactModel(contact).ConfigureAwait(false);
             return new OkObjectResult(contactFromDatabase);
         }
 
-        [HttpDelete]
+        [HttpDelete, Route(nameof(DeleteContact))]
         public async Task<IActionResult> DeleteContact(string id)
         {
             var contactFromDatabase = await XamListDatabase.DeleteContactModel(id).ConfigureAwait(false);

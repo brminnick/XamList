@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
@@ -22,7 +22,7 @@
         <Content Remove="local.settings.json" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     </ItemGroup>
     <Import Project="..\XamList.Shared\XamList.Shared.projitems" Label="Shared" Condition="Exists('..\XamList.Shared\XamList.Shared.projitems')" />
     <Import Project="..\XamList.Backend.Shared\XamList.Backend.Shared.projitems" Label="Shared" Condition="Exists('..\XamList.Backend.Shared\XamList.Backend.Shared.projitems')" />

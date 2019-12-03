@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.Droid", "XamList.Dr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.iOS", "XamList.iOS\XamList.iOS.csproj", "{18194F14-65E5-422B-A6C6-F020434314C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList.API", "XamList.API\XamList.API.csproj", "{E370E528-CD63-4277-827D-682A7E5A0A82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamList.API", "XamList.API\XamList.API.csproj", "{E370E528-CD63-4277-827D-682A7E5A0A82}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "XamList.Backend.Shared", "XamList.Backend.Shared\XamList.Backend.Shared.shproj", "{C345D820-AB9C-4853-A638-0C19A1C77903}"
 EndProject

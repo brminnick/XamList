@@ -21,15 +21,13 @@ namespace XamList.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-#if !DEBUG
             app.UseHttpsRedirection();
-#endif
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
         }
     }
 }
