@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using XamList.Shared;
@@ -11,12 +12,14 @@ namespace XamList.Backend.Shared
     {
         readonly static string _connectionString = Environment.GetEnvironmentVariable("XamListDatabaseConnectionString") ?? string.Empty;
 
-        public static Task<List<ContactModel>> GetAllContactModels()
+        public static List<ContactModel> GetAllContactModels(Func<ContactModel, bool> wherePredicate)
         {
-            return PerformDatabaseFunction(getContactModelsFunction);
+            using var connection = new XamListDatabaseContext();
 
-            static Task<List<ContactModel>> getContactModelsFunction(XamListDatabaseContext dataContext) => dataContext.Contacts.ToListAsync();
+            return connection.Contacts.Where(wherePredicate).ToList();
         }
+
+        public static List<ContactModel> GetAllContactModels() => GetAllContactModels(x => true);
 
         public static Task<ContactModel> GetContactModel(string id)
         {
@@ -97,7 +100,10 @@ namespace XamList.Backend.Shared
 
             try
             {
-                return await databaseFunction.Invoke(connection).ConfigureAwait(false);
+                var result = await databaseFunction.Invoke(connection).ConfigureAwait(false);
+                await connection.SaveChangesAsync().ConfigureAwait(false);
+
+                return result;
             }
             catch (Exception e)
             {

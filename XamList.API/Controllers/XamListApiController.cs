@@ -9,11 +9,7 @@ namespace XamList.API.Controllers
     public class XamListApiController : ControllerBase
     {
         [HttpGet, Route(nameof(GetAllContacts))]
-        public async Task<IActionResult> GetAllContacts()
-        {
-            var contactList = await XamListDatabase.GetAllContactModels().ConfigureAwait(false);
-            return new OkObjectResult(contactList);
-        }
+        public IActionResult GetAllContacts() => new OkObjectResult(XamListDatabase.GetAllContactModels());
 
         [HttpGet, Route(nameof(GetContact))]
         public IActionResult GetContact(string id)
