@@ -20,8 +20,7 @@ namespace XamList.Functions
 
             try
             {
-                var contactModelList = XamListDatabase.GetAllContactModels();
-                var deletedContactModelList = contactModelList.Where(x => x.IsDeleted);
+                var deletedContactModelList = XamListDatabase.GetAllContactModels(x => x.IsDeleted);
 
                 var undeletedContactModelList = deletedContactModelList.Select(x =>
                 {
