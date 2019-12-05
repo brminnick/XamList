@@ -70,7 +70,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
-        <PackageReference Include="Xamarin.Forms" Version="4.4.0.991210-pre2" />
+        <PackageReference Include="Xamarin.Forms" Version="4.4.0.991220-pre3" />
         <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.6.2" />
         <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.6.2" />
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.0.0-pre3" />
