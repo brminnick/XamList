@@ -5,7 +5,9 @@
 | App Center, iOS | [![Build status](https://build.appcenter.ms/v0.1/apps/e53e8e26-f6c5-4bb0-823b-355acf4d6100/branches/master/badge)](https://appcenter.ms) |
 | App Center, Android | [![Build status](https://build.appcenter.ms/v0.1/apps/cc7fc163-f984-4f2f-ba33-a20deeb312fb/branches/master/badge)](https://appcenter.ms) |
 
-An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Database, Azure API and Mobile Center.
+An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Database, Azure API and App Center.
+
+<a href="https://www.buymeacoffee.com/bminnick" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
 
 ## Visual Studio Requirements
 
