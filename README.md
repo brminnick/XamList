@@ -11,15 +11,15 @@ An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Data
 
 ## Visual Studio Requirements
 
-### [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac?WT.mc_id=XamList-github-bramin)
+### [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac?WT.mc_id=xamlist-github-bramin)
 
-This solution requires [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac?WT.mc_id=XamList-github-bramin) Version 7.1 Build 1294 or later.
+This solution requires [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac?WT.mc_id=xamlist-github-bramin) Version 7.1 Build 1294 or later.
 
 Earlier versions of VSMac don't support Shared Project references from .NET Standard libraries.
 
-### [Visual Studio for PC](https://visualstudio.microsoft.com/vs?WT.mc_id=XamList-github-bramin)
+### [Visual Studio for PC](https://visualstudio.microsoft.com/vs?WT.mc_id=xamlist-github-bramin)
 
-This solution requires [Visual Studio for PC](https://visualstudio.microsoft.com/vs?WT.mc_id=XamList-github-bramin) Version 15.3 or later.
+This solution requires [Visual Studio for PC](https://visualstudio.microsoft.com/vs?WT.mc_id=xamlist-github-bramin) Version 15.3 or later.
 
 Earlier versions of VS don't support Azure Functions.
 
