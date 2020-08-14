@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
+using Xamarin.Forms.Markup;
 using XamList.Mobile.Shared;
 using XamList.Shared;
 
@@ -24,74 +25,42 @@ namespace XamList
             ViewModel.Contact = selectedContact;
             ViewModel.SaveContactCompleted += HandleSaveContactCompleted;
 
-
-            var firstNameTextLabel = new ContactDetailLabel { Text = "First Name" };
-
-            var firstNameDataEntry = new ContactDetailEntry
-            {
-                ReturnType = ReturnType.Next,
-                AutomationId = AutomationIdConstants.FirstNameEntry
-            };
-            firstNameDataEntry.SetBinding(Entry.TextProperty, nameof(ContactDetailViewModel.FirstNameText));
-
-            var lastNameTextLabel = new ContactDetailLabel { Text = "Last Name" };
-
-            var lastNameDataEntry = new ContactDetailEntry
-            {
-                ReturnType = ReturnType.Next,
-                AutomationId = AutomationIdConstants.LastNameEntry
-            };
-            lastNameDataEntry.SetBinding(Entry.TextProperty, nameof(ContactDetailViewModel.LastNameText));
-
-            var phoneNumberTextLabel = new ContactDetailLabel { Text = "Phone Number" };
-
-            var phoneNumberDataEntry = new ContactDetailEntry
-            {
-                AutomationId = AutomationIdConstants.PhoneNumberEntry
-            };
-            phoneNumberDataEntry.SetBinding(Entry.TextProperty, nameof(ContactDetailViewModel.PhoneNumberText));
-
-            var isSavingIndicator = new ActivityIndicator();
-            isSavingIndicator.SetBinding(IsVisibleProperty, nameof(ContactDetailViewModel.IsSaving));
-            isSavingIndicator.SetBinding(ActivityIndicator.IsRunningProperty, nameof(ContactDetailViewModel.IsSaving));
-
-            var saveToobarItem = new ToolbarItem
-            {
-                Text = "Save",
-                Priority = 0,
-                AutomationId = AutomationIdConstants.SaveContactButton,
-                CommandParameter = _isNewContact
-            };
-            saveToobarItem.SetBinding(MenuItem.CommandProperty, nameof(ContactDetailViewModel.SaveButtonTappedCommand));
-
-            var cancelToolbarItem = new ToolbarItem
-            {
-                Text = "Cancel",
-                Priority = 1,
-                AutomationId = AutomationIdConstants.CancelContactButton
-            };
-            cancelToolbarItem.Clicked += HandleCancelToolBarItemClicked;
-
-            ToolbarItems.Add(saveToobarItem);
+            ToolbarItems.Add(new ToolbarItem { Text = "Save", Priority = 0, AutomationId = AutomationIdConstants.SaveContactButton, CommandParameter = _isNewContact }
+                                .Bind(MenuItem.CommandProperty, nameof(ContactDetailViewModel.SaveButtonTappedCommand)));
 
             if (isNewContact)
-                ToolbarItems.Add(cancelToolbarItem);
+            {
+                ToolbarItems.Add(new ToolbarItem { Text = "Cancel", Priority = 1, AutomationId = AutomationIdConstants.CancelContactButton }
+                                    .Invoke(toolBarItem => toolBarItem.Clicked += HandleCancelToolBarItemClicked));
+            }
 
             Title = PageTitleConstants.ContactDetailsPage;
-
             Padding = new Thickness(20, 0, 20, 0);
 
             Content = new StackLayout
             {
                 Margin = new Thickness(0, 10, 0, 0),
-                Children = {
-                    firstNameTextLabel,
-                    firstNameDataEntry,
-                    lastNameTextLabel,
-                    lastNameDataEntry,
-                    phoneNumberTextLabel,
-                    phoneNumberDataEntry,
-                    isSavingIndicator
+
+                Children =
+                {
+                    new ContactDetailLabel { Text = "First Name" },
+
+                    new ContactDetailEntry { ReturnType = ReturnType.Next, AutomationId = AutomationIdConstants.FirstNameEntry }
+                      .Bind(Entry.TextProperty, nameof(ContactDetailViewModel.FirstNameText)),
+
+                    new ContactDetailLabel { Text = "Last Name" },
+
+                    new ContactDetailEntry { ReturnType = ReturnType.Next, AutomationId = AutomationIdConstants.LastNameEntry }
+                        .Bind(Entry.TextProperty, nameof(ContactDetailViewModel.LastNameText)),
+
+                    new ContactDetailLabel { Text = "Phone Number" },
+
+                    new ContactDetailEntry { AutomationId = AutomationIdConstants.PhoneNumberEntry }
+                        .Bind(Entry.TextProperty, nameof(ContactDetailViewModel.PhoneNumberText)),
+
+                    new ActivityIndicator()
+                        .Bind(IsVisibleProperty, nameof(ContactDetailViewModel.IsSaving))
+                        .Bind(ActivityIndicator.IsRunningProperty, nameof(ContactDetailViewModel.IsSaving))
                 }
             };
         }

@@ -7,6 +7,8 @@ using Xamarin.Forms.Markup;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using XamList.Mobile.Shared;
 using XamList.Shared;
+using static XamList.MarkupExtensions;
+using static Xamarin.Forms.Markup.GridRowsColumns;
 
 namespace XamList
 {
@@ -20,60 +22,51 @@ namespace XamList
         {
             _mainThread = mainThread;
 
-            var addContactButton = new ToolbarItem
-            {
-                Text = "+",
-                AutomationId = AutomationIdConstants.AddContactButon
-            };
-            addContactButton.Clicked += HandleAddContactButtonClicked;
-            ToolbarItems.Add(addContactButton);
-
-            var refreshView = new RefreshView
-            {
-                RefreshColor = Color.Black,
-                Content = new CollectionView
-                {
-                    ItemTemplate = new ContactsListDataTemplateSelector(),
-                    BackgroundColor = Color.Transparent,
-                    AutomationId = AutomationIdConstants.ContactsListView,
-                }.Bind(CollectionView.ItemsSourceProperty, nameof(ContactsListViewModel.AllContactsList))
-                 .Invoke(collectionView => collectionView.SelectionChanged += HandleSelectionChanged)
-
-            }.Bind(RefreshView.CommandProperty, nameof(ContactsListViewModel.RefreshCommand))
-             .Bind(RefreshView.IsRefreshingProperty, nameof(ContactsListViewModel.IsRefreshing));
-
-            var restoreDeletedContactsButton = new Button
-            {
-                Text = "  Restore Deleted Contacts  ",
-                TextColor = ColorConstants.TextColor,
-                AutomationId = AutomationIdConstants.RestoreDeletedContactsButton,
-                BackgroundColor = new Color(ColorConstants.NavigationBarBackgroundColor.R,
-                                            ColorConstants.NavigationBarBackgroundColor.G,
-                                            ColorConstants.NavigationBarBackgroundColor.B,
-                                            0.25)
-            };
-            restoreDeletedContactsButton.Clicked += HandleRestoreDeletedContactsButtonClicked;
+            ToolbarItems.Add(new ToolbarItem { Text = "+", AutomationId = AutomationIdConstants.AddContactButon }
+                                .Invoke(toolBarItem => toolBarItem.Clicked += HandleAddContactButtonClicked));
 
             Title = PageTitleConstants.ContactsListPage;
 
-            var relativeLayout = new RelativeLayout();
+            Content = new Grid
+            {
+                RowDefinitions = Rows.Define(
+                    (Row.List, Star),
+                    (Row.RestoreButton, AbsoluteGridLength(50))),
 
-            relativeLayout.Children.Add(refreshView,
-                                        Constraint.Constant(0),
-                                        Constraint.Constant(0),
-                                        Constraint.RelativeToParent(parent => parent.Width),
-                                        Constraint.RelativeToParent(parent => parent.Height));
-            relativeLayout.Children.Add(restoreDeletedContactsButton,
-                                        Constraint.RelativeToParent(parent => parent.Width / 2 - getWidth(parent, restoreDeletedContactsButton) / 2),
-                                        Constraint.RelativeToParent(parent => parent.Height - getHeight(parent, restoreDeletedContactsButton) - 10));
+                Children =
+                {
+                    new RefreshView
+                    {
+                        RefreshColor = Color.Black,
+                        Content = new CollectionView
+                        {
+                            ItemTemplate = new ContactsListDataTemplateSelector(),
+                            BackgroundColor = Color.Transparent,
+                            AutomationId = AutomationIdConstants.ContactsListView,
+                            SelectionMode = SelectionMode.Single
+                        }.Bind(CollectionView.ItemsSourceProperty, nameof(ContactsListViewModel.AllContactsList))
+                         .Invoke(collectionView => collectionView.SelectionChanged += HandleSelectionChanged)
 
-            Content = relativeLayout;
+                    }.RowSpan(All<Row>())
+                     .Bind(RefreshView.CommandProperty, nameof(ContactsListViewModel.RefreshCommand))
+                     .Bind(RefreshView.IsRefreshingProperty, nameof(ContactsListViewModel.IsRefreshing)),
+
+                    new Button
+                    {
+                        Text = "Restore Deleted Contacts",
+                        TextColor = ColorConstants.TextColor,
+                        AutomationId = AutomationIdConstants.RestoreDeletedContactsButton,
+                        BackgroundColor = new Color(ColorConstants.NavigationBarBackgroundColor.R, ColorConstants.NavigationBarBackgroundColor.G, ColorConstants.NavigationBarBackgroundColor.B, 0.25)
+                    }.Padding(10, 5).Margin(25).Center()
+                     .Row(Row.RestoreButton)
+                     .Invoke(button => button.Clicked += HandleRestoreDeletedContactsButtonClicked)
+                }
+            };
 
             On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
-
-            static double getHeight(RelativeLayout parent, View view) => view.Measure(parent.Width, parent.Height).Request.Height;
-            static double getWidth(RelativeLayout parent, View view) => view.Measure(parent.Width, parent.Height).Request.Width;
         }
+
+        enum Row { List, RestoreButton }
 
         protected override void OnAppearing()
         {
