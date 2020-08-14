@@ -54,7 +54,7 @@ namespace XamList.UITests
 
         Task RemoveTestContactsFromDatabases()
         {
-            BackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase(App);
+            App.InvokeBackdoorMethod(BackdoorMethodConstants.RemoveTestContactsFromLocalDatabase);
             return RemoveTestContactsFromRemoteDatabase();
         }
 

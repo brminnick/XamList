@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ApiService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IAnalyticsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constants\BackdoorMethodConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Constants\" />

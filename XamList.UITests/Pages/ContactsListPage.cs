@@ -128,13 +128,17 @@ namespace XamList.UITests
             }
         }
 
-        public void PullToRefresh() => BackdoorMethodHelpers.TriggerPullToRefresh(App);
+        public void PullToRefresh() => App.InvokeBackdoorMethod(BackdoorMethodConstants.TriggerPullToRefresh);
 
-        bool GetIsRefreshActivityIndicatorDisplayed() => App switch
+        bool GetIsRefreshActivityIndicatorDisplayed()
         {
-            iOSApp iOSApp => iOSApp.Query(x => x.Class("UIRefreshControl")).Any(),
-            AndroidApp androidApp => (bool)androidApp.Query(x => x.Class("ListViewRenderer_SwipeRefreshLayoutWithFixedNestedScrolling").Invoke("isRefreshing")).First(),
-            _ => throw new NotSupportedException(),
-        };
+            if (App is AndroidApp)
+                return (bool)App.Query(x => x.Class("RefreshViewRenderer").Invoke("isRefreshing")).First();
+
+            if (App is iOSApp)
+                return App.Query(x => x.Class("UIRefreshControl")).Any();
+
+            throw new NotSupportedException("Xamarin.UITest only supports Android and iOS");
+        }
     }
 }

@@ -95,10 +95,8 @@ namespace XamList.UITests
 
         void EnterTextThenTapEnter(Query query, string text)
         {
-            App.Tap(query);
-
-            App.ClearText();
-            App.EnterText(text);
+            App.ClearText(query);
+            App.EnterText(query, text);
 
             App.Screenshot($"Entered Text: {text}");
 

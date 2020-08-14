@@ -19,6 +19,8 @@ namespace XamList
 
             static View CreateDataTemplate(in ContactModel contactModel) => new Grid
             {
+                RowSpacing = 2,
+
                 RowDefinitions = Rows.Define(
                     (Row.Text, Star),
                     (Row.Detail, Star),

@@ -4,11 +4,12 @@ using Android.OS;
 using Android.Runtime;
 using Autofac;
 using Java.Interop;
+using XamList.Mobile.Shared;
 
 namespace XamList.Droid
 {
     [Activity(Label = "XamList.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public partial class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
@@ -28,14 +29,5 @@ namespace XamList.Droid
 
             LoadApplication(new App());
         }
-
-#if DEBUG
-        [Export(nameof(RemoveTestContactsFromLocalDatabase))]
-        public async void RemoveTestContactsFromLocalDatabase() =>
-             await ServiceCollection.Container.Resolve<UITestBackdoorMethodService>().RemoveTestContactsFromLocalDatabase().ConfigureAwait(false);
-
-        [Export(nameof(TriggerPullToRefresh))]
-        public void TriggerPullToRefresh() => ServiceCollection.Container.Resolve<UITestBackdoorMethodService>().TriggerPullToRegresh();
-#endif
     }
 }

@@ -129,6 +129,7 @@
         <Compile Include="Main.cs" />
         <Compile Include="AppDelegate.cs" />
         <Compile Include="CustomRenderers\ContactDetailsPageCustomRenderer.cs" />
+        <Compile Include="AppDelegate.BackdoorMethods.cs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\XamList\XamList.csproj">
