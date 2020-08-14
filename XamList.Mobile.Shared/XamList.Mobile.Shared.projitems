@@ -17,9 +17,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ApiService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IAnalyticsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Constants\" />
     <Folder Include="$(MSBuildThisFileDirectory)Services\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Interfaces\" />
   </ItemGroup>
 </Project>

@@ -11,20 +11,36 @@ namespace XamList
 {
     public class ContactsListViewModel : BaseViewModel
     {
+        readonly ApiService _apiService;
+        readonly ContactDatabase _contactDatabase;
+        readonly DatabaseSyncService _databaseSyncService;
+
         bool _isRefreshing;
-        ICommand? _refreshCommand, _restoreDeletedContactsCommand;
 
-        public ICommand RefreshCommand => _refreshCommand ??= new AsyncCommand(() =>
+        public ContactsListViewModel(ApiService apiService,
+                                        ContactDatabase contactDatabase,
+                                        AppCenterService appCenterService,
+                                        DatabaseSyncService databaseSyncService) : base(appCenterService)
         {
-            AppCenterHelpers.TrackEvent(AppCenterConstants.PullToRefreshTriggered);
-            return ExecuteRefreshCommand();
-        });
+            _apiService = apiService;
+            _contactDatabase = contactDatabase;
+            _databaseSyncService = databaseSyncService;
 
-        public ICommand RestoreDeletedContactsCommand => _restoreDeletedContactsCommand ??= new AsyncCommand(() =>
-        {
-            AppCenterHelpers.TrackEvent(AppCenterConstants.RestoreDeletedContactsTapped);
-            return ExecuteRestoreDeletedContactsCommand();
-        });
+            RefreshCommand = new AsyncCommand(() =>
+            {
+                AppCenterService.Track(AppCenterConstants.PullToRefreshTriggered);
+                return ExecuteRefreshCommand();
+            });
+
+            RestoreDeletedContactsCommand = new AsyncCommand(() =>
+            {
+                AppCenterService.Track(AppCenterConstants.RestoreDeletedContactsTapped);
+                return ExecuteRestoreDeletedContactsCommand();
+            });
+        }
+
+        public ICommand RefreshCommand { get; }
+        public ICommand RestoreDeletedContactsCommand { get; }
 
         public bool IsRefreshing
         {
@@ -36,29 +52,30 @@ namespace XamList
 
         async Task ExecuteRefreshCommand()
         {
+            var minimumSpinnerTime = Task.Delay(1000);
+
             AllContactsList.Clear();
 
             try
             {
-                var minimumSpinnerTime = Task.Delay(1000);
 
-                await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
+                await _databaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
 
-                var contactList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
+                var contactList = await _contactDatabase.GetAllContacts().ConfigureAwait(false);
 
-                foreach (var contact in contactList.Where(x => !string.IsNullOrWhiteSpace(x?.FullName) && !x.IsDeleted).OrderBy(x => x.FullName))
+                foreach (var contact in contactList.Where(x => !string.IsNullOrWhiteSpace(x.FullName) && !x.IsDeleted).OrderBy(x => x.FullName))
                 {
                     AllContactsList.Add(contact);
                 }
 
-                await minimumSpinnerTime.ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                AppCenterHelpers.Report(e);
+                AppCenterService.Report(e);
             }
             finally
             {
+                await minimumSpinnerTime.ConfigureAwait(false);
                 IsRefreshing = false;
             }
         }
@@ -71,14 +88,13 @@ namespace XamList
 
             try
             {
-                await ApiService.RestoreDeletedContacts().ConfigureAwait(false);
+                await _apiService.RestoreDeletedContacts().ConfigureAwait(false);
 
                 await ExecuteRefreshCommand().ConfigureAwait(false);
-
-                await minimumSpinnerTime.ConfigureAwait(false);
             }
             finally
             {
+                await minimumSpinnerTime.ConfigureAwait(false);
                 IsRefreshing = false;
             }
         }

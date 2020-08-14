@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using XamList.Backend.Shared;
 
 namespace XamList.API
 {
@@ -17,6 +17,7 @@ namespace XamList.API
         {
             services.AddControllers();
             services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true);
+            services.AddSingleton<XamListDatabase>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

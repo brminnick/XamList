@@ -2,14 +2,18 @@
 
 namespace XamList
 {
-    public abstract class BaseContentPage<TViewModel> : ContentPage where TViewModel : BaseViewModel, new()
+    public abstract class BaseContentPage<TViewModel> : ContentPage where TViewModel : BaseViewModel
     {
-        protected BaseContentPage()
+        protected BaseContentPage(TViewModel viewModel, AppCenterService appCenterService)
         {
-            BindingContext = ViewModel;
+            BindingContext = ViewModel = viewModel;
+
+            AppCenterService = appCenterService;
+
             BackgroundColor = ColorConstants.PageBackgroundColor;
         }
 
-        protected TViewModel ViewModel { get; } = new TViewModel();
+        protected AppCenterService AppCenterService { get; }
+        protected TViewModel ViewModel { get; }
     }
 }

@@ -5,27 +5,28 @@ using System.Runtime.CompilerServices;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Analytics;
+using XamList.Mobile.Shared;
 
 namespace XamList
 {
-    public static class AppCenterHelpers
+    public class AppCenterService : IAnalyticsService
     {
-        public static void Start() => Start(AppCenterConstants.ApiKey);
+        public void Start() => Start(AppCenterConstants.ApiKey);
 
-        public static void TrackEvent(string trackIdentifier, IDictionary<string, string>? table = null) =>
+        public void Track(string trackIdentifier, IDictionary<string, string>? table = null) =>
             Analytics.TrackEvent(trackIdentifier, table);
 
-        public static void TrackEvent(string trackIdentifier, string key, string value)
+        public void Track(string trackIdentifier, string key, string value)
         {
             IDictionary<string, string>? table = new Dictionary<string, string> { { key, value } };
 
             if (string.IsNullOrWhiteSpace(key) && string.IsNullOrWhiteSpace(value))
                 table = null;
 
-            TrackEvent(trackIdentifier, table);
+            Track(trackIdentifier, table);
         }
 
-        public static void Report(Exception exception,
+        public void Report(Exception exception,
                                   IDictionary<string, string>? properties = null,
                                   [CallerMemberName] string callerMemberName = "",
                                   [CallerLineNumber] int lineNumber = 0,
@@ -37,7 +38,7 @@ namespace XamList
         }
 
         [Conditional("DEBUG")]
-        static void PrintException(Exception exception, string callerMemberName, int lineNumber, string filePath)
+        void PrintException(Exception exception, string callerMemberName, int lineNumber, string filePath)
         {
             var fileName = System.IO.Path.GetFileName(filePath);
 
@@ -48,6 +49,6 @@ namespace XamList
             Debug.WriteLine($"File Name: {fileName}");
         }
 
-        static void Start(string appSecret) => AppCenter.Start(appSecret, typeof(Analytics), typeof(Crashes));
+        void Start(string appSecret) => AppCenter.Start(appSecret, typeof(Analytics), typeof(Crashes));
     }
 }

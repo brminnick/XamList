@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
+using Autofac;
+using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.Markup;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using XamList.Mobile.Shared;
 using XamList.Shared;
@@ -11,8 +12,14 @@ namespace XamList
 {
     public class ContactsListPage : BaseContentPage<ContactsListViewModel>
     {
-        public ContactsListPage()
+        readonly IMainThread _mainThread;
+
+        public ContactsListPage(IMainThread mainThread,
+                                    AppCenterService appCenterService,
+                                    ContactsListViewModel contactsListViewModel) : base(contactsListViewModel, appCenterService)
         {
+            _mainThread = mainThread;
+
             var addContactButton = new ToolbarItem
             {
                 Text = "+",
@@ -21,18 +28,19 @@ namespace XamList
             addContactButton.Clicked += HandleAddContactButtonClicked;
             ToolbarItems.Add(addContactButton);
 
-            var contactsListView = new Xamarin.Forms.ListView(ListViewCachingStrategy.RecycleElement)
+            var refreshView = new RefreshView
             {
-                ItemTemplate = new DataTemplate(typeof(ContactsListTextCell)),
-                IsPullToRefreshEnabled = true,
-                BackgroundColor = Color.Transparent,
-                AutomationId = AutomationIdConstants.ContactsListView,
-                RefreshControlColor = Color.Black
-            };
-            contactsListView.ItemTapped += HandleItemTapped;
-            contactsListView.SetBinding(Xamarin.Forms.ListView.ItemsSourceProperty, nameof(ContactsListViewModel.AllContactsList));
-            contactsListView.SetBinding(Xamarin.Forms.ListView.RefreshCommandProperty, nameof(ContactsListViewModel.RefreshCommand));
-            contactsListView.SetBinding(Xamarin.Forms.ListView.IsRefreshingProperty, nameof(ContactsListViewModel.IsRefreshing));
+                RefreshColor = Color.Black,
+                Content = new CollectionView
+                {
+                    ItemTemplate = new ContactsListDataTemplateSelector(),
+                    BackgroundColor = Color.Transparent,
+                    AutomationId = AutomationIdConstants.ContactsListView,
+                }.Bind(CollectionView.ItemsSourceProperty, nameof(ContactsListViewModel.AllContactsList))
+                 .Invoke(collectionView => collectionView.SelectionChanged += HandleSelectionChanged)
+
+            }.Bind(RefreshView.CommandProperty, nameof(ContactsListViewModel.RefreshCommand))
+             .Bind(RefreshView.IsRefreshingProperty, nameof(ContactsListViewModel.IsRefreshing));
 
             var restoreDeletedContactsButton = new Button
             {
@@ -50,7 +58,7 @@ namespace XamList
 
             var relativeLayout = new RelativeLayout();
 
-            relativeLayout.Children.Add(contactsListView,
+            relativeLayout.Children.Add(refreshView,
                                         Constraint.Constant(0),
                                         Constraint.Constant(0),
                                         Constraint.RelativeToParent(parent => parent.Width),
@@ -61,7 +69,7 @@ namespace XamList
 
             Content = relativeLayout;
 
-            On<iOS>().SetUseSafeArea(true);
+            On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
 
             static double getHeight(RelativeLayout parent, View view) => view.Measure(parent.Width, parent.Height).Request.Height;
             static double getWidth(RelativeLayout parent, View view) => view.Measure(parent.Width, parent.Height).Request.Width;
@@ -71,45 +79,42 @@ namespace XamList
         {
             base.OnAppearing();
 
-            AppCenterHelpers.TrackEvent(AppCenterConstants.ContactsListPageAppeared);
+            AppCenterService.Track(AppCenterConstants.ContactsListPageAppeared);
 
             if (Content is Layout<View> layout
-                && layout.Children.OfType<Xamarin.Forms.ListView>().First() is Xamarin.Forms.ListView listView)
+                && layout.Children.OfType<RefreshView>().First() is RefreshView refreshView)
             {
-                listView.BeginRefresh();
+                refreshView.IsRefreshing = true;
             }
         }
 
-        async void HandleItemTapped(object sender, ItemTappedEventArgs e)
+        async void HandleSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is Xamarin.Forms.ListView listView &&
-                    e.Item is ContactModel selectedContactModel)
+            var collectionView = (CollectionView)sender;
+            collectionView.SelectedItem = null;
+
+            if (e.CurrentSelection.FirstOrDefault() is ContactModel selectedContactModel)
             {
-                listView.SelectedItem = null;
-                await Navigation.PushAsync(new ContactDetailPage(selectedContactModel, false));
+
+                var contactDetailPage = ServiceCollection.Container.Resolve<ContactDetailPage>(new TypedParameter(typeof(bool), false), new TypedParameter(typeof(ContactModel), selectedContactModel));
+                await Navigation.PushAsync(contactDetailPage);
             }
         }
 
-        void HandleAddContactButtonClicked(object sender, EventArgs e)
+        async void HandleAddContactButtonClicked(object sender, EventArgs e)
         {
-            AppCenterHelpers.TrackEvent(AppCenterConstants.AddContactButtonTapped);
+            AppCenterService.Track(AppCenterConstants.AddContactButtonTapped);
+            var contactDetailPage = ServiceCollection.Container.Resolve<ContactDetailPage>(new TypedParameter(typeof(bool), true), new TypedParameter(typeof(ContactModel), new ContactModel()));
 
-            Device.BeginInvokeOnMainThread(async () =>
-               await Navigation.PushModalAsync(new BaseNavigationPage(new ContactDetailPage(new ContactModel(), true))));
+            await _mainThread.InvokeOnMainThreadAsync(() => Navigation.PushModalAsync(new BaseNavigationPage(contactDetailPage)));
         }
 
-        void HandleRestoreDeletedContactsButtonClicked(object sender, EventArgs e)
+        async void HandleRestoreDeletedContactsButtonClicked(object sender, EventArgs e)
         {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                var isDisplayAlertDialogConfirmed = await DisplayAlert("Restore Deleted Contacts",
-                                                            "Would you like to restore deleted contacts?",
-                                                            AlertDialogConstants.Yes,
-                                                            AlertDialogConstants.Cancel);
+            var isDisplayAlertDialogConfirmed = await _mainThread.InvokeOnMainThreadAsync(() => DisplayAlert("Restore Deleted Contacts", "Would you like to restore deleted contacts?", AlertDialogConstants.Yes, AlertDialogConstants.Cancel)).ConfigureAwait(false);
 
-                if (isDisplayAlertDialogConfirmed)
-                    ViewModel.RestoreDeletedContactsCommand.Execute(null);
-            });
+            if (isDisplayAlertDialogConfirmed)
+                ViewModel.RestoreDeletedContactsCommand.Execute(null);
         }
     }
 }

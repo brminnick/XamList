@@ -1,16 +1,25 @@
-﻿using Xamarin.Forms;
+﻿using Autofac;
+using Xamarin.Forms;
 
 namespace XamList
 {
     public class App : Application
     {
-        public App() => MainPage = new BaseNavigationPage(new ContactsListPage());
+        readonly AppCenterService _appCenterService;
+
+        public App()
+        {
+            _appCenterService = ServiceCollection.Container.Resolve<AppCenterService>();
+
+            var contactsListPage = ServiceCollection.Container.Resolve<ContactsListPage>();
+            MainPage = new BaseNavigationPage(contactsListPage);
+        }
 
         protected override void OnStart()
         {
             base.OnStart();
 
-            AppCenterHelpers.Start();
+            _appCenterService.Start();
         }
     }
 }

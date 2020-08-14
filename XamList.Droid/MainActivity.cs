@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Autofac;
 using Java.Interop;
 
 namespace XamList.Droid
@@ -31,10 +32,10 @@ namespace XamList.Droid
 #if DEBUG
         [Export(nameof(RemoveTestContactsFromLocalDatabase))]
         public async void RemoveTestContactsFromLocalDatabase() =>
-             await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase().ConfigureAwait(false);
+             await ServiceCollection.Container.Resolve<UITestBackdoorMethodService>().RemoveTestContactsFromLocalDatabase().ConfigureAwait(false);
 
         [Export(nameof(TriggerPullToRefresh))]
-        public void TriggerPullToRefresh() => UITestBackdoorMethodHelpers.TriggerPullToRegresh();
+        public void TriggerPullToRefresh() => ServiceCollection.Container.Resolve<UITestBackdoorMethodService>().TriggerPullToRegresh();
 #endif
     }
 }

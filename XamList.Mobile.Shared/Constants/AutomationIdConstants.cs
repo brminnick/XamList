@@ -1,6 +1,6 @@
 ﻿namespace XamList.Mobile.Shared
 {
-    public static class AutomationIdConstants
+    static class AutomationIdConstants
     {
         #region Contact Details Page
         public const string FirstNameEntry = "FirstNameEntry";

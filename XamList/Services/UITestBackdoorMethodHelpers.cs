@@ -4,14 +4,21 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using XamList.Mobile.Shared;
 using Xamarin.Forms;
+using Xamarin.Essentials.Interfaces;
 
 namespace XamList
 {
-    public static class UITestBackdoorMethodHelpers
+    public class UITestBackdoorMethodService
     {
-        public static async Task RemoveTestContactsFromLocalDatabase()
+        readonly IMainThread _mainThread;
+        readonly ContactDatabase _contactDatabase;
+
+        public UITestBackdoorMethodService(ContactDatabase contactDatabase, IMainThread mainThread) =>
+            (_contactDatabase, _mainThread) = (contactDatabase, mainThread);
+
+        public async Task RemoveTestContactsFromLocalDatabase()
         {
-            var contactsList = await ContactDatabase.GetAllContacts().ConfigureAwait(false);
+            var contactsList = await _contactDatabase.GetAllContacts().ConfigureAwait(false);
 
             var testContactsList = contactsList.Where(x =>
                                                     x.FirstName.Equals(TestConstants.TestFirstName) &&
@@ -20,12 +27,12 @@ namespace XamList
 
             var removedContactTaskList = new List<Task>();
             foreach (var contact in testContactsList)
-                removedContactTaskList.Add(ContactDatabase.RemoveContact(contact));
+                removedContactTaskList.Add(_contactDatabase.RemoveContact(contact));
 
             await Task.WhenAll(removedContactTaskList).ConfigureAwait(false);
         }
 
-        public static void TriggerPullToRegresh()
+        public void TriggerPullToRegresh()
         {
             var navigationPage = (NavigationPage)Application.Current.MainPage;
             var listPage = (ContactsListPage)navigationPage.Navigation.NavigationStack.First();
@@ -33,7 +40,7 @@ namespace XamList
             var listPageLayout = (Layout<View>)listPage.Content;
             var listView = listPageLayout.Children.OfType<ListView>().First();
 
-            Device.BeginInvokeOnMainThread(listView.BeginRefresh);
+            _mainThread.BeginInvokeOnMainThread(listView.BeginRefresh);
         }
     }
 }

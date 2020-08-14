@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using Autofac;
+using Foundation;
 using UIKit;
 
 namespace XamList.iOS
@@ -21,10 +22,10 @@ namespace XamList.iOS
 #if DEBUG
         [Export("removeTestContactsFromLocalDatabase:")]
         public async void RemoveTestContactsFromLocalDatabase(NSString unusedString) =>
-            await UITestBackdoorMethodHelpers.RemoveTestContactsFromLocalDatabase().ConfigureAwait(false);
+            await ServiceCollection.Container.Resolve<UITestBackdoorMethodService>().RemoveTestContactsFromLocalDatabase().ConfigureAwait(false);
 
         [Export("triggerPullToRefresh:")]
-        public void TriggerPullToRefresh(NSString unusedString) => UITestBackdoorMethodHelpers.TriggerPullToRegresh();
+        public void TriggerPullToRefresh(NSString unusedString) => ServiceCollection.Container.Resolve<UITestBackdoorMethodService>().TriggerPullToRegresh();
 #endif
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
 using XamList.Mobile.Shared;
 using XamList.Shared;
@@ -9,13 +10,20 @@ namespace XamList
     public class ContactDetailPage : BaseContentPage<ContactDetailViewModel>
     {
         readonly bool _isNewContact;
+        readonly IMainThread _mainThread;
 
-        public ContactDetailPage(ContactModel selectedContact, bool isNewContact)
+        public ContactDetailPage(bool isNewContact,
+                                    IMainThread mainThread,
+                                    ContactModel selectedContact,
+                                    AppCenterService appCenterService,
+                                    ContactDetailViewModel contactDetailViewModel) : base(contactDetailViewModel, appCenterService)
         {
+            _mainThread = mainThread;
+            _isNewContact = isNewContact;
+
             ViewModel.Contact = selectedContact;
             ViewModel.SaveContactCompleted += HandleSaveContactCompleted;
 
-            _isNewContact = isNewContact;
 
             var firstNameTextLabel = new ContactDetailLabel { Text = "First Name" };
 
@@ -92,15 +100,15 @@ namespace XamList
         {
             base.OnAppearing();
 
-            AppCenterHelpers.TrackEvent(AppCenterConstants.ContactDetailPageAppeared);
+            AppCenterService.Track(AppCenterConstants.ContactDetailPageAppeared);
         }
 
         Task PopPage()
         {
             if (_isNewContact)
-                return Device.InvokeOnMainThreadAsync(() => Navigation.PopModalAsync());
+                return _mainThread.InvokeOnMainThreadAsync(() => Navigation.PopModalAsync());
 
-            return Device.InvokeOnMainThreadAsync(() => Navigation.PopAsync());
+            return _mainThread.InvokeOnMainThreadAsync(() => Navigation.PopAsync());
         }
 
         async void HandleSaveContactCompleted(object sender, bool isSaveSuccessful)

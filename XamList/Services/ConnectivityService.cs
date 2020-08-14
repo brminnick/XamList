@@ -1,21 +1,28 @@
-﻿using Xamarin.Essentials;
+﻿using Xamarin.Essentials.Interfaces;
 using XamList.Mobile.Shared;
 
 namespace XamList
 {
-    public static class ConnectivityService
+    public class ConnectivityService
     {
-        static ConnectivityService() =>
-            Connectivity.ConnectivityChanged += HandleConnectivityChanged;
+        readonly ApiService _apiService;
+        readonly DatabaseSyncService _databaseSyncService;
 
-        private static async void HandleConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        public ConnectivityService(ApiService apiService, DatabaseSyncService databaseService, IConnectivity connectivity)
         {
-            if (e.NetworkAccess is NetworkAccess.Internet)
+            _apiService = apiService;
+            _databaseSyncService = databaseService;
+            connectivity.ConnectivityChanged += HandleConnectivityChanged;
+        }
+
+        async void HandleConnectivityChanged(object sender, Xamarin.Essentials.ConnectivityChangedEventArgs e)
+        {
+            if (e.NetworkAccess is Xamarin.Essentials.NetworkAccess.Internet)
             {
-                var apiResponse = await ApiService.GetHttpResponseMessage().ConfigureAwait(false);
+                var apiResponse = await _apiService.GetHttpResponseMessage().ConfigureAwait(false);
 
                 if (apiResponse.IsSuccessStatusCode)
-                    await DatabaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
+                    await _databaseSyncService.SyncRemoteAndLocalDatabases().ConfigureAwait(false);
             }
         }
     }

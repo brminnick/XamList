@@ -8,27 +8,27 @@ using XamList.Shared;
 
 namespace XamList.Backend.Shared
 {
-    public static class XamListDatabase
+    public class XamListDatabase
     {
         readonly static string _connectionString = Environment.GetEnvironmentVariable("XamListDatabaseConnectionString") ?? string.Empty;
 
-        public static List<ContactModel> GetAllContactModels(Func<ContactModel, bool> wherePredicate)
+        public List<ContactModel> GetAllContactModels(Func<ContactModel, bool> wherePredicate)
         {
             using var connection = new XamListDatabaseContext();
 
-            return connection.Contacts.Where(wherePredicate).ToList();
+            return connection.Contacts?.Where(wherePredicate).ToList() ?? new List<ContactModel>();
         }
 
-        public static List<ContactModel> GetAllContactModels() => GetAllContactModels(x => true);
+        public List<ContactModel> GetAllContactModels() => GetAllContactModels(x => true);
 
-        public static Task<ContactModel> GetContactModel(string id)
+        public Task<ContactModel> GetContactModel(string id)
         {
             return PerformDatabaseFunction(getContactModelFunction);
 
             Task<ContactModel> getContactModelFunction(XamListDatabaseContext dataContext) => dataContext.Contacts.SingleAsync(x => x.Id.Equals(id));
         }
 
-        public static Task<ContactModel> InsertContactModel(ContactModel contact)
+        public Task<ContactModel> InsertContactModel(ContactModel contact)
         {
             return PerformDatabaseFunction(insertContactModelFunction);
 
@@ -46,7 +46,7 @@ namespace XamList.Backend.Shared
             }
         }
 
-        public static Task<ContactModel> PatchContactModel(ContactModel contactModel)
+        public Task<ContactModel> PatchContactModel(ContactModel contactModel)
         {
             return PerformDatabaseFunction(patchContactModelFunction);
 
@@ -66,7 +66,7 @@ namespace XamList.Backend.Shared
             }
         }
 
-        public static Task<ContactModel> DeleteContactModel(string id)
+        public Task<ContactModel> DeleteContactModel(string id)
         {
             return PerformDatabaseFunction(deleteContactModelFunction);
 
@@ -80,7 +80,7 @@ namespace XamList.Backend.Shared
             }
         }
 
-        public static Task<ContactModel> RemoveContactModel(string id)
+        public Task<ContactModel> RemoveContactModel(string id)
         {
             return PerformDatabaseFunction(removeContactDatabaseFunction);
 

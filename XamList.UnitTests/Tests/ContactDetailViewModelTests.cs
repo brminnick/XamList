@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-
-using XamList.Shared;
+﻿using Autofac;
+using NUnit.Framework;
 using XamList.Mobile.Shared;
+using XamList.Shared;
 
 namespace XamList.UnitTests
 {
@@ -12,7 +12,7 @@ namespace XamList.UnitTests
         public void ContactTest()
         {
             //Arrange
-            var contactDetailViewModel = new ContactDetailViewModel();
+            var contactDetailViewModel = ServiceCollection.Container.Resolve<ContactDetailViewModel>();
 
             //Act
             contactDetailViewModel.Contact = new ContactModel

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
+using Xamarin.Essentials.Interfaces;
 using XamList.Mobile.Shared;
 using XamList.Shared;
 
@@ -9,11 +10,22 @@ namespace XamList
 {
     public class ContactDetailViewModel : BaseViewModel
     {
+        readonly ApiService _apiService;
+        readonly IMainThread _mainThread;
+        readonly ContactDatabase _contactDatabase;
         readonly WeakEventManager<bool> _saveContactCompletedEventManager = new WeakEventManager<bool>();
 
         bool _isSaving;
         ContactModel _contact = new ContactModel();
-        IAsyncCommand<bool>? _saveButtonTappedCommand;
+
+        public ContactDetailViewModel(ApiService apiService, ContactDatabase contactDatabase, IMainThread mainThread, AppCenterService appCenterService) : base(appCenterService)
+        {
+            _apiService = apiService;
+            _mainThread = mainThread;
+            _contactDatabase = contactDatabase;
+
+            SaveButtonTappedCommand = new AsyncCommand<bool>(ExecuteSaveButtonTappedCommand, _ => !IsSaving);
+        }
 
         public event EventHandler<bool> SaveContactCompleted
         {
@@ -21,12 +33,12 @@ namespace XamList
             remove => _saveContactCompletedEventManager.RemoveEventHandler(value);
         }
 
-        public IAsyncCommand<bool> SaveButtonTappedCommand => _saveButtonTappedCommand ??= new AsyncCommand<bool>(ExecuteSaveButtonTappedCommand, _ => !IsSaving);
+        public IAsyncCommand<bool> SaveButtonTappedCommand { get; }
 
         public bool IsSaving
         {
             get => _isSaving;
-            set => SetProperty(ref _isSaving, value, () => Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(SaveButtonTappedCommand.RaiseCanExecuteChanged));
+            set => SetProperty(ref _isSaving, value, () => _mainThread.BeginInvokeOnMainThread(SaveButtonTappedCommand.RaiseCanExecuteChanged));
         }
 
         public string FirstNameText
@@ -78,15 +90,13 @@ namespace XamList
 
             try
             {
+                var saveToRemoteDatabaseTask = isNewContact switch
+                {
+                    true => _apiService.PostContactModel(Contact),
+                    false => _apiService.PatchContactModel(Contact)
+                };
 
-                Task<ContactModel> saveToRemoteDatabaseTask;
-
-                var saveToLocalDatabaseTask = ContactDatabase.SaveContact(Contact);
-
-                if (isNewContact)
-                    saveToRemoteDatabaseTask = ApiService.PostContactModel(Contact);
-                else
-                    saveToRemoteDatabaseTask = ApiService.PatchContactModel(Contact);
+                var saveToLocalDatabaseTask = _contactDatabase.SaveContact(Contact);
 
                 await Task.WhenAll(saveToRemoteDatabaseTask, saveToLocalDatabaseTask).ConfigureAwait(false);
 
@@ -103,6 +113,6 @@ namespace XamList
         }
 
         void OnSaveContactCompleted(bool isSaveSuccessful) =>
-            _saveContactCompletedEventManager.HandleEvent(this, isSaveSuccessful, nameof(SaveContactCompleted));
+            _saveContactCompletedEventManager.RaiseEvent(this, isSaveSuccessful, nameof(SaveContactCompleted));
     }
 }

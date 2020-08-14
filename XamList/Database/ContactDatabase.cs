@@ -1,62 +1,36 @@
 ﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using XamList.Shared;
+using Xamarin.Essentials.Interfaces;
 
 namespace XamList
 {
-    public abstract class ContactDatabase : BaseDatabase
+    public class ContactDatabase : BaseDatabase<ContactModel>
     {
-        public static async Task SaveContact(ContactModel contact)
+        public ContactDatabase(IFileSystem fileSystem) : base(fileSystem)
         {
-            var databaseConnection = await GetDatabaseConnection<ContactModel>().ConfigureAwait(false);
 
-            await AttemptAndRetry(() => databaseConnection.InsertOrReplaceAsync(contact)).ConfigureAwait(false);
         }
 
-        public static async Task PatchContactModel(ContactModel contact)
+        public Task SaveContact(ContactModel contact) => ExecuteDatabaseFunction(connection => connection.InsertOrReplaceAsync(contact));
+
+        public Task PatchContactModel(ContactModel contact) => ExecuteDatabaseFunction(connection => connection.UpdateAsync(contact));
+
+        public Task<int> GetContactCount() => ExecuteDatabaseFunction(connection => connection.Table<ContactModel>().CountAsync());
+
+        public Task<List<ContactModel>> GetAllContacts() => ExecuteDatabaseFunction(connection => connection.Table<ContactModel>().ToListAsync());
+
+        public Task<ContactModel> GetContact(string id) => ExecuteDatabaseFunction(connection => connection.Table<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync());
+
+        public Task DeleteContact(ContactModel contact)
         {
-            var databaseConnection = await GetDatabaseConnection<ContactModel>().ConfigureAwait(false);
-
-            await AttemptAndRetry(() => databaseConnection.UpdateAsync(contact)).ConfigureAwait(false);
-        }
-
-        public static async Task<int> GetContactCount()
-        {
-            var databaseConnection = await GetDatabaseConnection<ContactModel>().ConfigureAwait(false);
-
-            return await AttemptAndRetry(() => databaseConnection.Table<ContactModel>().CountAsync()).ConfigureAwait(false);
-        }
-
-        public static async Task<List<ContactModel>> GetAllContacts()
-        {
-            var databaseConnection = await GetDatabaseConnection<ContactModel>().ConfigureAwait(false);
-
-            return await AttemptAndRetry(() => databaseConnection.Table<ContactModel>().ToListAsync()).ConfigureAwait(false);
-        }
-
-        public static async Task<ContactModel> GetContact(string id)
-        {
-            var databaseConnection = await GetDatabaseConnection<ContactModel>().ConfigureAwait(false);
-
-            return await AttemptAndRetry(() => databaseConnection.Table<ContactModel>().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync()).ConfigureAwait(false);
-        }
-
-        public static async Task DeleteContact(ContactModel contact)
-        {
-            var databaseConnection = await GetDatabaseConnection<ContactModel>().ConfigureAwait(false);
-
             contact.IsDeleted = true;
 
-            await AttemptAndRetry(() => databaseConnection.UpdateAsync(contact)).ConfigureAwait(false);
+            return ExecuteDatabaseFunction(connection => connection.UpdateAsync(contact));
         }
 
 #if DEBUG
-        public static async Task RemoveContact(ContactModel contact)
-        {
-            var databaseConnection = await GetDatabaseConnection<ContactModel>().ConfigureAwait(false);
-
-            await AttemptAndRetry(() => databaseConnection.DeleteAsync(contact)).ConfigureAwait(false);
-        }
+        public Task RemoveContact(ContactModel contact) => ExecuteDatabaseFunction(connection => connection.DeleteAsync(contact));
 #endif  
     }
 }

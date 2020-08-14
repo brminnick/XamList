@@ -4,35 +4,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using Polly;
 using SQLite;
-using Xamarin.Essentials;
+using Xamarin.Essentials.Interfaces;
 
 namespace XamList
 {
-    public abstract class BaseDatabase
+    public abstract class BaseDatabase<T>
     {
-        static readonly string _databasePath = Path.Combine(FileSystem.AppDataDirectory, $"{nameof(XamList)}.db3");
+        readonly SQLiteAsyncConnection _databaseConnection;
 
-        static readonly Lazy<SQLiteAsyncConnection> _databaseConnectionHolder =
-            new Lazy<SQLiteAsyncConnection>(() => new SQLiteAsyncConnection(_databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache));
-
-        static SQLiteAsyncConnection DatabaseConnection => _databaseConnectionHolder.Value;
-
-        protected static async ValueTask<SQLiteAsyncConnection> GetDatabaseConnection<T>()
+        public BaseDatabase(IFileSystem fileSystem)
         {
-            if (!DatabaseConnection.TableMappings.Any(x => x.TableName == typeof(T).Name))
-            {
-                await DatabaseConnection.EnableWriteAheadLoggingAsync().ConfigureAwait(false);
-                await DatabaseConnection.CreateTablesAsync(CreateFlags.None, typeof(T)).ConfigureAwait(false);
-            }
+            var databasePath = Path.Combine(fileSystem.AppDataDirectory, "PunModelSQLite.db3");
 
-            return DatabaseConnection;
+            _databaseConnection = new SQLiteAsyncConnection(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
         }
 
-        protected static Task<T> AttemptAndRetry<T>(Func<Task<T>> action, int numRetries = 3)
+        protected virtual async Task Init()
         {
-            return Policy.Handle<SQLiteException>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
+            await _databaseConnection.EnableWriteAheadLoggingAsync().ConfigureAwait(false);
+            await _databaseConnection.CreateTablesAsync(CreateFlags.None, typeof(T)).ConfigureAwait(false);
+        }
 
-            static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
+        protected async Task<TReturn> ExecuteDatabaseFunction<TReturn>(Func<SQLiteAsyncConnection, Task<TReturn>> action, int numRetries = 12)
+        {
+            if (!_databaseConnection.TableMappings.Any(x => x.MappedType == typeof(T)))
+                await Init().ConfigureAwait(false);
+
+            return await Policy.Handle<Exception>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(() => action(_databaseConnection)).ConfigureAwait(false);
+
+            static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromMilliseconds(Math.Pow(2, attemptNumber));
         }
     }
 }

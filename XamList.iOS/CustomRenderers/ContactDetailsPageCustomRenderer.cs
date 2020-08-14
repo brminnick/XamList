@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -30,13 +29,17 @@ namespace XamList.iOS
 
                 if (itemPriority is 1)
                 {
-                    UIBarButtonItem LeftNavItems = navigationItem.RightBarButtonItems[i];
-                    leftNavList.Add(LeftNavItems);
+                    var leftNavItems = navigationItem?.RightBarButtonItems?[i];
+
+                    if (leftNavItems != null)
+                        leftNavList.Add(leftNavItems);
                 }
                 else if (itemPriority is 0)
                 {
-                    UIBarButtonItem RightNavItems = navigationItem.RightBarButtonItems[i];
-                    rightNavList.Add(RightNavItems);
+                    var rightNavItems = navigationItem?.RightBarButtonItems?[i];
+
+                    if (rightNavItems != null)
+                        rightNavList.Add(rightNavItems);
                 }
                 else
                 {
@@ -44,8 +47,8 @@ namespace XamList.iOS
                 }
             }
 
-            navigationItem.SetLeftBarButtonItems(leftNavList.ToArray(), false);
-            navigationItem.SetRightBarButtonItems(rightNavList.ToArray(), false);
+            navigationItem?.SetLeftBarButtonItems(leftNavList.ToArray(), false);
+            navigationItem?.SetRightBarButtonItems(rightNavList.ToArray(), false);
         }
     }
 }

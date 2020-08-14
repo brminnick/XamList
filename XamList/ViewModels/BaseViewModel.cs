@@ -10,11 +10,15 @@ namespace XamList
     {
         readonly WeakEventManager _propertyChangedEventManager = new WeakEventManager();
 
+        public BaseViewModel(AppCenterService appCenterService) => AppCenterService = appCenterService;
+
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             add => _propertyChangedEventManager.AddEventHandler(value);
             remove => _propertyChangedEventManager.RemoveEventHandler(value);
         }
+
+        protected AppCenterService AppCenterService { get; }
 
         protected void SetProperty<T>(ref T backingStore, in T value, in Action? onChanged = null, [CallerMemberName] in string propertyname = "")
         {
@@ -29,6 +33,6 @@ namespace XamList
         }
 
         protected void OnPropertyChanged([CallerMemberName] in string propertyName = "") =>
-            _propertyChangedEventManager.HandleEvent(this, new PropertyChangedEventArgs(propertyName), nameof(INotifyPropertyChanged.PropertyChanged));
+            _propertyChangedEventManager.RaiseEvent(this, new PropertyChangedEventArgs(propertyName), nameof(INotifyPropertyChanged.PropertyChanged));
     }
 }

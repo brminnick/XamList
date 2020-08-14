@@ -1,15 +1,12 @@
-﻿using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
-
+using Xamarin.Essentials.Implementation;
 using Xamarin.UITest;
-
-using XamList.Shared;
 using XamList.Mobile.Shared;
-using System;
+using XamList.Shared;
 
 namespace XamList.UITests
 {
@@ -63,7 +60,8 @@ namespace XamList.UITests
 
         async Task RemoveTestContactsFromRemoteDatabase()
         {
-            var contactList = await ApiService.GetAllContactModels().ConfigureAwait(false);
+            var apiService = new ApiService(new DeviceInfoImplementation());
+            var contactList = await apiService.GetAllContactModels().ConfigureAwait(false);
 
             Assert.IsNotNull(contactList, "Error Retrieving Contact List From Remote Database");
 
@@ -73,7 +71,7 @@ namespace XamList.UITests
 
             var removedContactTaskList = new List<Task<ContactModel>>();
             foreach (var contact in testContactList)
-                removedContactTaskList.Add(ApiService.RemoveContactFromRemoteDatabase(contact.Id));
+                removedContactTaskList.Add(apiService.RemoveContactFromRemoteDatabase(contact.Id));
 
             await Task.WhenAll(removedContactTaskList).ConfigureAwait(false);
 

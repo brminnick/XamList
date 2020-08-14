@@ -11,16 +11,20 @@ using XamList.Backend.Shared;
 
 namespace XamList.Functions
 {
-    public static class RestoreDeletedContacts
+    class RestoreDeletedContacts
     {
+        readonly XamListDatabase _database;
+
+        public RestoreDeletedContacts(XamListDatabase database) => _database = database;
+
         [FunctionName(nameof(RestoreDeletedContacts))]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "RestoreDeletedContacts/")]HttpRequestMessage req, ILogger log)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "RestoreDeletedContacts/")] HttpRequestMessage req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             try
             {
-                var deletedContactModelList = XamListDatabase.GetAllContactModels(x => x.IsDeleted);
+                var deletedContactModelList = _database.GetAllContactModels(x => x.IsDeleted);
 
                 var undeletedContactModelList = deletedContactModelList.Select(x =>
                 {
@@ -29,7 +33,7 @@ namespace XamList.Functions
                 }).ToList();
 
                 foreach (var contact in undeletedContactModelList)
-                    await XamListDatabase.PatchContactModel(contact).ConfigureAwait(false);
+                    await _database.PatchContactModel(contact).ConfigureAwait(false);
 
                 return new OkObjectResult($"Number of Deleted Contacts Restored: {undeletedContactModelList.Count}");
             }
