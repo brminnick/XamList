@@ -11,15 +11,15 @@ An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Data
 
 ## Visual Studio Requirements
 
-### [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac?WT.mc_id=xamlist-github-bramin)
+### [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac?WT.mc_id=mobile-0000-bramin)
 
-This solution requires [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac?WT.mc_id=xamlist-github-bramin) Version 7.1 Build 1294 or later.
+This solution requires [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac?WT.mc_id=mobile-0000-bramin) Version 7.1 Build 1294 or later.
 
 Earlier versions of VSMac don't support Shared Project references from .NET Standard libraries.
 
-### [Visual Studio for PC](https://visualstudio.microsoft.com/vs?WT.mc_id=xamlist-github-bramin)
+### [Visual Studio for PC](https://visualstudio.microsoft.com/vs?WT.mc_id=mobile-0000-bramin)
 
-This solution requires [Visual Studio for PC](https://visualstudio.microsoft.com/vs?WT.mc_id=xamlist-github-bramin) Version 15.3 or later.
+This solution requires [Visual Studio for PC](https://visualstudio.microsoft.com/vs?WT.mc_id=mobile-0000-bramin) Version 15.3 or later.
 
 Earlier versions of VS don't support Azure Functions.
 
@@ -27,7 +27,7 @@ Earlier versions of VS don't support Azure Functions.
 
 ### 1. Create Azure API App
 
-1. Open a browser, navigate to the [Azure Portal](https://portal.azure.com?WT.mc_id=XamList-github-bramin) and log in.
+1. Open a browser, navigate to the [Azure Portal](https://portal.azure.com/?WT.mc_id=mobile-0000-bramin) and log in.
 
 ![](https://user-images.githubusercontent.com/13558917/29183032-048619ee-7db6-11e7-86bd-d8aa56e8b579.png)
 
