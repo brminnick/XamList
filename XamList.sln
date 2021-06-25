@@ -30,6 +30,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamList.UnitTests", "XamLis
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "XamList.Mobile.Shared", "XamList.Mobile.Shared\XamList.Mobile.Shared.shproj", "{2DC30BEE-8B2A-4DE9-A52F-DB8DC9C23220}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{812D69AA-ED77-43FB-B7E8-348087B6C32A}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		XamList.Mobile.Shared\XamList.Mobile.Shared.projitems*{2dc30bee-8b2a-4de9-a52f-db8dc9c23220}*SharedItemsImports = 13

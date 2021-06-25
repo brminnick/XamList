@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using Autofac;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
@@ -15,9 +16,9 @@ namespace XamList
 
         static IContainer CreateContainer()
         {
-            Xamarin.Forms.Device.SetFlags(new[] { "Markup_Experimental" });
-
             var builder = new ContainerBuilder();
+
+            builder.RegisterType<App>().SingleInstance();
 
             //Xamarin.Essentials
             builder.RegisterType<AppInfoImplementation>().As<IAppInfo>().SingleInstance();
@@ -39,6 +40,8 @@ namespace XamList
             builder.RegisterType<AppCenterService>().SingleInstance();
             builder.RegisterType<ConnectivityService>().SingleInstance();
             builder.RegisterType<DatabaseSyncService>().SingleInstance();
+            builder.RegisterInstance(RefitExtensions.For<IXamListAPI>(CreateHttpClient(BackendConstants.AzureAPIUrl))).SingleInstance();
+            builder.RegisterInstance(RefitExtensions.For<IXamListFunction>(CreateHttpClient(BackendConstants.AzureFunctionUrl))).SingleInstance();
 
 #if DEBUG
             builder.RegisterType<UITestBackdoorMethodService>().SingleInstance();
@@ -54,5 +57,10 @@ namespace XamList
 
             return builder.Build();
         }
+
+        static HttpClient CreateHttpClient(string baseAddress) => new HttpClient
+        {
+            BaseAddress = new Uri(baseAddress)
+        };
     }
 }

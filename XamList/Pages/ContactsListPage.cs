@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Autofac;
+using Xamarin.CommunityToolkit.Markup;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
-using Xamarin.Forms.Markup;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using XamList.Mobile.Shared;
 using XamList.Shared;
-using static XamList.MarkupExtensions;
-using static Xamarin.Forms.Markup.GridRowsColumns;
+using static Xamarin.CommunityToolkit.Markup.GridRowsColumns;
 
 namespace XamList
 {
@@ -31,7 +30,7 @@ namespace XamList
             {
                 RowDefinitions = Rows.Define(
                     (Row.List, Star),
-                    (Row.RestoreButton, AbsoluteGridLength(50))),
+                    (Row.RestoreButton, 50)),
 
                 Children =
                 {

@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace XamList
 {
@@ -7,11 +6,9 @@ namespace XamList
     {
         readonly AppCenterService _appCenterService;
 
-        public App()
+        public App(AppCenterService appCenterService, ContactsListPage contactsListPage)
         {
-            _appCenterService = ServiceCollection.Container.Resolve<AppCenterService>();
-
-            var contactsListPage = ServiceCollection.Container.Resolve<ContactsListPage>();
+            _appCenterService = appCenterService;
             MainPage = new BaseNavigationPage(contactsListPage);
         }
 

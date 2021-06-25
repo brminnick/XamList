@@ -1,4 +1,5 @@
-﻿using Foundation;
+﻿using Autofac;
+using Foundation;
 using UIKit;
 
 namespace XamList.iOS
@@ -10,7 +11,7 @@ namespace XamList.iOS
         {
             global::Xamarin.Forms.Forms.Init();
 
-            LoadApplication(new App());
+            LoadApplication(ServiceCollection.Container.Resolve<App>());
 
             return base.FinishedLaunching(uiApplication, launchOptions);
         }

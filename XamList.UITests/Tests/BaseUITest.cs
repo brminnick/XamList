@@ -45,7 +45,6 @@ namespace XamList.UITests
 
             await RemoveTestContactsFromDatabases().ConfigureAwait(false);
 
-
             App.Screenshot("App Started");
         }
 
@@ -60,7 +59,10 @@ namespace XamList.UITests
 
         async Task RemoveTestContactsFromRemoteDatabase()
         {
-            var apiService = new ApiService(new DeviceInfoImplementation());
+            var xamListApi = RefitExtensions.For<IXamListAPI>(BackendConstants.AzureAPIUrl);
+            var xamListFunction = RefitExtensions.For<IXamListFunction>(BackendConstants.AzureFunctionUrl);
+
+            var apiService = new ApiService(xamListApi, xamListFunction);
             var contactList = await apiService.GetAllContactModels().ConfigureAwait(false);
 
             Assert.IsNotNull(contactList, "Error Retrieving Contact List From Remote Database");

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
         <Folder Include="Tests\" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="NUnit" Version="3.12.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-        <PackageReference Include="Autofac" Version="6.0.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+        <PackageReference Include="NUnit" Version="3.13.2" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+        <PackageReference Include="Autofac" Version="6.2.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\XamList\XamList.csproj" />

@@ -1,8 +1,7 @@
 ﻿using Xamarin.Forms;
-using Xamarin.Forms.Markup;
+using Xamarin.CommunityToolkit.Markup;
 using XamList.Shared;
-using static XamList.MarkupExtensions;
-using static Xamarin.Forms.Markup.GridRowsColumns;
+using static Xamarin.CommunityToolkit.Markup.GridRowsColumns;
 
 namespace XamList
 {
@@ -24,7 +23,7 @@ namespace XamList
                 RowDefinitions = Rows.Define(
                     (Row.Text, Star),
                     (Row.Detail, Star),
-                    (Row.Divider, AbsoluteGridLength(11))),
+                    (Row.Divider, 11)),
 
                 Children =
                 {

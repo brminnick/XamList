@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿#if DEBUG
+using Autofac;
 using Foundation;
 using XamList.Mobile.Shared;
 
@@ -6,7 +7,6 @@ namespace XamList.iOS
 {
     public partial class AppDelegate
     {
-#if DEBUG
         public AppDelegate() => Xamarin.Calabash.Start();
 
         [Export(BackdoorMethodConstants.RemoveTestContactsFromLocalDatabase + ":")]
@@ -15,6 +15,6 @@ namespace XamList.iOS
 
         [Export(BackdoorMethodConstants.TriggerPullToRefresh + ":")]
         public void TriggerPullToRefresh(NSString unusedString) => ServiceCollection.Container.Resolve<UITestBackdoorMethodService>().TriggerPullToRegresh();
-#endif
     }
 }
+#endif

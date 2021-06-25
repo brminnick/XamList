@@ -3,8 +3,6 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Autofac;
-using Java.Interop;
-using XamList.Mobile.Shared;
 
 namespace XamList.Droid
 {
@@ -27,7 +25,7 @@ namespace XamList.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-            LoadApplication(new App());
+            LoadApplication(ServiceCollection.Container.Resolve<App>());
         }
     }
 }

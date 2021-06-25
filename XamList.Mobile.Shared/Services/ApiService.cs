@@ -13,15 +13,13 @@ namespace XamList.Mobile.Shared
 {
     public class ApiService
     {
-        readonly IDeviceInfo _deviceInfo;
         readonly IXamListAPI _apiClient;
         readonly IXamListFunction _functionsClient;
 
-        public ApiService(IDeviceInfo deviceInfo)
+        public ApiService(IXamListAPI xamListAPI, IXamListFunction xamListFunction)
         {
-            _deviceInfo = deviceInfo;
-            _apiClient = RestService.For<IXamListAPI>(CreateHttpClient(BackendConstants.AzureAPIUrl));
-            _functionsClient = RestService.For<IXamListFunction>(CreateHttpClient(BackendConstants.AzureFunctionUrl));
+            _apiClient = xamListAPI;
+            _functionsClient = xamListFunction;
         }
 
         public Task<List<ContactModel>> GetAllContactModels() => AttemptAndRetry(() => _apiClient.GetAllContactModels());
@@ -38,20 +36,6 @@ namespace XamList.Mobile.Shared
             return Policy.Handle<Exception>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
 
             static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
-        }
-
-        HttpClient CreateHttpClient(string baseAddress)
-        {
-            HttpClient client;
-
-            if (_deviceInfo.Platform == DevicePlatform.iOS || _deviceInfo.Platform == DevicePlatform.Android)
-                client = new HttpClient();
-            else
-                client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip });
-
-            client.BaseAddress = new Uri(baseAddress);
-
-            return client;
         }
     }
 }
