@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Database\XamListDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Database\XamListDbContext.cs" />
   </ItemGroup>
 </Project>

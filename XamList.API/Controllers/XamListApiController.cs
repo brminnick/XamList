@@ -8,9 +8,9 @@ namespace XamList.API.Controllers
     [ApiController, Route("api")]
     class XamListApiController : ControllerBase
     {
-        readonly XamListDatabase _database;
+        readonly XamListDatabaseService _database;
 
-        public XamListApiController(XamListDatabase database) => _database = database;
+        public XamListApiController(XamListDatabaseService database) => _database = database;
 
         [HttpGet, Route(nameof(GetAllContacts))]
         public IActionResult GetAllContacts() => new OkObjectResult(_database.GetAllContactModels());

@@ -8,6 +8,10 @@ namespace GitTrends.Functions
 {
     public class Startup : FunctionsStartup
     {
-        public override void Configure(IFunctionsHostBuilder builder) => builder.Services.AddSingleton<XamListDatabase>();
+        public override void Configure(IFunctionsHostBuilder builder)
+        {
+            builder.Services.AddDbContext<XamListDbContext>();
+            builder.Services.AddScoped<XamListDatabaseService>();
+        }
     }
 }

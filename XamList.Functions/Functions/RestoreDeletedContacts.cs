@@ -1,21 +1,19 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-
 using XamList.Backend.Shared;
 
 namespace XamList.Functions
 {
     class RestoreDeletedContacts
     {
-        readonly XamListDatabase _database;
+        readonly XamListDatabaseService _database;
 
-        public RestoreDeletedContacts(XamListDatabase database) => _database = database;
+        public RestoreDeletedContacts(XamListDatabaseService database) => _database = database;
 
         [FunctionName(nameof(RestoreDeletedContacts))]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "RestoreDeletedContacts/")] HttpRequestMessage req, ILogger log)

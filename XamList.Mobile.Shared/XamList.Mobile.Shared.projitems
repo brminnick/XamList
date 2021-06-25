@@ -14,12 +14,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants\BackendConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\PageTitleConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\TestConstants.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListFunction.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\IXamListAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ApiService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IAnalyticsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\BackdoorMethodConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RefitExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IXamListAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IXamListFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Constants\" />
