@@ -80,4 +80,4 @@ jobs:
           
       - name: Build Android App
         run: |                    
-          dotnet test ./XamList.UnitTests
+          dotnet test ./XamList.UnitTests -c Release

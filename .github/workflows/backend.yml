@@ -32,7 +32,7 @@ jobs:
           
       - name: Build Functions App
         run: |                    
-          dotnet build ./XamList.Functions/XamList.Functions.csproj
+          dotnet build ./XamList.Functions/XamList.Functions.csproj -c Release
 
     Build_API:
       runs-on: macos-latest
@@ -56,4 +56,4 @@ jobs:
           
       - name: Build Functions App
         run: |                    
-          dotnet build ./XamList.API/XamList.API.csproj
+          dotnet build ./XamList.API/XamList.API.csproj -c Release
