@@ -28,7 +28,7 @@ jobs:
         
       - name: Restore NuGet 
         run: |
-          nuget restore **/**.sln
+          nuget restore
           
       - name: Build Android App
         run: |                    
@@ -52,7 +52,7 @@ jobs:
         
       - name: Restore NuGet 
         run: |
-          nuget restore **/**.sln
+          nuget restore
           
       - name: Build UITest Project
         run: |                    
@@ -76,7 +76,7 @@ jobs:
         
       - name: Restore NuGet 
         run: |
-          nuget restore **/**.sln
+          nuget restore
           
       - name: Build Android App
         run: |                    
