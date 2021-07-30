@@ -1,10 +1,6 @@
+ [![Cloud](https://github.com/brminnick/XamList/actions/workflows/backend.yml/badge.svg)](https://github.com/brminnick/XamList/actions/workflows/backend.yml)  [![Mobile](https://github.com/brminnick/XamList/actions/workflows/mobile.yml/badge.svg)](https://github.com/brminnick/XamList/actions/workflows/mobile.yml)
+
 # XamList
-
-| CI Tool | Build Status |
-|---------|--------------|
-| GitHub Actions, Backend | [![Cloud](https://github.com/brminnick/XamList/actions/workflows/backend.yml/badge.svg)](https://github.com/brminnick/XamList/actions/workflows/backend.yml)
-| GitHub Actions, Mobile | [![Cloud](https://github.com/brminnick/XamList/actions/workflows/mobile.yml/badge.svg)](https://github.com/brminnick/XamList/actions/workflows/mobile.yml)
-
 
 An iOS and Android app showcasing Xamarin.Forms, Azure Functions, Azure SQL Database, Azure API and App Center.
 
