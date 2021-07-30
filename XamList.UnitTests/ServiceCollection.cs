@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Net.Http;
 using Autofac;
-using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
 using XamList.Mobile.Shared;
 using XamList.Shared;
@@ -15,8 +15,6 @@ namespace XamList.UnitTests
 
         static IContainer CreateContainer()
         {
-            Xamarin.Forms.Device.SetFlags(new[] { "Markup_Experimental" });
-
             var builder = new ContainerBuilder();
 
             //Xamarin.Essentials
@@ -38,6 +36,8 @@ namespace XamList.UnitTests
             builder.RegisterType<AppCenterService>().SingleInstance();
             builder.RegisterType<ConnectivityService>().SingleInstance();
             builder.RegisterType<DatabaseSyncService>().SingleInstance();
+            builder.RegisterInstance(RefitExtensions.For<IXamListAPI>(BackendConstants.AzureAPIUrl)).SingleInstance();
+            builder.RegisterInstance(RefitExtensions.For<IXamListFunction>(BackendConstants.AzureFunctionUrl)).SingleInstance();
 
 #if DEBUG
             builder.RegisterType<UITestBackdoorMethodService>().SingleInstance();
