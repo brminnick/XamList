@@ -11,17 +11,16 @@
 	  <DefineConstants>TRACE;DEBUG;NETSTANDARD1_1;MOBILE;</DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
-		<PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.8.0-beta" />
 		<PackageReference Include="Microsoft.AppCenter.Analytics" Version="4.3.0" />
 		<PackageReference Include="Microsoft.AppCenter.Crashes" Version="4.3.0" />
-		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.0-pre1" />
+		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.0" />
 		<PackageReference Include="Polly" Version="7.2.2" />
 		<PackageReference Include="Refit" Version="6.0.38" />
 		<PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
-		<PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.6.1" />
+		<PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
 		<PackageReference Include="Autofac" Version="6.2.0" />
-		<PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.2.0-pre2" />
+		<PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.3.0-pre1" />
 		<PackageReference Include="Refit.Newtonsoft.Json" Version="6.0.38" />
 	</ItemGroup>
 	<ItemGroup>

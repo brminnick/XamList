@@ -1,0 +1,59 @@
+name: Cloud
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches: 
+      - "*"
+
+jobs:
+
+    Build_Functions:
+      runs-on: macos-latest
+
+      steps:
+      - uses: actions/checkout@v1
+        
+      - name: Setup .NET v5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+          
+      - name: Setup .NET Core v3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+        
+      - name: Restore NuGet 
+        run: |
+          nuget restore **/**.sln
+          
+      - name: Build Functions App
+        run: |                    
+          dotnet build ./XamList.Functions/XamList.Functions.csproj
+
+    Build_API:
+      runs-on: macos-latest
+
+      steps:
+      - uses: actions/checkout@v1
+        
+      - name: Setup .NET v5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+          
+      - name: Setup .NET Core v3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+        
+      - name: Restore NuGet 
+        run: |
+          nuget restore **/**.sln
+          
+      - name: Build Functions App
+        run: |                    
+          dotnet build ./XamList.API/XamList.API.csproj
