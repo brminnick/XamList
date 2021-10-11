@@ -74,7 +74,7 @@
         <PackageReference Include="Refit" Version="6.0.94" />
         <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
         <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
-        <PackageReference Include="Autofac" Version="6.2.0" />
+        <PackageReference Include="Autofac" Version="6.3.0" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="MainActivity.cs" />
