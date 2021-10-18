@@ -57,27 +57,3 @@ jobs:
       - name: Build UITest Project
         run: |                    
           mono /Applications/Visual\ studio.app/Contents/Resources/lib/monodevelop/bin/MSBuild/Current/bin/MSBuild.dll ./XamList.UITests/XamList.UITests.csproj /verbosity:normal /p:Configuration=Release    
-
-    UnitTests:
-      runs-on: macos-latest
-
-      steps:
-      - uses: actions/checkout@v1
-        
-      - name: Setup .NET v5.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.x'
-          
-      - name: Setup .NET Core v3.1
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.x'
-        
-      - name: Restore NuGet 
-        run: |
-          nuget restore
-          
-      - name: Build Android App
-        run: |                    
-          dotnet test ./XamList.UnitTests -c Release
