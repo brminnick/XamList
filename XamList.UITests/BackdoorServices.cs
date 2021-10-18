@@ -19,7 +19,7 @@ namespace XamList.UITests
         public static T InvokeBackdoorMethod<T>(this IApp app, string backdoorMethodName, string parameter = "")
         {
             var result = app.InvokeBackdoorMethod(backdoorMethodName, parameter).ToString();
-            return JsonConvert.DeserializeObject<T>(result);
+            return JsonConvert.DeserializeObject<T>(result) ?? throw new InvalidOperationException();
         }
     }
 }

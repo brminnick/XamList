@@ -47,7 +47,7 @@
         <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-        <PackageReference Include="Refit.Newtonsoft.Json" Version="6.0.38" />
+        <PackageReference Include="Refit.Newtonsoft.Json" Version="6.1.15" />
     </ItemGroup>
     <ItemGroup>
         <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
